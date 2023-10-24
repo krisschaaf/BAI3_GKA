@@ -1,6 +1,10 @@
 package kris.schaaf;
 
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiNode;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -8,12 +12,18 @@ import java.util.*;
  */
 public class Dijkstra
 {
-    public static void main( String[] args ) { }
+    private static final String ATTRIBUTE_WEIGHT = "weight";
 
-    public static PriorityQueueItem initialize(Node startNode, Node endNode) {
+    public static void main( String[] args ) {
+//        System.setProperty("org.graphstream.ui", "swing");
+//
+//        graph.display();
+    }
+
+    public static PriorityQueueItem initialize(MultiNode startNode, MultiNode endNode) {
 
         // Schritt 1: Leere Closed List und leere Priority Queue initialisieren
-        Set<Node> closedList = new HashSet<>();
+        Set<MultiNode> closedList = new HashSet<>();
         PriorityQueue<PriorityQueueItem> priorityQueue = new PriorityQueue<>(
                 Comparator.comparingInt((PriorityQueueItem priorityQueueItem) -> priorityQueueItem.getDistance())
         );
@@ -33,14 +43,20 @@ public class Dijkstra
         while(!allNodesVisited(counter, closedList) && !endNodeInQueueWithShortestDistance(endNode, priorityQueue)) {
 
             // Schritt 3: Jeder adjazente Knoten des Ausgangsknoten wird betrachtet
-            for (Node adjacentNode: initialPriorityQueueItem.getLastNode().getAdjacentNodes().keySet()) {
+            for (Node node: initialPriorityQueueItem.getLastNode().neighborNodes().collect(Collectors.toList())) {
+
+                if(!(node instanceof MultiNode)) {
+                    throw new ClassCastException("No Multinode provided!");
+                }
+                MultiNode adjacentNode = (MultiNode) node;
 
                 // Schritt 3a/b: Ist der Knoten bereits in der closed List, wird dieser nicht weiter beachtet
                 if(!closedList.contains(adjacentNode)) {
 
                     //Initialisierung eines PriorityQueueItems
                     PriorityQueueItem adjacentPriorityQueueItem = new PriorityQueueItem();
-                    adjacentPriorityQueueItem.setDistance(initialPriorityQueueItem.getLastNode().getAdjacentNodes().get(adjacentNode));
+                    String weight = initialPriorityQueueItem.getLastNode().getEdgeBetween(adjacentNode).getAttribute(ATTRIBUTE_WEIGHT).toString();
+                    adjacentPriorityQueueItem.setDistance(Integer.parseInt(weight));
                     adjacentPriorityQueueItem.addNode(adjacentNode);
 
                     PriorityQueueItem concatenatedPriorityQueueItem = new PriorityQueueItem();
@@ -50,7 +66,7 @@ public class Dijkstra
                     concatenatedPriorityQueueItem.setDistance(concatenatedDistance);
 
                     // Die Knoten sind die Knoten des Ausgangsitems konkateniert mit dem adjazenten Knoten
-                    List<Node> concatenatedNodes = new LinkedList<>();
+                    List<MultiNode> concatenatedNodes = new LinkedList<>();
                     concatenatedNodes.addAll(initialPriorityQueueItem.getNodes());
                     concatenatedNodes.addAll(adjacentPriorityQueueItem.getNodes());
                     concatenatedPriorityQueueItem.setNodes(concatenatedNodes);
@@ -98,7 +114,7 @@ public class Dijkstra
         return initialPriorityQueueItem;
     }
 
-    private static boolean endNodeInQueueWithShortestDistance(Node endNode, PriorityQueue<PriorityQueueItem> priorityQueue) {
+    private static boolean endNodeInQueueWithShortestDistance(MultiNode endNode, PriorityQueue<PriorityQueueItem> priorityQueue) {
         for(PriorityQueueItem priorityQueueItem: priorityQueue) {
             if(priorityQueueItem.getLastNode().equals(endNode)) {
 
@@ -120,7 +136,7 @@ public class Dijkstra
         return false;
     }
 
-    private static boolean allNodesVisited(int counter, Set<Node> closedList) {
+    private static boolean allNodesVisited(int counter, Set<MultiNode> closedList) {
         return counter == closedList.size();
     }
 }

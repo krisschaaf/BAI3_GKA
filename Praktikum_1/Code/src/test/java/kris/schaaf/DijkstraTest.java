@@ -1,43 +1,47 @@
 package kris.schaaf;
 
 
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class DijkstraTest
 {
+
+    public static final String ATTRIBUTE_WEIGHT = "weight";
+
     @Test
     void graph_1() {
         // Graphen bauen
-        Node aNode = new Node("A");
-        Node bNode = new Node("B");
-        Node cNode = new Node("C");
-        Node dNode = new Node("D");
-        Node eNode = new Node("E");
-        Node fNode = new Node("F");
-        Node gNode = new Node("G");
-        Node hNode = new Node("H");
+        MultiGraph graph = new MultiGraph("foo");
 
-        aNode.addDestination(bNode, 3);
-        aNode.addDestination(cNode, 6);
+        MultiNode multiNodeA = new MultiNode(graph, "A");
+        MultiNode multiNodeB = new MultiNode(graph, "B");
+        MultiNode multiNodeC = new MultiNode(graph, "C");
+        MultiNode multiNodeD = new MultiNode(graph, "D");
+        MultiNode multiNodeE = new MultiNode(graph, "E");
+        MultiNode multiNodeF = new MultiNode(graph, "F");
+        MultiNode multiNodeG = new MultiNode(graph, "G");
+        MultiNode multiNodeH = new MultiNode(graph, "H");
 
-        bNode.addDestination(dNode, 2);
-        bNode.addDestination(eNode, 6);
-        bNode.addDestination(fNode, 4);
-
-        cNode.addDestination(gNode, 4);
-
-        fNode.addDestination(hNode, 4);
-        gNode.addDestination(hNode, 6);
+        graph.addEdge("e1", multiNodeA, multiNodeB, false).setAttribute(ATTRIBUTE_WEIGHT, 3);
+        graph.addEdge("e2", multiNodeA, multiNodeC, false).setAttribute(ATTRIBUTE_WEIGHT, 6);
+        graph.addEdge("e3", multiNodeB, multiNodeD, false).setAttribute(ATTRIBUTE_WEIGHT, 2);
+        graph.addEdge("e4", multiNodeB, multiNodeE, false).setAttribute(ATTRIBUTE_WEIGHT, 6);
+        graph.addEdge("e5", multiNodeB, multiNodeF, false).setAttribute(ATTRIBUTE_WEIGHT, 4);
+        graph.addEdge("e6", multiNodeC, multiNodeG, false).setAttribute(ATTRIBUTE_WEIGHT, 4);
+        graph.addEdge("e7", multiNodeF, multiNodeH, false).setAttribute(ATTRIBUTE_WEIGHT, 4);
+        graph.addEdge("e8", multiNodeG, multiNodeH, false).setAttribute(ATTRIBUTE_WEIGHT, 6);
 
         PriorityQueueItem result = new PriorityQueueItem();
         result.setDistance(11);
-        result.setNodes(Arrays.asList(aNode, bNode, fNode, hNode));
+        result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
-        assertEquals(Dijkstra.initialize(aNode, hNode).toString(), result.toString());
+        assertEquals(Dijkstra.initialize(multiNodeA, multiNodeH).toString(), result.toString());
     }
 }
