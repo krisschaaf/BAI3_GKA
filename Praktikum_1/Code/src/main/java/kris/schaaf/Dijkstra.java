@@ -14,7 +14,9 @@ public class Dijkstra
 
         // Schritt 1: Leere Closed List und leere Priority Queue initialisieren
         Set<Node> closedList = new HashSet<>();
-        PriorityQueue<PriorityQueueItem> priorityQueue = new PriorityQueue<>(Comparator.comparingInt((PriorityQueueItem priorityQueueItem) -> priorityQueueItem.getDistance()));
+        PriorityQueue<PriorityQueueItem> priorityQueue = new PriorityQueue<>(
+                Comparator.comparingInt((PriorityQueueItem priorityQueueItem) -> priorityQueueItem.getDistance())
+        );
 
         // Schritt 2: PriorityQueueItem für den Startknoten initialisieren
         PriorityQueueItem startItem = new PriorityQueueItem();
