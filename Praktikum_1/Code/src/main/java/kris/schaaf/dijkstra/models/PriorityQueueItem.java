@@ -1,4 +1,4 @@
-package kris.schaaf;
+package kris.schaaf.dijkstra.models;
 
 import org.graphstream.graph.implementations.MultiNode;
 
@@ -40,4 +40,6 @@ public class PriorityQueueItem {
                 " via Nodes: " + this.getNodes().toString() +
                 ".";
     }
+
+
 }

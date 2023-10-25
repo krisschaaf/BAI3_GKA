@@ -1,6 +1,8 @@
 package kris.schaaf;
 
 
+import kris.schaaf.dijkstra.Dijkstra;
+import kris.schaaf.dijkstra.models.PriorityQueueItem;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,6 @@ public class DijkstraTest
         result.setDistance(11);
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
-        assertEquals(Dijkstra.initialize(multiNodeA, multiNodeH).toString(), result.toString());
+        assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
     }
 }
