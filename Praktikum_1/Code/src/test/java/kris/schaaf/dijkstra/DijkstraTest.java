@@ -1,4 +1,4 @@
-package kris.schaaf;
+package kris.schaaf.dijkstra;
 
 
 import kris.schaaf.dijkstra.Dijkstra;
