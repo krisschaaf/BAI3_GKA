@@ -98,6 +98,11 @@ public class GraphFileReader {
 			}
 			if(edgeName.isEmpty()) {
 				edgeName = firstNodeName+"-"+secondNodeName;
+				int counter = 1;
+				while (graph.getEdge(edgeName) != null){
+					edgeName = edgeName + "_" + String.valueOf(counter);
+					counter++;
+				}
 			}
 			//if (graph.getEdge(edgeName)==null)
 			graph.addEdge(edgeName, firstNodeName, secondNodeName, this.isDirected).setAttribute("ui.label", edgeName);
@@ -107,7 +112,5 @@ public class GraphFileReader {
 			}
 		}
 		return graph;	}
-
-
 }
 
