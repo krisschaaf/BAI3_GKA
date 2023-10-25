@@ -24,7 +24,7 @@ public class Main {
 		GraphFileReader reader = new GraphFileReader();
 		try {
 			graph = reader.getGraphFromFile(args[0]);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
