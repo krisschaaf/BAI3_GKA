@@ -1,8 +1,7 @@
-package kris.schaaf.dijkstra;
+package haw.gka.dijkstra;
 
 
-import kris.schaaf.dijkstra.Dijkstra;
-import kris.schaaf.dijkstra.models.PriorityQueueItem;
+import haw.gka.dijkstra.models.PriorityQueueItem;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;

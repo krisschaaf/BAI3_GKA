@@ -1,9 +1,9 @@
-package kris.schaaf.dijkstra;
+package haw.gka.dijkstra;
 
-import kris.schaaf.dijkstra.models.PriorityQueueItem;
-import kris.schaaf.dijkstra.utils.NodeUtils;
-import kris.schaaf.dijkstra.utils.PriorityQueueItemUtils;
-import kris.schaaf.dijkstra.utils.PriorityQueueUtils;
+import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
+import haw.gka.dijkstra.utils.PriorityQueueUtils;
+import haw.gka.dijkstra.models.PriorityQueueItem;
+import haw.gka.dijkstra.utils.NodeUtils;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;

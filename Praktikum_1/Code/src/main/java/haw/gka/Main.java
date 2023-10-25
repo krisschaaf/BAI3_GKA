@@ -1,7 +1,7 @@
-package kris.schaaf;
+package haw.gka;
 
-import kris.schaaf.io.GraphFileReader;
-import kris.schaaf.io.GraphFileWriter;
+import haw.gka.io.GraphFileReader;
+import haw.gka.io.GraphFileWriter;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 

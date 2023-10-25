@@ -1,4 +1,4 @@
-package kris.schaaf.io;
+package haw.gka.io;
 
 import org.junit.jupiter.api.Test;
 

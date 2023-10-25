@@ -1,4 +1,4 @@
-package kris.schaaf.io;
+package haw.gka.io;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

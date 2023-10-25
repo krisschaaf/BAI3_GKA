@@ -1,4 +1,4 @@
-package kris.schaaf.dijkstra.models;
+package haw.gka.dijkstra.models;
 
 import org.graphstream.graph.implementations.MultiNode;
 
