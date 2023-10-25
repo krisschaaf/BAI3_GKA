@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Verifier {
 
-	private static final String UMLAUTE = "\\u00fc";
+	private static final String UMLAUTE = "ÜüÄäÖöß";
 	private static final String ALL_CHARS_REGEX = "[a-zA-Z0-9" + UMLAUTE + "]";
 
 	public static boolean isValidLine(String line) {
@@ -23,8 +23,8 @@ public class Verifier {
 			line = line.replaceAll("-"+ALL_CHARS_REGEX+"+(:[0-9]+)?", "");
 		}
 
-		if (getCountOfPatternInLine(line, "\\"+ ALL_CHARS_REGEX+"\\)") == 1) {
-			line = line.replaceAll("\\"+ ALL_CHARS_REGEX+"\\)", "");
+		if (getCountOfPatternInLine(line, "\\("+ ALL_CHARS_REGEX+"\\)") == 1) {
+			line = line.replaceAll("\\("+ ALL_CHARS_REGEX+"\\)", "");
 		}
 
 		if (getCountOfPatternInLine(line, "::[0-9]+") == 1) {
