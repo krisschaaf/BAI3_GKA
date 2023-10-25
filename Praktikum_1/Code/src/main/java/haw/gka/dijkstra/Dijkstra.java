@@ -31,6 +31,7 @@ public class Dijkstra
         //Schritt 7
         while(!allNodesVisited(closedList, graph) && !endNodeInQueueWithShortestDistance(endNode, priorityQueue)) {
 
+
             // Schritt 3: Jeder adjazente Knoten des Ausgangsknoten wird betrachtet
             for (Node node: initialPriorityQueueItem.getLastNode().neighborNodes().collect(Collectors.toList())) {
 
@@ -68,23 +69,6 @@ public class Dijkstra
     }
 
     private static boolean endNodeInQueueWithShortestDistance(MultiNode endNode, PriorityQueue<PriorityQueueItem> priorityQueue) {
-        for(PriorityQueueItem priorityQueueItem: priorityQueue) {
-            if(priorityQueueItem.getLastNode().equals(endNode)) {
-
-                // Nur durchlaufen, wenn Zielknoten in PriorityQueue enthalten ist
-                int shortestDistance = Integer.MAX_VALUE;
-
-                for(PriorityQueueItem priorityQueueItemForDistance: priorityQueue) {
-                    if(priorityQueueItemForDistance.getDistance() <= shortestDistance) {
-                        shortestDistance = priorityQueueItemForDistance.getDistance();
-                    }
-                }
-
-                if(priorityQueueItem.getDistance() <= shortestDistance) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return priorityQueue.peek().getLastNode().equals(endNode);
     }
 }

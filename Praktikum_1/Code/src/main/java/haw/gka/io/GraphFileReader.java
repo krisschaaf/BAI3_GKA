@@ -1,10 +1,11 @@
 package haw.gka.io;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.MultiGraph;
+
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.*;
 
 public class GraphFileReader {
 

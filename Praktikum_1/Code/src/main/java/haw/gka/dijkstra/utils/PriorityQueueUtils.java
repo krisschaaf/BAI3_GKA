@@ -2,10 +2,10 @@ package haw.gka.dijkstra.utils;
 
 import haw.gka.dijkstra.models.PriorityQueueItem;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 public class PriorityQueueUtils {
 
@@ -16,8 +16,8 @@ public class PriorityQueueUtils {
     }
 
     public static void organizePriorityQueue(PriorityQueue<PriorityQueueItem> priorityQueue, PriorityQueueItem concatenatedPriorityQueueItem) {
-        List<PriorityQueueItem> itemsToRemove = new ArrayList<>();
-        List<PriorityQueueItem> itemsToAdd = new ArrayList<>();
+        Set<PriorityQueueItem> itemsToRemove = new HashSet<>();
+        Set<PriorityQueueItem> itemsToAdd = new HashSet<>();
 
         for (PriorityQueueItem priorityQueueItem : priorityQueue) {
 
