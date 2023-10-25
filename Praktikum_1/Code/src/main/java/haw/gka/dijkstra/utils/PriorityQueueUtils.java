@@ -21,8 +21,8 @@ public class PriorityQueueUtils {
 
         for (PriorityQueueItem priorityQueueItem : priorityQueue) {
 
-            // Schritt 4a: Ist der letzte Knoten aus der nodes Liste einer dieser PriorityQueueItems bereits das
-            // letzte Element einer nodes Liste eines PriorityQueueItems in der PriorityQueue
+            // Schritt 4a: Prüfen ob der letzte Knoten aus der nodes Liste einer dieser PriorityQueueItems bereits das
+            // letzte Element einer nodes Liste eines PriorityQueueItems in der PriorityQueue ist
             if (priorityQueueItem.getLastNode().equals(concatenatedPriorityQueueItem.getLastNode())) {
 
                 // Welche Distanz der PriorityQueueItems ist kleiner: Nur dieses PriorityQueueItem wird behalten

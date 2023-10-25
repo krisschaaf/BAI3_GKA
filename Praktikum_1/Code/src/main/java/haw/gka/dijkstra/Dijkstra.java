@@ -12,25 +12,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class Dijkstra
-{
-
+public class Dijkstra {
     public static PriorityQueueItem calculateFastestPath(MultiNode startNode, MultiNode endNode, MultiGraph graph) {
 
-        // Schritt 1: Leere Closed List und leere Priority Queue initialisieren
         Set<MultiNode> closedList = new HashSet<>();
         PriorityQueue<PriorityQueueItem> priorityQueue = PriorityQueueUtils.initializePriorityQueue();
 
-        // Schritt 2: PriorityQueueItem für den Startknoten initialisieren
         PriorityQueueItem startItem = PriorityQueueItemUtils.initializeStartingPriorityQueueItem(startNode);
 
-        // Item der PriorityQueue ergänzen, damit nachfolgende for each Schleife funktioniert
         priorityQueue.add(startItem);
         PriorityQueueItem initialPriorityQueueItem = priorityQueue.peek();
 
-        //Schritt 7
         while(!allNodesVisited(closedList, graph) && !endNodeInQueueWithShortestDistance(endNode, priorityQueue)) {
-
 
             // Schritt 3: Jeder adjazente Knoten des Ausgangsknoten wird betrachtet
             for (Node node: initialPriorityQueueItem.getLastNode().neighborNodes().collect(Collectors.toList())) {
@@ -40,14 +33,10 @@ public class Dijkstra
                 // Schritt 3a/b: Ist der Knoten bereits in der closed List, wird dieser nicht weiter beachtet
                 if(!closedList.contains(adjacentNode)) {
 
-                    //Initialisierung eines PriorityQueueItems für den adjazenten Knoten
                     PriorityQueueItem adjacentPriorityQueueItem = PriorityQueueItemUtils.initializeAdjacentPriorityQueueItem(initialPriorityQueueItem, adjacentNode);
-
-                    //Konkatenieren der beiden PriorityQueueItems
                     PriorityQueueItem concatenatedPriorityQueueItem = PriorityQueueItemUtils.concatenatePriorityQueueItems(initialPriorityQueueItem, adjacentPriorityQueueItem);
 
-                    // Schritt 4: Die neu entstandenen PriorityQueueItems ersetzen nun das PriorityQueueItem des
-                    // Ausgangsknotens in der PriorityQueue
+                    // Schritt 4: Die neu entstandenen PriorityQueueItems ersetzen nun das PriorityQueueItem des Ausgangsknotens in der PriorityQueue
                     PriorityQueueUtils.organizePriorityQueue(priorityQueue, concatenatedPriorityQueueItem);
                 }
             }

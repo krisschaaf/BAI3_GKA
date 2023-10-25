@@ -32,11 +32,9 @@ public class PriorityQueueItemUtils {
     public static PriorityQueueItem concatenatePriorityQueueItems(PriorityQueueItem initialPriorityQueueItem, PriorityQueueItem adjacentPriorityQueueItem) {
         PriorityQueueItem concatenatedPriorityQueueItem = new PriorityQueueItem();
 
-        // Die Distanz ist die Distanz zwischen Ausgangsknoten und dessen adjazentem Knoten
         int concatenatedDistance = initialPriorityQueueItem.getDistance() + adjacentPriorityQueueItem.getDistance();
         concatenatedPriorityQueueItem.setDistance(concatenatedDistance);
 
-        // Die Knoten sind die Knoten des Ausgangsitems konkateniert mit dem adjazenten Knoten
         List<MultiNode> concatenatedNodes = new LinkedList<>();
         concatenatedNodes.addAll(initialPriorityQueueItem.getNodes());
         concatenatedNodes.addAll(adjacentPriorityQueueItem.getNodes());
