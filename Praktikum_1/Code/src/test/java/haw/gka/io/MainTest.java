@@ -3,31 +3,37 @@ package haw.gka.io;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.MultiGraph;
 import org.junit.jupiter.api.Test;
-import java.util.*;
-import java.util.function.BooleanSupplier;
-import java.util.stream.Stream;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
+    private static final String OS = System.getProperty("os.name");
+    private static final String USER_DIR = System.getProperty("user.dir");
+    private static final String PATH = OS.contains("windows")
+            ? USER_DIR + "\\src\\main\\resources\\graphs\\"
+            : USER_DIR + "/src/main/resources/graphs/";
+    private static final String PATH_EULER = PATH + "/eulerGraphs/";
+
     @Test
     public void testReadValidFiles(){
-        String path = System.getProperty("user.dir")+"\\src\\main\\resources\\graphs\\";
         List<String> filesToAccept = new LinkedList<>();
-        filesToAccept.add(path+"graph01.grph");
-        filesToAccept.add(path+"graph02.grph");
-        filesToAccept.add(path+"graph03.grph");
-        filesToAccept.add(path+"graph04.grph");
+
+        filesToAccept.add(PATH+"graph01.grph");
+        filesToAccept.add(PATH+"graph02.grph");
+        filesToAccept.add(PATH+"graph03.grph");
+        filesToAccept.add(PATH+"graph04.grph");
         //graph05 shouldn't work because of syntax error: "::" but no weight specified
         //graph06 shouldn't work because of semantic error: doubled edge "f"
         //graph07 missing
-        filesToAccept.add(path+"graph08.grph");
+        filesToAccept.add(PATH+"graph08.grph");
         //graph09 shouldn't work because of syntax error: triple edge a-gb-j
-        filesToAccept.add(path+"eulerGraphs\\eulG1.grph");
-        filesToAccept.add(path+"eulerGraphs\\eulG2.grph");
-        filesToAccept.add(path+"eulerGraphs\\eulG3.grph");
+        filesToAccept.add(PATH_EULER + "eulG1.grph");
+        filesToAccept.add(PATH_EULER + "eulG2.grph");
+        filesToAccept.add(PATH_EULER + "eulG3.grph");
 
         GraphFileReader reader = new GraphFileReader();
         for (String file : filesToAccept){
@@ -37,22 +43,22 @@ public class MainTest {
 
     @Test
     public void testReadInvalidFiles(){
-        String path = System.getProperty("user.dir")+"\\src\\main\\resources\\graphs\\";
+
         List<String> filesToDenied = new LinkedList<>();
         //syntax error: "::" but no weight specified
-        filesToDenied.add(path+"graph05.grph");
+        filesToDenied.add(PATH+"graph05.grph");
         //semantic error: doubled edge "f"
-        filesToDenied.add(path+"graph06.grph");
+        filesToDenied.add(PATH+"graph06.grph");
         //syntax error: triple edge a-gb-j
-        filesToDenied.add(path+"graph09.grph");
+        filesToDenied.add(PATH+"graph09.grph");
         //syntax error: missing semicolon
-        filesToDenied.add(path+"fail01.grph");
+        filesToDenied.add(PATH+"fail01.grph");
         //syntax error: missing "#" in first line
-        filesToDenied.add(path+"fail02.grph");
+        filesToDenied.add(PATH+"fail02.grph");
         //syntax error: two weights for one edge
-        filesToDenied.add(path+"fail03.grph");
+        filesToDenied.add(PATH+"fail03.grph");
         //syntax error: only one node in one line but with weight
-        filesToDenied.add(path+"fail04.grph");
+        filesToDenied.add(PATH+"fail04.grph");
         GraphFileReader reader = new GraphFileReader();
         for (String file : filesToDenied){
             assertThrows(Exception.class,() -> reader.getGraphFromFile(file));
@@ -61,8 +67,7 @@ public class MainTest {
 
     @Test
     public void testWriteFile(){
-        String path = System.getProperty("user.dir")+"\\src\\main\\resources\\graphs\\";
-        String file = path+"graph01.grph";
+        String file = PATH+"graph01.grph";
         GraphFileReader reader = new GraphFileReader();
         Graph graphPrev = null;
         try{

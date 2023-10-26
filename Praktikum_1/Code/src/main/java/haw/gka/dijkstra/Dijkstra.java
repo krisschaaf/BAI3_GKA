@@ -1,15 +1,15 @@
 package haw.gka.dijkstra;
 
-import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
-import haw.gka.dijkstra.utils.PriorityQueueUtils;
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.dijkstra.utils.NodeUtils;
-import org.graphstream.graph.Node;
+import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
+import haw.gka.dijkstra.utils.PriorityQueueUtils;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 
 public class Dijkstra {
@@ -26,9 +26,7 @@ public class Dijkstra {
         while(!allNodesVisited(closedList, graph) && !endNodeInQueueWithShortestDistance(endNode, priorityQueue)) {
 
             // Schritt 3: Jeder adjazente Knoten des Ausgangsknoten wird betrachtet
-            for (Node node: initialPriorityQueueItem.getLastNode().neighborNodes().collect(Collectors.toList())) {
-
-                MultiNode adjacentNode = NodeUtils.castToAdjacentNode(node);
+            for (MultiNode adjacentNode: NodeUtils.getAdjacentNodes(initialPriorityQueueItem.getLastNode())) {
 
                 // Schritt 3a/b: Ist der Knoten bereits in der closed List, wird dieser nicht weiter beachtet
                 if(!closedList.contains(adjacentNode)) {

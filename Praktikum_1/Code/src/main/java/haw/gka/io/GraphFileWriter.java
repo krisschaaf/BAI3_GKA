@@ -1,13 +1,12 @@
 package haw.gka.io;
 
-import java.io.IOException;
-import java.io.File;
-import java.io.FileOutputStream;
-
-
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class GraphFileWriter {
 
