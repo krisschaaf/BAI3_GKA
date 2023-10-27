@@ -1,6 +1,8 @@
 package haw.gka.dijkstra.utils;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
 import java.util.LinkedList;
@@ -40,5 +42,14 @@ public class NodeUtils {
         }
         MultiNode adjacentNode = (MultiNode) node;
         return adjacentNode;
+    }
+
+    public static boolean graphContainsNode(MultiNode node, MultiGraph graph) {
+        for (Edge edge: graph.edges().collect(Collectors.toList())) {
+            if (edge.getSourceNode() == node || edge.getTargetNode() == node) {
+                return true;
+            }
+        }
+        return false;
     }
 }

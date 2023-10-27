@@ -4,6 +4,7 @@ import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.dijkstra.utils.NodeUtils;
 import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
 import haw.gka.dijkstra.utils.PriorityQueueUtils;
+import haw.gka.exceptions.NodeNotFoundException;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
@@ -13,7 +14,11 @@ import java.util.Set;
 
 
 public class Dijkstra {
-    public static PriorityQueueItem calculateFastestPath(MultiNode startNode, MultiNode endNode, MultiGraph graph) {
+    public static PriorityQueueItem calculateFastestPath(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException {
+
+        if (!NodeUtils.graphContainsNode(startNode, graph) || !NodeUtils.graphContainsNode(endNode, graph)) {
+            throw new NodeNotFoundException("Could not find start or end node in graph");
+        }
 
         Set<MultiNode> closedList = new HashSet<>();
         PriorityQueue<PriorityQueueItem> priorityQueue = PriorityQueueUtils.initializePriorityQueue();
@@ -43,12 +48,22 @@ public class Dijkstra {
             priorityQueue.remove(initialPriorityQueueItem);
             closedList.add(initialPriorityQueueItem.getLastNode());
 
+            // Wenn kein Pfad gefunden werden kann und aufgrund gerichteter Kanten nicht alle Knoten bearbeitet werden können
+            // wird eine leeres PriorityQueueItem zurückgegeben
+            if (priorityQueue.size() == 0) {
+                return PriorityQueueItemUtils.initializeEmptyPriorityQueueItem();
+            }
+
             // Schritt 6: Das oberste Element der PriorityQueue wird bestimmt. Das letzte Element aus dessen nodes
             // Liste wird zum neuen Ausgangsknoten und Schritt 3 wird wiederholt.
             initialPriorityQueueItem = priorityQueue.peek();
         }
 
-        return initialPriorityQueueItem;
+        if(initialPriorityQueueItem.getLastNode().equals(endNode)) {
+            return initialPriorityQueueItem;
+        } else {
+           return PriorityQueueItemUtils.initializeEmptyPriorityQueueItem();
+        }
     }
 
     private static boolean allNodesVisited(Set<MultiNode> closedList, MultiGraph graph) {

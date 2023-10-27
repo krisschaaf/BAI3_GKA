@@ -4,11 +4,19 @@ import haw.gka.dijkstra.models.PriorityQueueItem;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiNode;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PriorityQueueItemUtils {
     private static final String ATTRIBUTE_WEIGHT = "weight";
+
+    public static PriorityQueueItem initializeEmptyPriorityQueueItem() {
+        PriorityQueueItem priorityQueueItem = new PriorityQueueItem();
+        priorityQueueItem.setDistance(0);
+        priorityQueueItem.setNodes(Collections.emptyList());
+        return priorityQueueItem;
+    }
 
     public static PriorityQueueItem initializeStartingPriorityQueueItem(MultiNode startNode) {
         PriorityQueueItem startItem = new PriorityQueueItem();
