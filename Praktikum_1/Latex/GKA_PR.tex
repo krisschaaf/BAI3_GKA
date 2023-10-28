@@ -33,25 +33,25 @@ Nehmen wir an Kreuzungen und Kreisverkehre seien Knoten und die Straßen, die di
 \subsection{Wählen des Grundansatzes}
 
 Zur objektorientierten Abstrahierung eines Graphen gibt es zwei verschiedene Ansätze. Der erste Ansatz wäre, dass es einen Typ \textit{Kante} gibt, in welchem die vor- und nachfolgenden Knoten und die Länge der jeweiligen Kante gespeichert werden.\\
-Diese Kanten würde dann den Graphen bilden und diesen in Form eines Sets darstellen:\\$Set <Kante> graph = new\ HashSet<>()$.\\
-Problematisch wird es jetzt aber bereits zu Beginn des Dijkstra Algorithmus, wenn der Startknoten gefunden werden soll. Hat dieser immer den Grad 1, können wir über das Set \textit{graph} iterieren und stoppen, sobald der gesuchte Knoten in einer der Kanten enthalten ist. Ist der Grad des Startknoten aber größer 1, so muss über alle Kanten iteriert werden ob diese nicht mit dem Startknoten verbunden sind. Somit wäre schon der Start des Algorithmus ineffizient.
-
+Diese Kanten würde dann den Graphen bilden und diesen in Form eines Sets darstellen:\\$Set <Kante> graph = new\ HashSet<>()$.\\\\
 Der zweite Ansatz wäre die Kante als solches zu abstrahieren und nicht als eigenen Typen zu implementieren. Es gäbe dann nur den Typen Knoten, welcher alle benachbarten Knoten mit zugehöriger Distanz enthält.\\
 Auch diese Knoten können nun in einem Set gespeichert werden:\\
-$Set<Knoten> graph = new\ HashSet<>()$.\\
-Bei der Suche nach dem Startknoten wird die Iteration gestoppt, sobald dieser gefunden wurde.
-Somit ist der zweite Ansatz vorerst effizienter.
+$Set<Knoten> graph = new\ HashSet<>()$.\\\\
+Die zu verwendende Java Bibliothek Graphstream enthält einen Typen Multigraph, welcher den ersten Ansatz implementiert.\\
+Eine Beispiel Implementierung des zweiten Ansatzes ist im folgenden Blog Eintrag\footnote{\url{https://www.baeldung.com/java-dijkstra}} implementiert.
+
+
 
 \subsection{Aufbau des Graphen}
 
 Um den Dijkstra Algorithmus innerhalb eines Graphen anwenden zu können, muss zuerst ein Graph aufgebaut werden.
-Wie im vorherigen Kapitel beschrieben, genügt es ein Set mit Knoten zu definieren.
-Die Knoten des Graphen müssen folgende Informationen enthalten: Einen eindeutigen, im Graphen nur einmal vorkommenden Namen und die adjazenten Knoten.\\\\
+Wie im vorherigen Kapitel beschrieben, genügt es einen Multigraphen zu definieren und diesem Kanten hinzuzufügen.
+Sowohl die Kanten als auch die Knoten müssen einen eindeutigen, im Graphen nur einmal vorkommenden Namen haben.\\\\
 Bedingungen, welche für den Graphen gelten:
 \begin{itemize}
-    \item Der Graph muss gewichtet sein und darf ausschließlich positive Kantengewichte haben.
+    \item Der Graph muss entweder komplett gewichtet sein und dann ausschließlich positive Kantengewichte haben und komplett ungewichtet sein.
     \item Der Graph kann unendlich viele Knoten besitzen.
-    \item Allgemein kann Dijkstra auf einen gerichteten, ungerichteten oder gemischten Graphen angewendet werden. In dieser Implementierung wird aber ein ungerichteter Graph genutzt.
+    \item Der Graph kann gerichtet, ungerichtet oder gemischt sein.
 \end{itemize}
 
 \subsection{Open und Closed List}
@@ -78,7 +78,7 @@ Nach jeder Iteration muss der Knoten aus der Open List mit dem kürzestem Weg zu
 
 \subsubsection{Open List als Priority Queue} \label{priorityQueueSection}
 
-Java bietet einen Typen Priority Queue an. Diesem kann eine Comparator übergeben werden, welcher die in der Queue enthaltenden Elemente nach bestimmten Attributen sortiert.\\
+Java bietet einen Typen Priority Queue an. Diesem kann eine Comparator übergeben werden, welcher die in der Queue enthaltenden Elemente effizient nach bestimmten Attributen sortiert.\\
 So können zum Beispiel verschiedene Listen mit Knoten beim Einfügen von Elementen direkt nach der in den Knoten enthaltenden Länge zum Startpunkt sortiert werden.\\
 Ein großer Vorteil, den diese Implementierung mit sich bringt ist, dass durch die Funktion\\$PriorityQueue.peak()$ effizient der Knoten für die Wiederholung des Algorithmus bestimmt werden kann.\\
 Der Typ Knoten muss des weiteren nur noch die adjazenten Knoten mit der Distanz enthalten.\\
@@ -88,7 +88,7 @@ Der Typ Knoten muss des weiteren nur noch die adjazenten Knoten mit der Distanz 
 \subsection{Einführung neuer Typen}
 
 Wie bereits in \ref{priorityQueueSection} beschrieben, ist die Implementierung der Open List als PriorityQueue am sinnvollsten.\\\\
-Zur effizienteren Sortierung wird einer neuer Typ \textit{PriorityQueueItem} eingeführt. Zusätzlich wird der Typ \textit{Node} (auch Knoten) angepasst, wobei Teile eines bereits implementierten Nodes\footnote{\url{https://github.com/eugenp/tutorials/blob/master/algorithms-modules/algorithms-miscellaneous-2/src/main/java/com/baeldung/algorithms/ga/dijkstra/Node.java}} genutzt werden.\\
+Zur effizienteren Sortierung wird einer neuer Typ \textit{PriorityQueueItem} eingeführt.\\
 
 \begin{lstlisting}[language = java, frame = trBL]
 @Data
@@ -105,25 +105,8 @@ public class PriorityQueueItem {
     werden kann*/
     private List<Node> nodes = new LinkedList<>(); //Node -> Knoten
 }
-
-@Data
-public class Node {
-    
-    private String name;
-    
-    Map<Node, Integer> adjacentNodes = new HashMap<>();
-
-    public void addDestination(Node destination, int distance) {
-        adjacentNodes.put(destination, distance);
-    }
- 
-    public Node(String name) {
-        this.name = name;
-    }
-}
 \end{lstlisting}
 
-\newpage
 \subsection{Ablauf des Algorithmus mit einer Priority Queue}
 
 \begin{enumerate}
