@@ -1,28 +1,127 @@
 package haw.gka.dijkstra;
-
+import haw.gka.visual.Visualisation;
 
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.NodeNotFoundException;
+import haw.gka.visual.Visualisation;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DijkstraTest
 {
 
     public static final String ATTRIBUTE_WEIGHT = "weight";
+    @Test
+    public void sameStartAsFinish() throws NodeNotFoundException {
+        MultiGraph graph = new MultiGraph("GraphWithZeros");
+        MultiNode node1 = new MultiNode(graph, "node1");
+        MultiNode node2 = new MultiNode(graph, "node2");
+        MultiNode node3 = new MultiNode(graph, "node3");
+        graph.addNode("node1").setAttribute("ui.label", "Node 1");
+        graph.addNode("node2").setAttribute("ui.label", "Node 2");
+        graph.addNode("node3").setAttribute("ui.label", "Node 3");
+        graph.addEdge("edge12", node1, node2);
+        graph.addEdge("edge23", node2, node3);
+        graph.addEdge("edge13", node1, node3);
+        graph.getEdge("edge12").setAttribute("weight", 1);
+        graph.getEdge("edge23").setAttribute("weight", 1);
+        graph.getEdge("edge13").setAttribute("weight", 0);
+
+        PriorityQueueItem result = new PriorityQueueItem();
+        result.setDistance(0);
+        result.setNodes(Arrays.asList(node1));
+        assertEquals(result.toString(), Dijkstra.calculateFastestPath(node1,node1, graph).toString());
+
+    }
+
+
+    @Test
+    public void zeroValuesGraph() throws NodeNotFoundException {
+        MultiGraph graph = new MultiGraph("GraphWithZeros");
+        MultiNode node1 = new MultiNode(graph, "node1");
+        MultiNode node2 = new MultiNode(graph, "node2");
+        MultiNode node3 = new MultiNode(graph, "node3");
+        graph.addNode("node1").setAttribute("ui.label", "Node 1");
+        graph.addNode("node2").setAttribute("ui.label", "Node 2");
+        graph.addNode("node3").setAttribute("ui.label", "Node 3");
+        graph.addEdge("edge12", node1, node2);
+        graph.addEdge("edge23", node2, node3);
+        graph.addEdge("edge13", node1, node3);
+        graph.getEdge("edge12").setAttribute("weight", 1);
+        graph.getEdge("edge23").setAttribute("weight", 1);
+        graph.getEdge("edge13").setAttribute("weight", 0);
+
+        PriorityQueueItem result = new PriorityQueueItem();
+        result.setDistance(0);
+        result.setNodes(Arrays.asList(node1,node3));
+        assertEquals(result.toString(), Dijkstra.calculateFastestPath(node1,node3, graph).toString());
+
+    }
+    
+    @Test
+    public void graphWithLoop() throws NodeNotFoundException {
+        MultiGraph graph = new MultiGraph("GraphWithLoop");
+        //graph.setAttribute("ui.stylesheet", styleSheet);
+
+
+        MultiNode node1 = new MultiNode(graph, "node1");
+        MultiNode node2 = new MultiNode(graph, "node2");
+        MultiNode node3 = new MultiNode(graph, "node3");
+        MultiNode node4 = new MultiNode(graph, "node4");
+        MultiNode node5 = new MultiNode(graph, "node5");
+        MultiNode node6 = new MultiNode(graph, "node6");
+
+        node1.setAttribute("ui.label", "Node 1");
+        node2.setAttribute("ui.label", "Node 2");
+        node3.setAttribute("ui.label", "Node 3");
+        node4.setAttribute("ui.label", "Node 4");
+        node5.setAttribute("ui.label", "Node 5");
+        node6.setAttribute("ui.label", "Node 6");
+
+        graph.addNode("node1").setAttribute("ui.label", "Node 1");;
+        graph.addNode("node2").setAttribute("ui.label", "Node 2");
+        graph.addNode("node3").setAttribute("ui.label", "Node 3");
+        graph.addNode("node4").setAttribute("ui.label", "Node 4");
+        graph.addNode("node5").setAttribute("ui.label", "Node 5");
+        graph.addNode("node6").setAttribute("ui.label", "Node 6");
+        graph.addEdge("edge12", node1, node2);
+        graph.addEdge("edge23", node2, node3);
+        graph.addEdge("edge34", node3, node4);
+        graph.addEdge("edge45", node4, node5);
+        graph.addEdge("edge52", node5, node2);
+        graph.addEdge("edge36", node3, node6);
+
+        graph.getEdge("edge12").setAttribute("weight", 1);
+        graph.getEdge("edge23").setAttribute("weight", 1);
+        graph.getEdge("edge34").setAttribute("weight", 1);
+        graph.getEdge("edge45").setAttribute("weight", 1);
+        graph.getEdge("edge52").setAttribute("weight", 1);
+        graph.getEdge("edge36").setAttribute("weight", 100);
+        PriorityQueueItem dijRes = Dijkstra.calculateFastestPath(node1, node6, graph);
+
+        PriorityQueueItem result = new PriorityQueueItem();
+        result.setDistance(102);
+        result.setNodes(Arrays.asList(node1,node2,node3, node6));
+
+
+        assertEquals(result.toString(),dijRes.toString());
+
+    }
 
     @Test
     public void findShortestPathInUndirectedGraph() throws NodeNotFoundException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
+
 
         MultiNode multiNodeA = new MultiNode(graph, "A");
         MultiNode multiNodeB = new MultiNode(graph, "B");
@@ -45,9 +144,10 @@ public class DijkstraTest
         PriorityQueueItem result = new PriorityQueueItem();
         result.setDistance(11);
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
-
         assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
+
     }
+
 
     @Test
     public void findShortestPathInDirectedGraph() throws NodeNotFoundException {
@@ -178,4 +278,7 @@ public class DijkstraTest
 
         assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeA, multiNodeD, graph));
     }
+
+
+
 }
