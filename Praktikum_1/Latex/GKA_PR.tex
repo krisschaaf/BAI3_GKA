@@ -153,29 +153,21 @@ priorityQueue = {
 closedList = { };
 \end{lstlisting}
 
-
-
 \newpage
 
-\section{Nachwort}
+\section{Tests}
 
-\subsection{Dijkstra als Baum}
+Um das Program zu überprüfen, ist es notwendig aussagekräftige Tests zu implementieren. Dazu haben wir das JUnit Jupiter Testframework verwendet, ein Java-Test-Framework, welches die Erstellung und Ausführung von Unit-Tests automatisieren und vereinfachen soll.\\
 
-Eine weitere Möglichkeit den Algorithmus zu implementieren wäre es die besuchten Knoten als Baum nachzubauen, während der originale Graph bearbeitet wird. Der Startknoten ist nun der Elternknoten, während nach der ersten Iteration alle adjazenten Knoten die Kinderknoten sind. 
+Unsere Tests decken verschiedene Fälle ab, wie zum Beispiel:
 
-\cite{KN2012} 
-und Ihre Abbildungen nicht, z.B. Abb.~\ref{fig:bild}.
-  
-
-\section{Beantwortung der  Fragen}
 \begin{enumerate}
-						\item Antwort auf die erste Frage
-						\item 
-					\end{enumerate}
+    \item Testen von gerichteten, ungerichteten und gemischten Graphen
+    \item Was passiert, wenn der Startknoten auch der Endknoten ist.
+    \item Funktioniert die Anwendung bei einem Graph mit einer Schleife.
+    \item Was ist, wenn der gesamte Pfad den Wert 0 hat.
+    \item Wird eine NodeNotFoundException geworfen, wenn der Start- oder Endknoten nicht im Graphen enthalten sind.
+\end{enumerate}
 
-
-\bibliographystyle{alpha}
-\bibliography{mybib}
-%\include{GKA_PR_template.bbl}
 
 \end{document}
