@@ -1,18 +1,12 @@
 package haw.gka;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import haw.gka.dijkstra.Dijkstra;
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.NodeNotFoundException;
 import haw.gka.visual.Visualisation;
-
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Main2 {
@@ -62,14 +56,23 @@ public class Main2 {
                 graph.addEdge("edge78", node7, node8);
 
                 graph.getEdge("edge12").setAttribute("weight", 4);
+                graph.getEdge("edge12").setAttribute("ui.label", 4);
                 graph.getEdge("edge23").setAttribute("weight", 1);
+                graph.getEdge("edge23").setAttribute("ui.label", 1);
                 graph.getEdge("edge34").setAttribute("weight", 1);
+                graph.getEdge("edge34").setAttribute("ui.label", 1);
                 graph.getEdge("edge45").setAttribute("weight", 1);
+                graph.getEdge("edge45").setAttribute("ui.label", 1);
                 graph.getEdge("edge18").setAttribute("weight", 100);
+                graph.getEdge("edge18").setAttribute("ui.label", 100);
                 graph.getEdge("edge15").setAttribute("weight", 100);
+                graph.getEdge("edge15").setAttribute("ui.label", 100);
                 graph.getEdge("edge56").setAttribute("weight", 1);
+                graph.getEdge("edge56").setAttribute("ui.label", 1);
                 graph.getEdge("edge67").setAttribute("weight", 1);
+                graph.getEdge("edge67").setAttribute("ui.label", 1);
                 graph.getEdge("edge78").setAttribute("weight", 12);
+                graph.getEdge("edge78").setAttribute("ui.label", 12);
 
                 PriorityQueueItem dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
 
@@ -106,13 +109,21 @@ public class Main2 {
                 graph.addEdge("edge78", node7, node8);
 
                 graph.getEdge("edge12").setAttribute("weight", 1);
+                graph.getEdge("edge12").setAttribute("ui.label", 1);
                 graph.getEdge("edge23").setAttribute("weight", 1);
+                graph.getEdge("edge23").setAttribute("ui.label", 1);
                 graph.getEdge("edge34").setAttribute("weight", 1);
+                graph.getEdge("edge34").setAttribute("ui.label", 1);
                 graph.getEdge("edge45").setAttribute("weight", 1);
+                graph.getEdge("edge45").setAttribute("ui.label", 1);
                 graph.getEdge("edge52").setAttribute("weight", 1);
+                graph.getEdge("edge52").setAttribute("ui.label", 1);
                 graph.getEdge("edge36").setAttribute("weight", 100);
+                graph.getEdge("edge36").setAttribute("ui.label", 100);
                 graph.getEdge("edge67").setAttribute("weight", 1);
+                graph.getEdge("edge67").setAttribute("ui.label", 1);
                 graph.getEdge("edge78").setAttribute("weight", 1);
+                graph.getEdge("edge78").setAttribute("ui.label", 1);
                  dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
 
 
