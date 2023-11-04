@@ -62,14 +62,14 @@ public class GraphFileReader {
 				throw new Exception("Invalid Line: " + currentLine);
 			}
 			// Füge die Eigenschaften der aktuellen Zeile dem neuen Graphen hinzu
-			newGraph = AddProperties(newGraph, currentLine);
+			newGraph = addProperties(newGraph, currentLine);
 		}
 		// Gebe den neuen Graphen zurück
 		return newGraph;
 	}
 
 
-	private Graph AddProperties(Graph graph, String line) {
+	private Graph addProperties(Graph graph, String line) {
 		// Lösche das Semikolon aus Zeile, da semantisch irrelevant
 		line = line.replace(";", "");
 		// Erstelle Pattern für das Kantengewicht
