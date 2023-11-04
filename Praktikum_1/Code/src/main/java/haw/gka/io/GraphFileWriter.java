@@ -52,14 +52,16 @@ public class GraphFileWriter {
 			output += ";\n";
 		}
 		// Iteriere über kantenlose Knoten
-		for(int i = 0; i<graph.getNodeCount() && graph.getNode(i).getEdge(0) == null;i++) {
+		for(int i = 0; i<graph.getNodeCount();i++) {
 			Node actualNode = graph.getNode(i);
-			if(actualNode.getAttribute("attr") != null){
-				// Schreibe kantenlosen Knoten mit Attribut
-				output += actualNode.getId() + ":" + actualNode.getAttribute("attr") + "\n";
-			} else {
-				// Schreibe kantenlosen Knoten ohne Attribut
-				output += actualNode.getId() + "\n";
+			if(actualNode.neighborNodes().count() == 0){
+				if(actualNode.getAttribute("attr") != null){
+					// Schreibe kantenlosen Knoten mit Attribut
+					output += actualNode.getId() + ":" + actualNode.getAttribute("attr") + ";\n";
+				} else {
+					// Schreibe kantenlosen Knoten ohne Attribut
+					output += actualNode.getId() + ";\n";
+				}
 			}
 		}
 		// Schreibe Kopfzeile
