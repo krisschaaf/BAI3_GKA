@@ -1,9 +1,12 @@
 package haw.gka;
 
+import haw.gka.dijkstra.Dijkstra;
+import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.io.GraphFileReader;
 import haw.gka.io.GraphFileWriter;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.graph.implementations.MultiNode;
 
 import java.io.IOException;
 
@@ -29,6 +32,13 @@ public class Main {
 			e.printStackTrace();
 		}
 		graph.display(true);
+		try{
+			PriorityQueueItem result = Dijkstra.calculateFastestPath((MultiNode) graph.getNode("Oldenburg"), (MultiNode) graph.getNode("Hamburg"), (MultiGraph) graph);
+			result.markUp();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
 		GraphFileWriter writer = new GraphFileWriter();
 		try {
 			writer.writeFile(graph, "test2");

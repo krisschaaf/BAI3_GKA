@@ -34,6 +34,15 @@ public class PriorityQueueItem {
         this.nodes = nodes;
     }
 
+    public void markUp(){
+        nodes.get(0).setAttribute("ui.style", "fill-color: rgb(0,100,255);");
+        for (int i = 0; i < nodes.size()-1; i++){
+            nodes.get(i+1).setAttribute("ui.style", "fill-color: rgb(0,100,255);");
+            nodes.get(i).getEdgeToward(nodes.get((i+1))).setAttribute("ui.style", "fill-color: rgb(0,100,255);");
+        }
+
+    }
+
     @Override
     public String toString() {
         return "Distance: " + this.getDistance() +

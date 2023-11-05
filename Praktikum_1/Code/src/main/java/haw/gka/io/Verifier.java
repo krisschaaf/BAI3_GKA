@@ -14,27 +14,33 @@ public class Verifier {
 
 		if (countOfPatternInLine == 1) {
 			line = line.replaceAll(ALL_CHARS_REGEX+"+(:[0-9]+)?", "");
+			// Wenn nur ein Knoten angegeben, darf nach dessen Löschung nur ein Semikolon übrig bleiben
 			return line.equals(";");
 		} else if (countOfPatternInLine > 1) {
+			// Lösche ersten Knoten aus der Zeile
 			line = line.replaceAll(ALL_CHARS_REGEX+"+(:[0-9]+)?-", "-");
 		}
 
 		if (getCountOfPatternInLine(line, "-"+ALL_CHARS_REGEX+"+(:[0-9]+)?") == 1) {
+			// Wenn nur ein zweiter Knoten angegeben, lösche diesen aus der Zeile
 			line = line.replaceAll("-"+ALL_CHARS_REGEX+"+(:[0-9]+)?", "");
 		}
 
 		if (getCountOfPatternInLine(line, "\\("+ ALL_CHARS_REGEX+"\\)") == 1) {
+			// Lösche den Kantennamen aus der Zeile
 			line = line.replaceAll("\\("+ ALL_CHARS_REGEX+"\\)", "");
 		}
 
 		if (getCountOfPatternInLine(line, "::[0-9]+") == 1) {
+			// Lösche das Kantengewicht aus der Zeile
 			line = line.replaceAll("::[0-9]+", "");
 		}
-
+		// Es darf nur das Semikolon übrig bleiben (Mehrfach angebene Kantennamen,-gewichte und mehr als zwei Knoten sind illegal)
 		return line.equals(";");
 		
 	}
 
+	// Zählt die Treffer des übergebenen Regexausdruckes in der Zeile
 	private static int getCountOfPatternInLine(String line, String regex) {
 		Matcher m;
 		Pattern nodePattern = Pattern.compile(regex);
