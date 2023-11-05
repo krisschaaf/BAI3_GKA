@@ -7,6 +7,7 @@ import haw.gka.visual.Visualisation;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import java.util.List;
+import java.util.function.Function;
 
 public class Main3 {
     public static void main(String[] args) throws NodeNotFoundException {
@@ -33,7 +34,11 @@ public class Main3 {
         node7.setAttribute("ui.label", "Node 7");
         node8.setAttribute("ui.label", "Node 8");
 
-        int graphToDisplay = 3;
+
+
+        boolean recurcion = true;
+        PriorityQueueItem dijRes =null;
+        int graphToDisplay = 2;
         switch (graphToDisplay) {
             case 1:
 
@@ -66,8 +71,16 @@ public class Main3 {
                 graph.getEdge("edge67").setAttribute("weight", 1);
                 graph.getEdge("edge78").setAttribute("weight", 12);
 
-                //PriorityQueueItem dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
-                PriorityQueueItem dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
+
+                if (recurcion) {
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
+            }
+
+                else {
+                    dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
+                   }
+
+
 
 
                 List<MultiNode> nodeList = dijRes.getNodes();
@@ -105,8 +118,14 @@ public class Main3 {
                 graph.getEdge("edge67").setAttribute("weight", 1);
                 graph.getEdge("edge78").setAttribute("weight", 1);
                 //dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
-                dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
 
+                if (recurcion) {
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
+                }
+
+                else {
+                    dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
+                }
 
                 nodeList = dijRes.getNodes();
                 Visualisation.paintEdges(graph, nodeList);
@@ -131,7 +150,15 @@ public class Main3 {
                 graph.getEdge("edge14").setAttribute("weight", 10);
                 graph.getEdge("edge15").setAttribute("weight", 20);
                 //dijRes = Dijkstra.calculateFastestPath(node1, node4, graph);
-                dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
+                //dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
+                if (recurcion) {
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
+                }
+
+                else {
+                    dijRes = Dijkstra.calculateFastestPath(node1, node4, graph);
+                }
+
                 System.out.println(dijRes);
                 nodeList = dijRes.getNodes();
                 Visualisation.paintEdges(graph, nodeList);
