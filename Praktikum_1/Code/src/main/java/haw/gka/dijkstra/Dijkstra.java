@@ -48,8 +48,7 @@ public class Dijkstra {
             priorityQueue.remove(initialPriorityQueueItem);
             closedList.add(initialPriorityQueueItem.getLastNode());
 
-            // Wenn kein Pfad gefunden werden kann und aufgrund gerichteter Kanten nicht alle Knoten bearbeitet werden können
-            // wird eine leeres PriorityQueueItem zurückgegeben
+            // Wenn kein Pfad gefunden werden kann wird eine leeres PriorityQueueItem zurückgegeben
             if (priorityQueue.size() == 0) {
                 return PriorityQueueItemUtils.initializeEmptyPriorityQueueItem();
             }

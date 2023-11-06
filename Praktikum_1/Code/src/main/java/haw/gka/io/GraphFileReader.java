@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GraphFileReader {
+
 	private boolean isDirected;
+
 	public Graph getGraphFromFile(String path) throws Exception{
 		Graph newGraph;
 
@@ -70,8 +72,10 @@ public class GraphFileReader {
 
 
 	private Graph addProperties(Graph graph, String line) {
+
 		// Lösche das Semikolon aus Zeile, da semantisch irrelevant
 		line = line.replace(";", "");
+
 		// Erstelle Pattern für das Kantengewicht
 		Pattern weightPattern = Pattern.compile("::[0-9]+");
 		Matcher m = weightPattern.matcher(line);
@@ -97,6 +101,7 @@ public class GraphFileReader {
 		// Teile übrig gebliebene Knotenbezeichnungen am Bindestrich
 		String[] parts = line.split("-");
 		String firstNode = parts[0];
+
 		// Teile ersten Knoten am Doppelpunkt für das Knotenattribut
 		String firstNodeName = firstNode.split(":")[0];
 		if (graph.getNode(firstNodeName)==null) {

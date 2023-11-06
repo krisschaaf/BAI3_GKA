@@ -1,5 +1,4 @@
 package haw.gka.dijkstra;
-import haw.gka.dijkstra.DjekstraRecurs;
 
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.NodeNotFoundException;
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class DijkstraTestRecurs
+public class DijkstraRecursTest
 {
 
     public static final String ATTRIBUTE_WEIGHT = "weight";
@@ -37,7 +36,7 @@ public class DijkstraTestRecurs
         PriorityQueueItem result = new PriorityQueueItem();
         result.setDistance(0);
         result.setNodes(Arrays.asList(node1));
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node1, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node1, graph).toString());
 
 
     }
@@ -63,7 +62,7 @@ public class DijkstraTestRecurs
         result.setDistance(0);
         result.setNodes(Arrays.asList(node1,node3));
 
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node3, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node3, graph).toString());
 
     }
     
@@ -111,7 +110,7 @@ public class DijkstraTestRecurs
         result.setDistance(102);
         result.setNodes(Arrays.asList(node1,node2,node3, node6));
         //assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
 
 
 
@@ -146,7 +145,7 @@ public class DijkstraTestRecurs
         result.setDistance(11);
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
 
@@ -178,7 +177,7 @@ public class DijkstraTestRecurs
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
@@ -209,7 +208,7 @@ public class DijkstraTestRecurs
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
@@ -240,7 +239,7 @@ public class DijkstraTestRecurs
         result.setNodes(Collections.emptyList());
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
@@ -261,7 +260,7 @@ public class DijkstraTestRecurs
         result.setNodes(Collections.emptyList());
 
        // assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeD, multiNodeA, graph));
-        assertThrows(NodeNotFoundException.class, () -> DjekstraRecurs.calculateFastestPathRecurs(multiNodeD, multiNodeA, graph));
+        assertThrows(NodeNotFoundException.class, () -> DijkstraRecurs.calculateFastestPathRecurs(multiNodeD, multiNodeA, graph));
     }
 
     @Test
@@ -282,7 +281,7 @@ public class DijkstraTestRecurs
         result.setNodes(Collections.emptyList());
 
        // assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeA, multiNodeD, graph));
-        assertThrows(NodeNotFoundException.class, () -> DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeD, graph));
+        assertThrows(NodeNotFoundException.class, () -> DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeD, graph));
     }
 
 

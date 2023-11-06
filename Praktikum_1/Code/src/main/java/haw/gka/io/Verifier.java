@@ -63,8 +63,7 @@ public class Verifier {
 		Matcher m = filename.matcher(path);
 		return m.find();
 	}
-	
-	
+
 	static boolean isDirected(String firstLine) throws Exception{
 		String graphDirection = firstLine.split(":")[0];
 		switch (graphDirection) {

@@ -124,25 +124,16 @@ public class Main2 {
                 graph.getEdge("edge67").setAttribute("ui.label", 1);
                 graph.getEdge("edge78").setAttribute("weight", 1);
                 graph.getEdge("edge78").setAttribute("ui.label", 1);
-                 dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
 
+                dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
 
                 nodeList =  dijRes.getNodes();
                 Visualisation.paintEdges(graph, nodeList);
                 System.setProperty("org.graphstream.ui", "swing");
                 graph.display();
                 break;
-
         }
-
-
-
-
-
-
     }
-
-
 
     protected static String styleSheet =
             "node {" +

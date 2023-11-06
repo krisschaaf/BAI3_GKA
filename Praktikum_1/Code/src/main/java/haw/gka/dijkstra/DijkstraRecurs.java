@@ -11,9 +11,7 @@ import org.graphstream.graph.implementations.MultiNode;
 
 import java.util.*;
 
-//import static haw.gka.dijkstra.Dijkstra.allNodesVisited;
-
-public class DjekstraRecurs {
+public class DijkstraRecurs {
     private static final String ATTRIBUTE_WEIGHT = "weight";
 
     public static PriorityQueueItem calculateFastestPathRecurs(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException {
@@ -58,7 +56,7 @@ public class DjekstraRecurs {
             List<MultiNode> adjacentNodeList = NodeUtils.getAdjacentNodes(lastNode);
             adjacentNodeList.stream().filter(x ->!closedList.contains(x)).forEach(x ->{
                 Edge edge = lastNode.getEdgeBetween(x);
-                int weight = Integer.parseInt(edge.getAttribute("weight").toString());
+                int weight = Integer.parseInt(edge.getAttribute(ATTRIBUTE_WEIGHT).toString());
                 int newDist = dist + weight;
                 PriorityQueueItem existingNodeItem = findInPriorityQueue(priorityQueue, x);
                 if (existingNodeItem == null) {
@@ -84,9 +82,9 @@ public class DjekstraRecurs {
 
                 });
 
-
             priorityQueue.poll();
-           return recursStep(finalPathsQueue, priorityQueue, endNode, closedList, graph);
+
+            return recursStep(finalPathsQueue, priorityQueue, endNode, closedList, graph);
         }
 
 
