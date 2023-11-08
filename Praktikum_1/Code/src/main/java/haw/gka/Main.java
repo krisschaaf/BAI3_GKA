@@ -67,7 +67,11 @@ public class Main {
 		if(args[1].isEmpty()) {
 			throw new FileArgMissingException("Please provide output file as second parameters.");
 		}
-//		if(args[2] != "iterative" || args[2] != "recursive") {
+		if(args[2].isEmpty()) {
+			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
+		}
+		// TODO: fix
+//		if(args[2].toString() != "iterative" && args[2].toString() != "recursive") {
 //			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
 //		}
 		if(args[3].isEmpty()) {
