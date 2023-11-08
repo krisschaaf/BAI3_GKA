@@ -143,6 +143,9 @@ public class GraphFileReader {
 				// Wenn Gewicht angegeben, füge es als Attribut der Kante hinzu
 				graph.getEdge(edgeName).setAttribute("weight", weight);
 				graph.getEdge(edgeName).setAttribute("ui.label", edgeName +"::"+weight);
+			} else {
+				// Ansonsten setze an jeder Kante das gleiche Gewicht
+				graph.getEdge(edgeName).setAttribute("weight", 1);
 			}
 		}
 		return graph;	}
