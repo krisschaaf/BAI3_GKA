@@ -13,7 +13,7 @@ import java.util.*;
 
 
 public class DjekstraRecurs {
-  //  private static final String ATTRIBUTE_WEIGHT = "weight";
+    //  private static final String ATTRIBUTE_WEIGHT = "weight";
 
     public static PriorityQueueItem calculateFastestPathRecurs(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException {
 
@@ -24,7 +24,7 @@ public class DjekstraRecurs {
 
         //Initialisierung einer Prioritätswarteschlange zur Sortierung der Knoten:
         PriorityQueue<PriorityQueueItem> priorityQueue = PriorityQueueUtils.initializePriorityQueue();
-        //Initialisierung einer Prioritätswarteschlange zur Abtrennung und Sortierung der Pfade, die den Endknoten enthalten:
+        //Initialisierung einer Prioritätswarteschlange zur Speicherung der Pfade, die den Endknoten enthalten:
         PriorityQueue<PriorityQueueItem> finalPathsQueue = PriorityQueueUtils.initializePriorityQueue();
 
         //Erstellung eines PriorityQueueItem aus dem Startknoten und Hinzufügen dessen zur Prioritätswarteschlange
@@ -67,7 +67,7 @@ public class DjekstraRecurs {
 
         //Bedingungen für den Rekursionsabbruch: Wenn der aktuelle Knoten der ZielKnote ist und alle Knoten verarbeitet wurden.
         if ((lastNode.equals(endNode)) && (allNodesVisited(closedList, graph))) {
-        //Den resultierenden Pfad zur Prioritätswarteschlange der vollständigen Pfade hinzufügen und diese dann zurückgeben
+            //Den resultierenden Pfad zur Prioritätswarteschlange der vollständigen Pfade hinzufügen und diese dann zurückgeben
             finalPathsQueue.add(actualPriorityQueueItem);
             return finalPathsQueue;
         }
@@ -99,10 +99,10 @@ public class DjekstraRecurs {
                 if (x.equals(endNode)) {
                     finalPathsQueue.add(newItem);
                 }
-            //Wenn der benachbarte Knoten bereits in der Sortierwarteschlange vorhanden ist und die neue Distanz günstiger als die bestehende ist
+                //Wenn der benachbarte Knoten bereits in der Sortierwarteschlange vorhanden ist und die neue Distanz günstiger als die bestehende ist
             } else if (existingNodeItem.getDistance() > newDist) {
-            //Entfernen des alten Elements und Ersetzen desselben durch ein neues Element der Sortierwarteschlange mit dem
-            // benachbarten Knoten und seiner aktualisierten Distanz
+                //Entfernen des alten Elements und Ersetzen desselben durch ein neues Element der Sortierwarteschlange mit dem
+                // benachbarten Knoten und seiner aktualisierten Distanz
                 priorityQueue.remove(existingNodeItem);
                 existingNodeItem.setDistance(newDist);
                 existingNodeItem.setNodes(new ArrayList<>(actualPriorityQueueItem.getNodes()));
