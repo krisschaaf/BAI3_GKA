@@ -97,6 +97,7 @@ Gelesen und geschrieben wird in eine *.grph Datei, deren Aufbau folgendermaßen 
 		<Knotenname>(:Attribut)?;\\
 	\item oder zwei Knoten mit jeweils optionalen Attributen, sowie darauf folgend optional explizitem Kantennamen (umklammert) und/oder Kantengewicht ("::" als Präfix):\\
 		<Knotenname1>(:Attribut)?-<Knotenname2>(:Attribut)?((<Kantenname))?(::<Kantengewicht>)?
+    \item Graphen, die sowohl ungewichtete, als auch gewichtete Kanten besitzen, werden nicht akzeptiert, da diese keine algorithmische Anwendung finden.
 \end{enumerate}
 
 \subsubsection{Lesen der Graphdatei}
@@ -107,7 +108,7 @@ Zeile mit nur einem Knoten vorkommen, und dass pro Zeile nur maximal zwei Knoten
 Ist die Prüfung erfolgreich, kann einem neuen Graphenobjekt der entsprechenden Bibliothek von graphstream.org die in der Zeile genannten Eigenschaften hinzugefügt werden. Dies übernimmt die Funktion addProperties(Graph, Zeile) in der GraphFileReader-Klasse.\\
 Ähnlich wie bei der Regexprüfung werden hier zur Vereinfachung des Patternmatchings identifizierte Attribute aus der zu lesenden Zeile gelöscht, nachdem sie in einer lokalen Variable gespeichert wurden. Und da die Korrektheit der Zeile bereits bewiesen ist, kann man durch Teilung an definierten Zeichen weitere semantischen Bestandteile der Zeile erhalten, nachdem die hintenstehenden Attribute Kantenname und Kantengewicht entfernt wurden. Teilt man den übriggebliebenen String am Zeichen "-", erhält man beide Knoten getrennt und teilt man diese jeweils am Zeichen ":", erhält man deren Attribut.\\
 Wenn alle in der Zeile angegebenen Attribute in lokalen Variablen gespeichert sind, kann man auf deren Grundlage die Objekte "Node" und "Edge" dem übergebenen Graphobjekt hinzufügen. Zur verbesserten Darstellung werden die Knoten- und Kantennamen als ui.label jeweils hinzugefügt.\\
-Sind alle Zeilen abgearbeitet, erhält man das fertige Graphobjekt von der Methode getGraphFromFile zurück.\\
+Sind alle Zeilen abgearbeitet, wird geprüft ob der Graph ungerichtete und gerichtete Kanten gleichzeitig enthält und in diesem Fall aussortiert. Zudem wird im Graph die Information aufgenommen, ob dieser gerichtet ist, oder nicht. Anschließend erhält man das fertige Graphobjekt von der Methode getGraphFromFile zurück.\\
 
 \subsubsection{Schreiben der Graphdatei}
 Geschrieben wird das Graphobjekt der Bibliothek von graphstream.org im gleichen Format wie in \ref{Dateiformat} beschrieben.\\
@@ -193,12 +194,14 @@ Um das Program zu überprüfen, ist es notwendig aussagekräftige Tests zu imple
 Unsere Tests decken verschiedene Fälle ab, wie zum Beispiel:
 
 \begin{enumerate}
-    \item Testen von gerichteten, ungerichteten und gemischten Graphen
+    \item Testen von gerichteten Graphen
     \item Was passiert, wenn der Startknoten auch der Endknoten ist.
     \item Funktioniert die Anwendung bei einem Graph mit einer Schleife.
     \item Was ist, wenn der gesamte Pfad den Wert 0 hat.
     \item Wird eine NodeNotFoundException geworfen, wenn der Start- oder Endknoten nicht im Graphen enthalten sind.
     \item Wird eine MultiEdgeWithSameDirectionException geworfen, wenn eine entsprechende nicht inverse Multikante gefunden wurde.
+    \item Wird eine UnoperableGraphException vom Algorithmus geworfen, wenn der Graph ungewichtet ist.
+    \item Wird eine UnoperableGraphException von der GraphFileReader-Klasse geworfen, wenn der Graph gemischt ungewichtet und gewichtet ist.
 \end{enumerate}
 
 
