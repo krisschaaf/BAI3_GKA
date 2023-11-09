@@ -1,5 +1,11 @@
 package haw.gka.io;
 
+import haw.gka.exceptions.UnoperableGraphException;
+import org.apache.commons.math3.exception.NullArgumentException;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.MultiGraph;
+
+import java.io.Console;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,7 +43,7 @@ public class Verifier {
 		}
 		// Es darf nur das Semikolon übrig bleiben (Mehrfach angebene Kantennamen,-gewichte und mehr als zwei Knoten sind illegal)
 		return line.equals(";");
-		
+
 	}
 
 	// Zählt die Treffer des übergebenen Regexausdruckes in der Zeile
@@ -57,23 +63,51 @@ public class Verifier {
 		Matcher m = filename.matcher(firstLine);
 		return m.find();
 	}
-	
+
 	static boolean isValidFilename(String path) {
 		Pattern filename = Pattern.compile("(.)+\\.grph", Pattern.CASE_INSENSITIVE);
 		Matcher m = filename.matcher(path);
 		return m.find();
 	}
 
-	static boolean isDirected(String firstLine) throws Exception{
+	static boolean isDirected(String firstLine) throws UnoperableGraphException {
 		String graphDirection = firstLine.split(":")[0];
 		switch (graphDirection) {
 			case "#directed":
 				return true;
 			case "#undirected":
-				return false;	
+				return false;
 			default:
-				throw new Exception("Invalid File Header: " + firstLine);
-		}	
-		
+				throw new UnoperableGraphException("Invalid File Header: " + firstLine);
+		}
+
+	}
+
+	static boolean unambigouslyWeights(Graph graph){
+		boolean hasWeights = false;
+		boolean hasNoWeights = false;
+		try {
+			// Iteriert über die Kanten
+			for (int i = 0; i < graph.getEdgeCount(); i++){
+				String weight = graph.getEdge(i).getAttribute("weight").toString();
+				if (weight != null && Integer.parseInt(weight) > 0){
+					hasWeights = true;
+					if(!(Integer.parseInt(weight) > 0)){
+						throw new UnoperableGraphException("Weight "+ weight + " of Edge " + graph.getEdge(i).getId() +" null or negative");
+					}
+				}
+				if (graph.getEdge(i).getAttribute("weight") == null){
+					hasNoWeights = true;
+				}
+				if ((hasWeights && hasNoWeights) || (!hasWeights && !hasNoWeights)){
+					return false;
+				}
+			}
+			graph.setAttribute("isWeighted", hasWeights);
+			return true;
+		} catch (Exception e){
+			System.out.println(e.toString());
+		}
+		return false;
 	}
 }

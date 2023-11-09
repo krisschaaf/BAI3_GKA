@@ -1,5 +1,6 @@
 package haw.gka.io;
 
+import haw.gka.exceptions.UnoperableGraphException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 
@@ -10,8 +11,9 @@ import java.util.regex.Pattern;
 public class GraphFileReader {
 
 	private boolean isDirected;
+	private boolean isWeighted;
 
-	public Graph getGraphFromFile(String path) throws Exception{
+	public Graph getGraphFromFile(String path) throws UnoperableGraphException, IOException{
 		Graph newGraph;
 
 		// Überprüfe den Dateinamen
@@ -21,7 +23,6 @@ public class GraphFileReader {
 		// Lade den Lese Buffer
 		StringBuffer fileContent = new StringBuffer();
 		try {
-
 			File graphFile = new File(path);
 			FileInputStream fis = new FileInputStream(graphFile);
 			// Korrektes encoding für Umlaute
@@ -48,26 +49,32 @@ public class GraphFileReader {
 
 		// Prüfe erste Zeile auf Korrektheit
 		if(!Verifier.isValidFirstLine(firstLine)) {
-			throw new Exception("Invalid File Header: " + firstLine);
+			throw new UnoperableGraphException("Invalid File Header: " + firstLine);
 		}
 		// Erkenne ob der Graph gerichtet ist
 		this.isDirected = Verifier.isDirected(firstLine);
 
 		// Instanziiere den neuen Graph
-		newGraph = new MultiGraph(firstLine.split(":")[1].replace(";", ""));
+		String graphId = firstLine.split(":")[1].replace(";", "");
+		newGraph = new MultiGraph(graphId);
 
 		// Iteriere über die Zeilen
 		for(int i = 1; i< lines.length; i++) {
 			String currentLine = lines[i];
 			// Prüfe jede Zeile auf Korrektheit
 			if(!Verifier.isValidLine(currentLine)) {
-				throw new Exception("Invalid Line: " + currentLine);
+				throw new UnoperableGraphException("Invalid Line: " + currentLine);
 			}
 			// Füge die Eigenschaften der aktuellen Zeile dem neuen Graphen hinzu
 			newGraph = addProperties(newGraph, currentLine);
 		}
-		// Gebe den neuen Graphen zurück
-		return newGraph;
+		//Prüfe ob der Graph rein gewichtet oder ungewichtet ist (jede oder keine Kante ist gewichtet)
+		if(Verifier.unambigouslyWeights(newGraph)){
+			// Gebe den neuen Graphen zurück
+			return newGraph;
+		} else {
+			throw new UnoperableGraphException("Graph ambigously contains weighted and unweighted edges");
+		}
 	}
 
 
@@ -137,6 +144,7 @@ public class GraphFileReader {
 					counter++;
 				}
 			}
+
 			// Füge Kante hinzu
 			graph.addEdge(edgeName, firstNodeName, secondNodeName, this.isDirected).setAttribute("ui.label", edgeName);
 			if (!weight.isEmpty()) {
@@ -148,6 +156,9 @@ public class GraphFileReader {
 				graph.getEdge(edgeName).setAttribute("weight", 1);
 			}
 		}
-		return graph;	}
+		return graph;
+	}
+
+
 }
 
