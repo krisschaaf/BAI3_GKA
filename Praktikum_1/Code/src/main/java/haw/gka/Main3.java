@@ -4,13 +4,14 @@ import haw.gka.dijkstra.DjekstraRecurs;
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
+import haw.gka.exceptions.UnoperableGraphException;
 import haw.gka.visual.Visualisation;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import java.util.List;
 
 public class Main3 {
-    public static void main(String[] args) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public static void main(String[] args) throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
 
 
 
