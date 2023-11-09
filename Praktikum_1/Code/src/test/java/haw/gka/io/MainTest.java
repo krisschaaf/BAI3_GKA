@@ -90,7 +90,7 @@ public class MainTest {
             Edge edgePrev = graphPrev.getEdge(i);
             Edge edgeAfter = graphAfter.getEdge(edgePrev.getId());
             assertNotNull(edgeAfter);
-            assertEquals(edgePrev.getAttribute("weight"), edgeAfter.getAttribute("weight"));
+            assertEquals(edgePrev.getAttribute("weight").toString(), edgeAfter.getAttribute("weight").toString());
         }
         // Check if there is only desired edges in new graph
         for(int i =0;i<graphAfter.getEdgeCount();i++){
