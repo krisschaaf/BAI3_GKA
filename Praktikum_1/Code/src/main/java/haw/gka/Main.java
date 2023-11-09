@@ -1,7 +1,7 @@
 package haw.gka;
 
 import haw.gka.dijkstra.Dijkstra;
-import haw.gka.dijkstra.DijkstraRecurs;
+import haw.gka.dijkstra.DjekstraRecurs;
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.*;
 import haw.gka.io.GraphFileReader;
@@ -40,7 +40,7 @@ public class Main {
 					result = Dijkstra.calculateFastestPath((MultiNode) graph.getNode(startNode), (MultiNode) graph.getNode(endNode), (MultiGraph) graph);
 					break;
 				case "recursive":
-					result = DijkstraRecurs.calculateFastestPathRecurs((MultiNode) graph.getNode(startNode), (MultiNode) graph.getNode(endNode), (MultiGraph) graph);
+					result = DjekstraRecurs.calculateFastestPathRecurs((MultiNode) graph.getNode(startNode), (MultiNode) graph.getNode(endNode), (MultiGraph) graph);
 			}
 
 			if(result != null) {

@@ -2,6 +2,7 @@ package haw.gka;
 
 import haw.gka.dijkstra.Dijkstra;
 import haw.gka.dijkstra.models.PriorityQueueItem;
+import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import haw.gka.visual.Visualisation;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class Main2 {
 
-    public static void main(String[] args) throws NodeNotFoundException {
+    public static void main(String[] args) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
 
         MultiGraph graph = new MultiGraph("GraphWithLoop");
         graph.setAttribute("ui.stylesheet", styleSheet);

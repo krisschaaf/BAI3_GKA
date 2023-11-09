@@ -4,6 +4,7 @@ import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.dijkstra.utils.NodeUtils;
 import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
 import haw.gka.dijkstra.utils.PriorityQueueUtils;
+import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 
 public class Dijkstra {
-    public static PriorityQueueItem calculateFastestPath(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException {
+    public static PriorityQueueItem calculateFastestPath(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
 
         if (!NodeUtils.graphContainsNode(startNode, graph) || !NodeUtils.graphContainsNode(endNode, graph)) {
             throw new NodeNotFoundException("Could not find start or end node in graph");

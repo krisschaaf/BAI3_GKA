@@ -1,6 +1,7 @@
 package haw.gka.dijkstra;
 
 import haw.gka.dijkstra.models.PriorityQueueItem;
+import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
@@ -13,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class DijkstraRecursTest
+public class DjekstraRecursTest
 {
 
     public static final String ATTRIBUTE_WEIGHT = "weight";
     @Test
-    public void sameStartAsFinish() throws NodeNotFoundException {
+    public void sameStartAsFinish() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         MultiGraph graph = new MultiGraph("GraphWithZeros");
         MultiNode node1 = new MultiNode(graph, "node1");
         MultiNode node2 = new MultiNode(graph, "node2");
@@ -36,14 +37,14 @@ public class DijkstraRecursTest
         PriorityQueueItem result = new PriorityQueueItem();
         result.setDistance(0);
         result.setNodes(Arrays.asList(node1));
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node1, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node1, graph).toString());
 
 
     }
 
 
     @Test
-    public void zeroValuesGraph() throws NodeNotFoundException {
+    public void zeroValuesGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         MultiGraph graph = new MultiGraph("GraphWithZeros");
         MultiNode node1 = new MultiNode(graph, "node1");
         MultiNode node2 = new MultiNode(graph, "node2");
@@ -62,12 +63,12 @@ public class DijkstraRecursTest
         result.setDistance(0);
         result.setNodes(Arrays.asList(node1,node3));
 
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node3, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node3, graph).toString());
 
     }
     
     @Test
-    public void graphWithLoop() throws NodeNotFoundException {
+    public void graphWithLoop() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         MultiGraph graph = new MultiGraph("GraphWithLoop");
         //graph.setAttribute("ui.stylesheet", styleSheet);
 
@@ -110,7 +111,7 @@ public class DijkstraRecursTest
         result.setDistance(102);
         result.setNodes(Arrays.asList(node1,node2,node3, node6));
         //assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(node1,node6, graph).toString());
 
 
 
@@ -118,7 +119,7 @@ public class DijkstraRecursTest
     }
 
     @Test
-    public void findShortestPathInUndirectedGraph() throws NodeNotFoundException {
+    public void findShortestPathInUndirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -145,12 +146,12 @@ public class DijkstraRecursTest
         result.setDistance(11);
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
 
     @Test
-    public void findShortestPathInDirectedGraph() throws NodeNotFoundException {
+    public void findShortestPathInDirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -177,11 +178,11 @@ public class DijkstraRecursTest
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
-    public void findShortestPathInMixedGraph() throws NodeNotFoundException {
+    public void findShortestPathInMixedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -208,11 +209,11 @@ public class DijkstraRecursTest
         result.setNodes(Arrays.asList(multiNodeA,multiNodeB,multiNodeF,multiNodeH));
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
-    public void returnEmptyItemWhenNoPathFound() throws NodeNotFoundException {
+    public void returnEmptyItemWhenNoPathFound() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -239,7 +240,7 @@ public class DijkstraRecursTest
         result.setNodes(Collections.emptyList());
 
         //assertEquals(result.toString(), Dijkstra.calculateFastestPath(multiNodeA, multiNodeH, graph).toString());
-        assertEquals(result.toString(), DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
+        assertEquals(result.toString(), DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeH, graph).toString());
     }
 
     @Test
@@ -260,7 +261,7 @@ public class DijkstraRecursTest
         result.setNodes(Collections.emptyList());
 
        // assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeD, multiNodeA, graph));
-        assertThrows(NodeNotFoundException.class, () -> DijkstraRecurs.calculateFastestPathRecurs(multiNodeD, multiNodeA, graph));
+        assertThrows(NodeNotFoundException.class, () -> DjekstraRecurs.calculateFastestPathRecurs(multiNodeD, multiNodeA, graph));
     }
 
     @Test
@@ -281,7 +282,7 @@ public class DijkstraRecursTest
         result.setNodes(Collections.emptyList());
 
        // assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeA, multiNodeD, graph));
-        assertThrows(NodeNotFoundException.class, () -> DijkstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeD, graph));
+        assertThrows(NodeNotFoundException.class, () -> DjekstraRecurs.calculateFastestPathRecurs(multiNodeA, multiNodeD, graph));
     }
 
 

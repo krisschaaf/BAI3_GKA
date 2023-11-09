@@ -1,7 +1,8 @@
 package haw.gka;
 import haw.gka.dijkstra.Dijkstra;
-import haw.gka.dijkstra.DijkstraRecurs;
+import haw.gka.dijkstra.DjekstraRecurs;
 import haw.gka.dijkstra.models.PriorityQueueItem;
+import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import haw.gka.visual.Visualisation;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -9,7 +10,7 @@ import org.graphstream.graph.implementations.MultiNode;
 import java.util.List;
 
 public class Main3 {
-    public static void main(String[] args) throws NodeNotFoundException {
+    public static void main(String[] args) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
 
 
 
@@ -72,7 +73,7 @@ public class Main3 {
 
 
                 if (recurcion) {
-                    dijRes = DijkstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
             }
 
                 else {
@@ -119,7 +120,7 @@ public class Main3 {
                 //dijRes = Dijkstra.calculateFastestPath(node1, node8, graph);
 
                 if (recurcion) {
-                    dijRes = DijkstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node8, graph);
                 }
 
                 else {
@@ -151,7 +152,7 @@ public class Main3 {
                 //dijRes = Dijkstra.calculateFastestPath(node1, node4, graph);
                 //dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
                 if (recurcion) {
-                    dijRes = DijkstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
+                    dijRes = DjekstraRecurs.calculateFastestPathRecurs(node1, node4, graph);
                 }
 
                 else {

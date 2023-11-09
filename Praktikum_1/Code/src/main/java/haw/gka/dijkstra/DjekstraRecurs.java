@@ -4,6 +4,7 @@ import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.dijkstra.utils.NodeUtils;
 import haw.gka.dijkstra.utils.PriorityQueueItemUtils;
 import haw.gka.dijkstra.utils.PriorityQueueUtils;
+import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -15,7 +16,7 @@ import java.util.*;
 public class DjekstraRecurs {
     //  private static final String ATTRIBUTE_WEIGHT = "weight";
 
-    public static PriorityQueueItem calculateFastestPathRecurs(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException {
+    public static PriorityQueueItem calculateFastestPathRecurs(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
 
         //Überprüfung, ob der Graph den Startknoten und den Zielknoten enthält
         if (!NodeUtils.graphContainsNode(startNode, graph) || !NodeUtils.graphContainsNode(endNode, graph)) {
@@ -53,7 +54,7 @@ public class DjekstraRecurs {
         else return (PriorityQueueItem) finalPathsQueue.poll();
     }
 
-    public static PriorityQueue recursStep(PriorityQueue finalPathsQueue, PriorityQueue priorityQueue, MultiNode endNode, Set<MultiNode> closedList, MultiGraph graph) {
+    public static PriorityQueue recursStep(PriorityQueue finalPathsQueue, PriorityQueue priorityQueue, MultiNode endNode, Set<MultiNode> closedList, MultiGraph graph) throws MultiEdgeWithSameDirectionException {
         //Wenn die sortierende Prioritätswarteschlange leer ist, die Prioritätswarteschlange mit vollständigen Pfaden zurückgeben
         if (priorityQueue.isEmpty()) {
             return finalPathsQueue;
