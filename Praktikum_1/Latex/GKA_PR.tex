@@ -52,6 +52,7 @@ Bedingungen, welche für den Graphen gelten:
     \item Der Graph muss entweder komplett gewichtet sein und dann ausschließlich positive Kantengewichte haben und komplett ungewichtet sein.
     \item Der Graph kann unendlich viele Knoten besitzen.
     \item Der Graph kann gerichtet, ungerichtet oder gemischt sein.
+    \item Der Graph darf Schleifen, aber keine nicht inversen Multikanten besitzen.
 \end{itemize}
 
 \subsection{Open und Closed List}
@@ -197,6 +198,7 @@ Unsere Tests decken verschiedene Fälle ab, wie zum Beispiel:
     \item Funktioniert die Anwendung bei einem Graph mit einer Schleife.
     \item Was ist, wenn der gesamte Pfad den Wert 0 hat.
     \item Wird eine NodeNotFoundException geworfen, wenn der Start- oder Endknoten nicht im Graphen enthalten sind.
+    \item Wird eine MultiEdgeWithSameDirectionException geworfen, wenn eine entsprechende nicht inverse Multikante gefunden wurde.
 \end{enumerate}
 
 
