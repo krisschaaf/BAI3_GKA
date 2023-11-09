@@ -1,5 +1,6 @@
 package haw.gka.io;
 
+import haw.gka.exceptions.UnoperableGraphException;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -26,11 +27,7 @@ public class MainTest {
         filesToAccept.add(PATH+"graph02.grph");
         filesToAccept.add(PATH+"graph03.grph");
         filesToAccept.add(PATH+"graph04.grph");
-        //graph05 shouldn't work because of syntax error: "::" but no weight specified
-        //graph06 shouldn't work because of semantic error: doubled edge "f"
-        //graph07 missing
         filesToAccept.add(PATH+"graph08.grph");
-        //graph09 shouldn't work because of syntax error: triple edge a-gb-j
         filesToAccept.add(PATH_EULER + "eulG1.grph");
         filesToAccept.add(PATH_EULER + "eulG2.grph");
         filesToAccept.add(PATH_EULER + "eulG3.grph");
@@ -59,6 +56,8 @@ public class MainTest {
         filesToDenied.add(PATH+"fail03.grph");
         //syntax error: only one node in one line but with weight
         filesToDenied.add(PATH+"fail04.grph");
+        //semantic error: graph has both weighted and unweighted edges
+        filesToDenied.add(PATH+"fail05.grph");
         GraphFileReader reader = new GraphFileReader();
         for (String file : filesToDenied){
             assertThrows(Exception.class,() -> reader.getGraphFromFile(file));
@@ -71,7 +70,7 @@ public class MainTest {
         GraphFileReader reader = new GraphFileReader();
         Graph graphPrev = null;
         try{
-            // Read known graph04.grph file, deserialize and write back to a file (graphAfter.grph)
+            // Lese graph04.grph, wandle in Graphobjekt und schreibe wieder in Datei (graphAfter.grph)
             graphPrev = reader.getGraphFromFile(file);
             GraphFileWriter writer = new GraphFileWriter();
             writer.writeFile(graphPrev, "graphAfter.grph");
@@ -80,30 +79,30 @@ public class MainTest {
         }
         Graph graphAfter = null;
         try{
-            // Read and deserialize newly written graphAfter.grph file
+            // Lese und wandle das eben geschriebene graphAfter.grph file in ein Graphobjekt zurück
             graphAfter = reader.getGraphFromFile("graphAfter.grph");
         } catch (Exception e){
             fail(e.getMessage());
         }
-        // Check if every previous edge is similar to the new one
+        // Vergleiche die Zeilen
         for(int i =0;i<graphPrev.getEdgeCount();i++){
             Edge edgePrev = graphPrev.getEdge(i);
             Edge edgeAfter = graphAfter.getEdge(edgePrev.getId());
             assertNotNull(edgeAfter);
             assertEquals(edgePrev.getAttribute("weight").toString(), edgeAfter.getAttribute("weight").toString());
         }
-        // Check if there is only desired edges in new graph
+        // Prüfe ob keine Kanten zusätzlich geschrieben wurden
         for(int i =0;i<graphAfter.getEdgeCount();i++){
             assertNotNull(graphPrev.getEdge(graphAfter.getEdge(i).getId()));
         }
-        // Check if every previous node is similar to the new one
+        // Vergleiche die Knoten
         for(int i =0;i<graphPrev.getNodeCount();i++){
             Node nodePrev = graphPrev.getNode(i);
             Node nodeAfter = graphAfter.getNode(nodePrev.getId());
             assertNotNull(nodeAfter);
             assertEquals(nodePrev.getAttribute("attr"), nodeAfter.getAttribute("attr"));
         }
-        // Check if there is only desired nodes in new graph
+        // Prüfe ob keine Knoten zusätzlich geschrieben wurden
         for(int i =0;i<graphAfter.getNodeCount();i++){
             assertNotNull(graphPrev.getNode(graphAfter.getNode(i).getId()));
         }

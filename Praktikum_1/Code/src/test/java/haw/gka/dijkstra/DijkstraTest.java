@@ -3,6 +3,7 @@ package haw.gka.dijkstra;
 import haw.gka.dijkstra.models.PriorityQueueItem;
 import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
+import haw.gka.exceptions.UnoperableGraphException;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class DijkstraTest
     public static final String ATTRIBUTE_UI_LABEL = "ui.label";
 
     @Test
-    public void findShortestPathWhenDistanceToDestinationIsZero() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void findShortestPathWhenDistanceToDestinationIsZero() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         MultiGraph graph = new MultiGraph("GraphWithZeros");
         MultiNode node1 = new MultiNode(graph, "node1");
         MultiNode node2 = new MultiNode(graph, "node2");
@@ -40,7 +41,7 @@ public class DijkstraTest
     }
     
     @Test
-    public void findShortestPathInGraphWithLoop() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void findShortestPathInGraphWithLoop() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         MultiGraph graph = new MultiGraph("GraphWithLoop");
 
         MultiNode node1 = new MultiNode(graph, "node1");
@@ -78,7 +79,7 @@ public class DijkstraTest
     }
 
     @Test
-    public void findShortestPathInUndirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void findShortestPathInUndirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         MultiGraph graph = new MultiGraph("foo");
 
         MultiNode multiNodeA = new MultiNode(graph, "A");
@@ -108,7 +109,7 @@ public class DijkstraTest
 
 
     @Test
-    public void findShortestPathInDirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void findShortestPathInDirectedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -138,7 +139,7 @@ public class DijkstraTest
     }
 
     @Test
-    public void findShortestPathInMixedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void findShortestPathInMixedGraph() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -192,7 +193,7 @@ public class DijkstraTest
     }
 
     @Test
-    public void returnEmptyItemWhenNoPathFound() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void returnEmptyItemWhenNoPathFound() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         // Graphen bauen
         MultiGraph graph = new MultiGraph("foo");
 
@@ -222,7 +223,7 @@ public class DijkstraTest
     }
 
     @Test
-    public void returnListWithStartNodeOnlyWhenStartAndEndNodeAreTheSame() throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
+    public void returnListWithStartNodeOnlyWhenStartAndEndNodeAreTheSame() throws NodeNotFoundException, MultiEdgeWithSameDirectionException, UnoperableGraphException {
         MultiGraph graph = new MultiGraph("GraphWithZeros");
         MultiNode node1 = new MultiNode(graph, "node1");
         MultiNode node2 = new MultiNode(graph, "node2");
@@ -282,5 +283,21 @@ public class DijkstraTest
         result.setNodes(Collections.emptyList());
 
         assertThrows(NodeNotFoundException.class, () -> Dijkstra.calculateFastestPath(multiNodeA, multiNodeD, graph));
+    }
+    @Test
+    public void throwExceptionWhenGraphIsUnWeighted() {
+        // Graphen bauen
+        MultiGraph graph = new MultiGraph("foo");
+
+        MultiNode multiNodeA = new MultiNode(graph, "A");
+        MultiNode multiNodeB = new MultiNode(graph, "B");
+        MultiNode multiNodeC = new MultiNode(graph, "C");
+        MultiNode multiNodeD = new MultiNode(graph, "D");
+
+        graph.addEdge("e1", multiNodeA, multiNodeB, false);
+        graph.addEdge("e2", multiNodeA, multiNodeC, false);
+        graph.addEdge("e3", multiNodeB, multiNodeD, false);
+        PriorityQueueItem result = new PriorityQueueItem();
+        assertThrows(UnoperableGraphException.class, () -> Dijkstra.calculateFastestPath(multiNodeA, multiNodeD, graph));
     }
 }
