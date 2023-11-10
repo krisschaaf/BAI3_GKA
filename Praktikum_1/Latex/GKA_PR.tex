@@ -5,6 +5,10 @@
 \input{deckblatt}
 \newpage
 
+\tableofcontents
+
+\newpage
+
 \section{Einleitung}
 
 \subsection{Dijkstra Algorithmus in Worten}
@@ -32,7 +36,7 @@ Nehmen wir an Kreuzungen und Kreisverkehre seien Knoten und die Straßen, die di
 
 \subsection{Wählen des Grundansatzes}
 
-Zur objektorientierten Abstrahierung eines Graphen gibt es zwei verschiedene Ansätze. Der erste Ansatz wäre, dass es einen Typ \textit{Kante} gibt, in welchem die vor- und nachfolgenden Knoten und die Länge der jeweiligen Kante gespeichert werden.\\
+Zur objektorientierten Abstrahierung eines Graphen gibt es zwei verschiedene Ansätze. Der erste Ansatz wäre, dass es einen Typen \textit{Kante} gibt, in welchem die vor- und nachfolgenden Knoten und die Länge der jeweiligen Kante gespeichert werden.\\
 Diese Kanten würde dann den Graphen bilden und diesen in Form eines Sets darstellen:\\$Set <Kante> graph = new\ HashSet<>()$.\\\\
 Der zweite Ansatz wäre die Kante als solches zu abstrahieren und nicht als eigenen Typen zu implementieren. Es gäbe dann nur den Typen Knoten, welcher alle benachbarten Knoten mit zugehöriger Distanz enthält.\\
 Auch diese Knoten können nun in einem Set gespeichert werden:\\
@@ -49,7 +53,7 @@ Wie im vorherigen Kapitel beschrieben, genügt es einen Multigraphen zu definier
 Sowohl die Kanten als auch die Knoten müssen einen eindeutigen, im Graphen nur einmal vorkommenden Namen haben.\\\\
 Bedingungen, welche für den Graphen gelten:
 \begin{itemize}
-    \item Der Graph muss entweder komplett gewichtet sein und dann ausschließlich positive Kantengewichte haben und komplett ungewichtet sein.
+    \item Der Graph muss vollständig gewichtet sein und ausschließlich positive Kantengewichte haben.
     \item Der Graph kann unendlich viele Knoten besitzen.
     \item Der Graph kann gerichtet, ungerichtet oder gemischt sein.
     \item Der Graph darf Schleifen, aber keine nicht inversen Multikanten besitzen.
@@ -139,6 +143,8 @@ public class PriorityQueueItem {
 }
 \end{lstlisting}
 
+\newpage
+
 \subsection{Ablauf des Algorithmus mit einer Priority Queue}
 
 \begin{enumerate}
@@ -185,13 +191,18 @@ priorityQueue = {
 closedList = { };
 \end{lstlisting}
 
-\newpage
+\subsection{Rekursive Implementierung des Dijkstra-Algorithmus}
+Neben dem iterativen Ansatz haben wir eine rekursive Methode zur Implementierung des Dijkstra-Algorithmus umgesetzt. Ähnlich wie beim vorherigen Verfahren wurde eine Priority Queue eingesetzt, um die Knoten effizient nach ihrer Entfernung zum Startknoten zu sortieren und auszuwählen. Bereits besuchte Knoten werden, wie im vorherigen Verfahren, in einem Set gespeichert. 
+In der Hauptfunktion \textit{calculateFastestPathRecurs} erfolgt die Initialisierung der \textit{PriorityQueue} sowie der \textit{closedList}. Daraufhin wird ein erstes \textit{PriorityQueueItem} basierend auf dem Startknoten definiert. Die \textit{finalPathsQueue} hält die Endergebnisse der Rekursion fest, um einen korrekten Rückgabewert sicherzustellen.
+Die Funktion \textit{recursStep} stellt den rekursiven Schritt dar, der die Kernlogik des Algorithmus beinhaltet. In jedem Rekursionsschritt wird das erste Element der \textit{PriorityQueue} verarbeitet, ähnlich wie im iterativen Ansatz. Das Abbruchkriterium der Rekursion ist erreicht, wenn der Knoten aus dem aktuellen \textit{PriorityQueueItem} der Zielknoten ist und alle Knoten besucht wurden. Dann wird dieser in die \textit{finalPathsQueue} aufgenommen. Diese enthält alle Pfade, die am Zielknoten enden. Beim Verlassen der Rekursion wird die \textit{finalPathsQueue} zurückgegeben und im Methodenaufruf von \textit{calculateFastestPathRecurs} wird das erste Element dieser Queue entnommen, welches den optimalen Pfad repräsentiert.
+Sollte der Knoten aus dem aktuellen \textit{PriorityQueueItem} nicht der Zielknoten sein, so werden die adjazenten Knoten überprüft. Jeder dieser Knoten wird daraufhin kontrolliert, ob er bereits in einem der potenziellen Pfade in der \textit{PriorityQueue} enthalten ist. Wenn dies der Fall ist und der neu berechnete Pfad ist kürzer, wird auf Basis des gefundenen Pfades ein neues \textit{PriorityQueueItem} erstellt und die Distanz entsprechend aktualisiert. Sollte der adjazente Knoten noch nicht in den vorhandenen Pfaden sein, wird auch ein neues \textit{PriorityQueueItem} mit diesem Knoten angelegt.
+Nachdem alle adjazenten Knoten verarbeitet wurden, wird das aktuelle \textit{PriorityQueueItem} aus der \textit{PriorityQueue} entfernt. Anschließend wird ein neuer rekursiver Schritt für die aktualisierte \textit{PriorityQueue} aufgerufen.
 
 \section{Tests}
 
 Um das Program zu überprüfen, ist es notwendig aussagekräftige Tests zu implementieren. Dazu haben wir das JUnit Jupiter Testframework verwendet, ein Java-Test-Framework, welches die Erstellung und Ausführung von Unit-Tests automatisieren und vereinfachen soll.\\
 
-Unsere Tests decken verschiedene Fälle ab, wie zum Beispiel:
+Unsere Tests decken folgende Fälle ab:
 
 \begin{enumerate}
     \item Testen von gerichteten Graphen
