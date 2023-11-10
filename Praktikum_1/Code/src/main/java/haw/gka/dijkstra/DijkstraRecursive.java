@@ -13,7 +13,7 @@ import org.graphstream.graph.implementations.MultiNode;
 import java.util.*;
 
 
-public class DjekstraRecurs {
+public class DijkstraRecursive {
     //  private static final String ATTRIBUTE_WEIGHT = "weight";
 
     public static PriorityQueueItem calculateFastestPathRecurs(MultiNode startNode, MultiNode endNode, MultiGraph graph) throws NodeNotFoundException, MultiEdgeWithSameDirectionException {
