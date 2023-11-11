@@ -39,14 +39,13 @@ public class Dijkstra {
             // Schritt 3: Jeder adjazente Knoten des Ausgangsknoten wird betrachtet
             for (MultiNode adjacentNode: NodeUtils.getAdjacentNodes(initialPriorityQueueItem.getLastNode())) {
 
+                if(adjacentNode == null) {
+                    throw new UnoperableGraphException("No valid neighbours of start node!");
+                }
+
                 // Schritt 3a/b: Ist der Knoten bereits in der closed List, wird dieser nicht weiter beachtet
                 if(!closedList.contains(adjacentNode)) {
-                    PriorityQueueItem adjacentPriorityQueueItem = null;
-                    try {
-                        adjacentPriorityQueueItem = PriorityQueueItemUtils.initializeAdjacentPriorityQueueItem(initialPriorityQueueItem, adjacentNode);
-                    } catch(NullPointerException e){
-                        throw new UnoperableGraphException("No valid neighbours of start node!");
-                    }
+                    PriorityQueueItem adjacentPriorityQueueItem = PriorityQueueItemUtils.initializeAdjacentPriorityQueueItem(initialPriorityQueueItem, adjacentNode);
                     PriorityQueueItem concatenatedPriorityQueueItem = PriorityQueueItemUtils.concatenatePriorityQueueItems(initialPriorityQueueItem, adjacentPriorityQueueItem);
 
                     // Schritt 4: Die neu entstandenen PriorityQueueItems ersetzen nun das PriorityQueueItem des Ausgangsknotens in der PriorityQueue

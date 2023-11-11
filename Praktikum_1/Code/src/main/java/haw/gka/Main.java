@@ -87,10 +87,9 @@ public class Main {
 		if(args[2].isEmpty()) {
 			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
 		}
-		// TODO: fix
-//		if(args[2].toString() != "iterative" && args[2].toString() != "recursive") {
-//			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
-//		}
+		if(!args[2].equals("iterative") && !args[2].equals("recursive")) {
+			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
+		}
 		if(args[3].isEmpty()) {
 			throw new NodeArgMissingException("Please provide start node as fourth parameter.");
 		}
