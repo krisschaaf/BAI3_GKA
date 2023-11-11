@@ -10,22 +10,38 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
+import java.util.Scanner;
+
 public class Main {
 
 	public static void main(String[] args) {
 		System.setProperty("org.graphstream.ui", "swing");
-
+		String inputFile;
+		String outputFile;
+		String dijkstraAlg;
+		String startNode;
+		String endNode;
 		try {
 			checkArgs(args);
+			inputFile = args[0];
+			outputFile = args[1];
+			dijkstraAlg = args[2];
+			startNode = args[3];
+			endNode = args[4];
 		} catch (Exception e) {
 			e.printStackTrace();
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Enter path/input file:");
+			inputFile = scanner.nextLine();
+			System.out.println("Enter path/output file:");
+			outputFile = scanner.nextLine();
+			System.out.println("Enter dijkstra [iterative, recursive]:");
+			dijkstraAlg = scanner.nextLine();
+			System.out.println("Enter startNode:");
+			startNode = scanner.nextLine();
+			System.out.println("Enter endNode:");
+			endNode = scanner.nextLine();
 		}
-
-		String inputFile = args[0];
-		String outputFile = args[1];
-		String dijkstraAlg = args[2];
-		String startNode = args[3];
-		String endNode = args[4];
 
 		try {
 			GraphFileReader reader = new GraphFileReader();
