@@ -59,7 +59,8 @@ public class Main {
 					result = DijkstraRecursive.calculateFastestPathRecurs((MultiNode) graph.getNode(startNode), (MultiNode) graph.getNode(endNode), (MultiGraph) graph);
 			}
 
-			if(result != null) {
+			if(!result.getNodes().isEmpty()) {
+				System.out.println(result);
 				result.markUp();
 			} else {
 				throw new NoResultFoundException("Could not find any result for given parameters.");
