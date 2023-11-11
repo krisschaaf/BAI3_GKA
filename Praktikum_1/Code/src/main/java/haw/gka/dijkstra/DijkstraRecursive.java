@@ -34,13 +34,13 @@ public class DijkstraRecursive {
         //Initialisierung einer Liste für bereits besuchte Knoten
         Set<MultiNode> closedList = new HashSet<>();
 
-        //Start der Rekursion
-        finalPathsQueue = recursStep(finalPathsQueue, priorityQueue, endNode, closedList, graph);
-
         // Den Startknoten zurückgeben, wenn er gleich der Endknoten ist
         if (startNode.equals(endNode)) {
             return startItem;
         }
+        //Start der Rekursion
+        finalPathsQueue = recursStep(finalPathsQueue, priorityQueue, endNode, closedList, graph);
+
 
         //Ein leeres Ergebnis zurückgeben, wenn kein Weg gefunden wurde.
         if (finalPathsQueue.isEmpty()) {
