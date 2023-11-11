@@ -93,32 +93,33 @@ Der Typ Knoten muss des weiteren nur noch die adjazenten Knoten mit der Distanz 
 \subsection{IO}
 
 \subsubsection{Dateiformat}
+\label{Dateiformat}
 Gelesen und geschrieben wird in eine *.grph Datei, deren Aufbau folgendermaßen strukturiert ist:
 \begin{enumerate}
- 	\item Kopfzeile beginnt mit '\#' worauf das Schlüsselwort "undirected", bzw. "directed", ein Doppelpunkt und der Name des Graphen folgt. Wie jede Zeile wird die Kopfzeile durch ein Semikolon abgeschlossen:\\
-		\#<(un)directed>:name;
-	\item Alle folgenden Zeilen beinhalten entweder einen Knoten mit optionalem Attribut (":" als Präfix):\\
-		<Knotenname>(:Attribut)?;\\
-	\item oder zwei Knoten mit jeweils optionalen Attributen, sowie darauf folgend optional explizitem Kantennamen (umklammert) und/oder Kantengewicht ("::" als Präfix):\\
-		<Knotenname1>(:Attribut)?-<Knotenname2>(:Attribut)?((<Kantenname))?(::<Kantengewicht>)?
-    \item Graphen, die sowohl ungewichtete, als auch gewichtete Kanten besitzen, werden nicht akzeptiert, da diese keine algorithmische Anwendung finden.
+ 	\item Kopfzeile beginnt mit '\#' worauf das Schlüsselwort  \verb"undirected", bzw. \verb"directed", ein Doppelpunkt und der Name des Graphen folgt. Wie jede Zeile wird die Kopfzeile durch ein Semikolon abgeschlossen:\\
+		\verb|#<(un)directed>:name;|
+	\item Alle folgenden Zeilen beinhalten entweder einen Knoten mit optionalem Attribut \verb|(":" als Präfix):| \\
+		\verb|<Knotenname>(:Attribut)?;|
+	\item oder zwei Knoten mit jeweils optionalen Attributen, sowie darauf folgend optional explizitem Kantennamen (umklammert) und/oder Kantengewicht \verb|("::" als Präfix):|\\
+		\verb|<Knotenname1>(:Attribut)?-<Knotenname2>(:Attribut)?((<Kantenname))?(::<Kantengewicht>)?|
+    \item Graphen, die sowohl ungewichtete, als auch gewichtete Kanten besitzen, werden nicht akzeptiert, da diese hier keine algorithmische Anwendung finden, ohne Knotengewichte zu erfinden.
 \end{enumerate}
 
 \subsubsection{Lesen der Graphdatei}
-Gelesen wird die Graphdatei in der Klasse GraphFileReader mit einem nach ISO-8859-1 encodierten InputStreamReader. Hier kann eine IOException geworfen werden.\\
-Nachdem die Zeilen eingelesen wurden, wird jede Zeile mit Regex auf Korrektheit, wie in \ref{Dateiformat} beschrieben, geprüft. Diese Prüfung ist in der Klasse Verifier implementiert.\\
-Die Funktionsweise der Regexprüfung baut auf dem Erkennen und Löschen der Zeilenbestandteile (Quell-/Ziel-)Knoten, Knotenattribut, Kantenname und Kantengewicht. Wenn alle Bestandteile aus der Zeile gelöscht sind, darf nur noch das Semikolon übrigbleiben. Dieses vorgehen verhindert, dass Attribute wie Kantengewicht oder Kantenname doppelt oder in einer
-Zeile mit nur einem Knoten vorkommen, und dass pro Zeile nur maximal zwei Knoten (als Kante) vorkommen dürfen.\\
-Ist die Prüfung erfolgreich, kann einem neuen Graphenobjekt der entsprechenden Bibliothek von graphstream.org die in der Zeile genannten Eigenschaften hinzugefügt werden. Dies übernimmt die Funktion addProperties(Graph, Zeile) in der GraphFileReader-Klasse.\\
-Ähnlich wie bei der Regexprüfung werden hier zur Vereinfachung des Patternmatchings identifizierte Attribute aus der zu lesenden Zeile gelöscht, nachdem sie in einer lokalen Variable gespeichert wurden. Und da die Korrektheit der Zeile bereits bewiesen ist, kann man durch Teilung an definierten Zeichen weitere semantischen Bestandteile der Zeile erhalten, nachdem die hintenstehenden Attribute Kantenname und Kantengewicht entfernt wurden. Teilt man den übriggebliebenen String am Zeichen "-", erhält man beide Knoten getrennt und teilt man diese jeweils am Zeichen ":", erhält man deren Attribut.\\
-Wenn alle in der Zeile angegebenen Attribute in lokalen Variablen gespeichert sind, kann man auf deren Grundlage die Objekte "Node" und "Edge" dem übergebenen Graphobjekt hinzufügen. Zur verbesserten Darstellung werden die Knoten- und Kantennamen als ui.label jeweils hinzugefügt.\\
-Sind alle Zeilen abgearbeitet, wird geprüft ob der Graph ungerichtete und gerichtete Kanten gleichzeitig enthält und in diesem Fall aussortiert. Zudem wird im Graph die Information aufgenommen, ob dieser gerichtet ist, oder nicht. Anschließend erhält man das fertige Graphobjekt von der Methode getGraphFromFile zurück.\\
+Gelesen wird die Graphdatei in der Klasse \verb|GraphFileReader| mit einem nach ISO-8859-1 encodierten \verb|InputStreamReader|. Hier kann eine \verb|IOException| geworfen werden.\\
+Nachdem die Zeilen eingelesen wurden, wird jede Zeile mit Regex auf Korrektheit, wie in \ref{Dateiformat} beschrieben, geprüft. Diese Prüfung ist in der Klasse Verifier implementiert.\\ \\
+Die Funktionsweise der Regexprüfung baut auf dem Erkennen und Löschen der Zeilenbestandteile (Quell-/Ziel-)Knoten, Knotenattribut, Kantenname und Kantengewicht auf. Wenn alle Bestandteile aus der Zeile gelöscht sind, darf nur noch das Semikolon übrigbleiben. Dieses vorgehen verhindert, dass Attribute wie Kantengewicht oder Kantenname doppelt oder in einer
+Zeile mit nur einem Knoten vorkommen, und dass pro Zeile nur maximal zwei Knoten (als Kante) vorkommen dürfen.\\ \\
+Ist die Prüfung erfolgreich, kann einem neuen Graphenobjekt der entsprechenden Bibliothek von graphstream.org die in der Zeile genannten Eigenschaften hinzugefügt werden. Dies übernimmt die Funktion \verb|addProperties(Graph, Zeile)| in der \verb|GraphFileReader-Klasse|.\\
+Ähnlich wie bei der Regexprüfung werden hier zur Vereinfachung des Patternmatchings identifizierte Attribute aus der zu lesenden Zeile gelöscht, nachdem sie in einer lokalen Variable gespeichert wurden. Und da die Korrektheit der Zeile bereits bewiesen ist, kann man durch Teilung an definierten Zeichen weitere semantischen Bestandteile der Zeile erhalten, nachdem die hintenstehenden Attribute Kantenname und Kantengewicht entfernt wurden. Teilt man den übriggebliebenen String am Zeichen "-", erhält man beide Knoten getrennt und teilt man diese jeweils am Zeichen \verb|":"|, erhält man deren Attribut.\\
+Wenn alle in der Zeile angegebenen Attribute in lokalen Variablen gespeichert sind, kann man auf deren Grundlage die Objekte \verb|"Node"| und \verb|"Edge"| dem übergebenen Graphobjekt hinzufügen. Zur verbesserten Darstellung werden die Knoten- und Kantennamen als ui.label jeweils hinzugefügt.\\ \\
+Sind alle Zeilen abgearbeitet, wird geprüft ob der Graph ungerichtete und gerichtete Kanten gleichzeitig enthält und in diesem Fall aussortiert. Zudem wird für eine potentielle spätere Verwendung im Graph die Information aufgenommen, ob dieser gerichtet ist, oder nicht. Anschließend erhält man das fertige Graphobjekt von der Methode \verb|getGraphFromFile| zurück.\\
 
 \subsubsection{Schreiben der Graphdatei}
 Geschrieben wird das Graphobjekt der Bibliothek von graphstream.org im gleichen Format wie in \ref{Dateiformat} beschrieben.\\
-Die Methode writeFile(Graph, Filename) iteriert hier erst über die Kantenobjekte und konkatiniert deren Bestandteile Quell-/Zielknoten, Kantengewicht und Kantenname zu einem Outputstring, die mit Semikolon und Zeilenumbruch nach korrekter Syntax abgeschlossen wird.\\
+Die Methode \verb|writeFile(Graph, Filename)| iteriert hier erst über die Kantenobjekte und konkatiniert deren Bestandteile Quell-/Zielknoten, Kantengewicht und Kantenname zu einem Outputstring, die mit Semikolon und Zeilenumbruch nach korrekter Syntax abgeschlossen wird.\\
 Anschließend wird zur Berücksichtigung von Knoten ohne Nachbarn nochmals über die Knoten iteriert, um diese zu identifizieren und ggf. dem Outputstring hinzuzufügen. Dieses doppelte Iterieren reduziert die Verschachtelung von Logik im Vergleich zum einfachen Iterieren über alle Knoten, von denen die bereits abgearbeiteten gebuffert werden müssten, um mehrfache Einträge einer gleichen
-Kante zu verhindern.\\
+Kante zu erkennen.\\
 		
 
 \subsection{Einführung neuer Typen}
