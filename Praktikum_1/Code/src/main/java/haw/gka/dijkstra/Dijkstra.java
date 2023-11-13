@@ -7,12 +7,15 @@ import haw.gka.dijkstra.utils.PriorityQueueUtils;
 import haw.gka.exceptions.MultiEdgeWithSameDirectionException;
 import haw.gka.exceptions.NodeNotFoundException;
 import haw.gka.exceptions.UnoperableGraphException;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Dijkstra {
@@ -21,9 +24,9 @@ public class Dijkstra {
         if (!NodeUtils.graphContainsNode(startNode, graph) || !NodeUtils.graphContainsNode(endNode, graph)) {
             throw new NodeNotFoundException("Could not find start or end node in graph");
         }
-        // Ungewichtete Graphen können nicht berechnet werden
-        if (graph.getAttribute("isWeighted") != null && !((boolean)graph.getAttribute("isWeighted"))){
-            throw new UnoperableGraphException("Graph is unweighted!");
+
+        if(hasUngweightedEdges(graph, startNode)) {
+            throw new UnoperableGraphException("The provided Graph is missing weights.");
         }
 
         Set<MultiNode> closedList = new HashSet<>();
@@ -41,11 +44,8 @@ public class Dijkstra {
                 // Schritt 3a/b: Ist der Knoten bereits in der closed List, wird dieser nicht weiter beachtet
                 if(!closedList.contains(adjacentNode)) {
                     PriorityQueueItem adjacentPriorityQueueItem;
-                    try{
-                        adjacentPriorityQueueItem = PriorityQueueItemUtils.initializeAdjacentPriorityQueueItem(initialPriorityQueueItem, adjacentNode);
-                    } catch (NullPointerException e){
-                        throw new UnoperableGraphException("No valid neighbours of start node!");
-                    }
+                    adjacentPriorityQueueItem = PriorityQueueItemUtils.initializeAdjacentPriorityQueueItem(initialPriorityQueueItem, adjacentNode);
+
                     PriorityQueueItem concatenatedPriorityQueueItem = PriorityQueueItemUtils.concatenatePriorityQueueItems(initialPriorityQueueItem, adjacentPriorityQueueItem);
 
                     // Schritt 4: Die neu entstandenen PriorityQueueItems ersetzen nun das PriorityQueueItem des Ausgangsknotens in der PriorityQueue
@@ -72,6 +72,19 @@ public class Dijkstra {
         } else {
            return PriorityQueueItemUtils.initializeEmptyPriorityQueueItem();
         }
+    }
+
+    private static boolean hasUngweightedEdges(MultiGraph graph, Node node) {
+        if (graph.getAttribute("isWeighted") != null && !(Boolean.parseBoolean((String) graph.getAttribute("isWeighted")))){
+            return true;
+        }
+
+        for(Edge edge: node.edges().collect(Collectors.toList())) {
+            if (edge.getAttribute(PriorityQueueItemUtils.ATTRIBUTE_WEIGHT) == null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean allNodesVisited(Set<MultiNode> closedList, MultiGraph graph) {

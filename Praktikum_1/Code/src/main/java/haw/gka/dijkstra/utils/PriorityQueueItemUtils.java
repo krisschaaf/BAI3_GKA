@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PriorityQueueItemUtils {
-    private static final String ATTRIBUTE_WEIGHT = "weight";
+    public static final String ATTRIBUTE_WEIGHT = "weight";
 
     public static PriorityQueueItem initializeEmptyPriorityQueueItem() {
         PriorityQueueItem priorityQueueItem = new PriorityQueueItem();

@@ -21,11 +21,19 @@ public class Main {
 		String dijkstraAlg;
 		String startNode;
 		String endNode;
+
 		try {
 			checkArgs(args);
 			inputFile = args[0];
 			outputFile = args[1];
-			dijkstraAlg = args[2];
+
+			if(!args[2].equals("iterative") && !args[2].equals("recursive")) {
+				System.out.println("Invalid Dijkstra Algorithm provided. Fallback to Default (iterative).");
+				dijkstraAlg = "iterative";
+			} else {
+				dijkstraAlg = args[2];
+			}
+
 			startNode = args[3];
 			endNode = args[4];
 		} catch (Exception e) {
@@ -85,9 +93,6 @@ public class Main {
 			throw new FileArgMissingException("Please provide output file as second parameters.");
 		}
 		if(args[2].isEmpty()) {
-			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
-		}
-		if(!args[2].equals("iterative") && !args[2].equals("recursive")) {
 			throw new DijkstraAlgArgMissingException("Please provide either 'iterative' or 'recursive' as third parameter.");
 		}
 		if(args[3].isEmpty()) {
