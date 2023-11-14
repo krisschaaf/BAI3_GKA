@@ -69,7 +69,7 @@ public class GraphFileReader {
 			newGraph = addProperties(newGraph, currentLine);
 		}
 		//Prüfe ob der Graph rein gewichtet oder ungewichtet ist (jede oder keine Kante ist gewichtet)
-		if(Verifier.unambigouslyWeights(newGraph)){
+		if(!Verifier.unambigouslyWeights(newGraph)){
 			// Gebe den neuen Graphen zurück
 			return newGraph;
 		} else {
@@ -151,9 +151,6 @@ public class GraphFileReader {
 				// Wenn Gewicht angegeben, füge es als Attribut der Kante hinzu
 				graph.getEdge(edgeName).setAttribute("weight", weight);
 				graph.getEdge(edgeName).setAttribute("ui.label", edgeName +"::"+weight);
-			} else {
-				// Ansonsten setze an jeder Kante das gleiche Gewicht
-				graph.getEdge(edgeName).setAttribute("weight", 1);
 			}
 		}
 		return graph;

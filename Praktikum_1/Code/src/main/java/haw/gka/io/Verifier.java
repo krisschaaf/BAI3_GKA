@@ -96,7 +96,7 @@ public class Verifier {
 						throw new UnoperableGraphException("Weight "+ weight + " of Edge " + graph.getEdge(i).getId() +" null or negative");
 					}
 				}
-				if (graph.getEdge(i).getAttribute("weight") == null){
+				if (graph.getEdge(i).getAttribute("weight").toString().isEmpty()){
 					hasNoWeights = true;
 				}
 				if ((hasWeights && hasNoWeights) || (!hasWeights && !hasNoWeights)){
@@ -104,7 +104,6 @@ public class Verifier {
 				}
 			}
 			graph.setAttribute("isWeighted", hasWeights);
-			return true;
 		} catch (Exception e){
 			System.out.println(e.toString());
 		}

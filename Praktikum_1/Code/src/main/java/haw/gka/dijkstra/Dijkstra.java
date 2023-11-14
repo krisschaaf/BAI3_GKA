@@ -75,7 +75,7 @@ public class Dijkstra {
     }
 
     private static boolean hasUngweightedEdges(MultiGraph graph, Node node) {
-        if (graph.getAttribute("isWeighted") != null && !(Boolean.parseBoolean((String) graph.getAttribute("isWeighted")))){
+        if (graph.getAttribute("isWeighted") != null && !(Boolean.parseBoolean(graph.getAttribute("isWeighted").toString()))){
             return true;
         }
 
