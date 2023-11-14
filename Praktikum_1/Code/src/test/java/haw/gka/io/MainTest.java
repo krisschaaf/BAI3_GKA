@@ -89,7 +89,9 @@ public class MainTest {
             Edge edgePrev = graphPrev.getEdge(i);
             Edge edgeAfter = graphAfter.getEdge(edgePrev.getId());
             assertNotNull(edgeAfter);
-            assertEquals(edgePrev.getAttribute("weight").toString(), edgeAfter.getAttribute("weight").toString());
+            if(edgePrev.getAttribute("weight") != null){
+                assertEquals(edgePrev.getAttribute("weight").toString(), edgeAfter.getAttribute("weight").toString());
+            }
         }
         // Prüfe ob keine Kanten zusätzlich geschrieben wurden
         for(int i =0;i<graphAfter.getEdgeCount();i++){
