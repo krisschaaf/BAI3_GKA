@@ -89,7 +89,6 @@ public class KruskalTest {
             assertNotNull(testGraph.getEdge("FI"));
         }
     }
-
     @Test
     public void testOptimalSolutionFoundMultiEdges()  {
         MultiGraph testGraph = new MultiGraph("testGraph");
@@ -165,6 +164,5 @@ public class KruskalTest {
             assertNotNull(testGraph.getEdge("HJ"));
             assertNotNull(testGraph.getEdge("FI"));
         }
-
     }
 }
