@@ -54,7 +54,6 @@ public class KruskalImpl implements Kruskal {
 
         //Edges die zum Spannbaum gehören, werden farblich markiert
         mst.stream().forEach(x -> x.setAttribute("ui.style", "size: 5px; fill-color: red;"));
-        graph.display(true);
 
         //Erstelle den Output Graph
         this.outputGraph = new MultiGraph(graph.getId());
