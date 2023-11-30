@@ -8,4 +8,5 @@ import java.util.HashSet;
 public interface Kruskal {
     //public DisjointSet createMinimalSpanningForrest(MultiGraph graph);
     public HashSet<Edge> createMinimalSpanningForrest(MultiGraph graph);
+    public MultiGraph getOutputGraph();
 }

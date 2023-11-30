@@ -2,6 +2,7 @@ package haw.gka.kruskal;
 
 import org.graphstream.algorithm.util.DisjointSets;
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class KruskalImpl implements Kruskal {
 
+    private MultiGraph outputGraph;
     @Override
     public HashSet<Edge>  createMinimalSpanningForrest(MultiGraph graph) {
         System.setProperty("org.graphstream.ui", "swing");
@@ -53,6 +55,26 @@ public class KruskalImpl implements Kruskal {
         //Edges die zum Spannbaum gehören, werden farblich markiert
         mst.stream().forEach(x -> x.setAttribute("ui.style", "size: 5px; fill-color: red;"));
         graph.display(true);
+
+        //Erstelle den Output Graph
+        this.outputGraph = new MultiGraph(graph.getId());
+        this.outputGraph.setAutoCreate(true);
+        mst.stream().forEach(x -> {
+            if (this.outputGraph.getNode(x.getSourceNode().getId())==null){
+                this.outputGraph.addNode(x.getSourceNode().getId());
+            }
+            if (this.outputGraph.getNode(x.getTargetNode().getId())==null){
+                this.outputGraph.addNode(x.getTargetNode().getId());
+            }
+            this.outputGraph.addEdge(x.getId(), x.getSourceNode().getId(), x.getTargetNode().getId());
+            this.outputGraph.getEdge(x.getId()).setAttribute("weight", x.getAttribute("weight"));
+        });
+        for (int i = 0; i < graph.getNodeCount(); i++){
+            Node d = graph.getNode(i);
+            if (this.outputGraph.getNode(d.getId())== null){
+                this.outputGraph.addNode(d.getId());
+            }
+        }
         return mst;
     }
     HashSet<Node> findSet(  HashSet<HashSet<Node>> disjointMengeSet , Node node){
@@ -64,5 +86,10 @@ public class KruskalImpl implements Kruskal {
         }
     return  result;
     }
+
+    public MultiGraph getOutputGraph(){
+        return this.outputGraph;
+    }
+
 
 }
