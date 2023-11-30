@@ -12,4 +12,9 @@ public class KruskalMockImpl implements Kruskal {
         //TODO use if needed
         return null;
     }
+
+    @Override
+    public MultiGraph getOutputGraph() {
+        return null;
+    }
 }
