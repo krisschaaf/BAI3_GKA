@@ -103,6 +103,10 @@ public class KruskalTest {
         testGraph.addNode("I");
         testGraph.addNode("J");
 
+        testGraph.addNode("K");
+        testGraph.addNode("L");
+        testGraph.addNode("M");
+
         testGraph.addEdge("AB","A", "B", false);
         testGraph.getEdge("AB").setAttribute("weight", 2);
         testGraph.addEdge("AB2","A", "B", false);
@@ -139,12 +143,18 @@ public class KruskalTest {
         testGraph.getEdge("FI").setAttribute("weight", 2);
         testGraph.addEdge("IJ","I", "J", false);
         testGraph.getEdge("IJ").setAttribute("weight", 6);
+
+        testGraph.addEdge("KL","K", "L", false);
+        testGraph.getEdge("KL").setAttribute("weight", 5);
+        testGraph.addEdge("KM","K", "M", false);
+        testGraph.getEdge("KM").setAttribute("weight", 2);
+        testGraph.addEdge("LM","L", "M", false);
+        testGraph.getEdge("LM").setAttribute("weight", 6);
         KruskalImpl kruskal = new KruskalImpl();
 
         for (int i = 0; i < 10; i++){
             System.out.println(kruskal.createMinimalSpanningForrest(testGraph));
             testGraph = (MultiGraph) kruskal.getOutputGraph();
-
 
             assertNull(testGraph.getEdge("BE"));
             assertNull(testGraph.getEdge("BC"));
@@ -153,6 +163,7 @@ public class KruskalTest {
             assertNull(testGraph.getEdge("IJ"));
             assertNull(testGraph.getEdge("GJ"));
             assertNull(testGraph.getEdge("AC"));
+            assertNull(testGraph.getEdge("LM"));
 
             assertNotNull(testGraph.getEdge("BD"));
             assertNotNull(testGraph.getEdge("AB"));
@@ -163,6 +174,9 @@ public class KruskalTest {
             assertNotNull(testGraph.getEdge("GH"));
             assertNotNull(testGraph.getEdge("HJ"));
             assertNotNull(testGraph.getEdge("FI"));
+
+            assertNotNull(testGraph.getEdge("KM"));
+            assertNotNull(testGraph.getEdge("KL"));
         }
     }
 }
