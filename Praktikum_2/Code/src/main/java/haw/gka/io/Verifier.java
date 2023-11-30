@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class Verifier {
 
 	private static final String UMLAUTE = "ÜüÄäÖöß";
-	private static final String ALL_CHARS_REGEX = "[a-zA-Z0-9" + UMLAUTE + "]";
+	private static final String ALL_CHARS_REGEX = "[a-zA-Z0-9" + UMLAUTE + "]+";
 
 	public static boolean isValidLine(String line) {
 
