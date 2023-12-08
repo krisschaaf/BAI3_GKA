@@ -55,35 +55,35 @@ public class KruskalImpl {
         // Edges die zum Spannbaum gehören, werden farblich markiert
         mst.stream().forEach(x -> x.setAttribute("ui.style", "size: 5px; fill-color: red;"));
 
-        //Erstelle den Output Graph
+        // Erstelle den Output Graph
         this.outputGraph = createOutputGraph(graph, mst);
 
         return mst;
     }
 
     private static MultiGraph createOutputGraph(MultiGraph graph, HashSet<Edge> mst) {
-        graph = new MultiGraph(graph.getId());
-        graph.setAutoCreate(true);
+        MultiGraph newOutputGraph = new MultiGraph(graph.getId());
+        newOutputGraph.setAutoCreate(true);
 
-        for (Edge edge: mst) {
-            if (graph.getNode(edge.getSourceNode().getId()) == null) {
-                graph.addNode(edge.getSourceNode().getId());
+        mst.stream().forEach((edge) -> {
+            if (newOutputGraph.getNode(edge.getSourceNode().getId()) == null) {
+                newOutputGraph.addNode(edge.getSourceNode().getId());
             }
-            if (graph.getNode(edge.getTargetNode().getId()) == null) {
-                graph.addNode(edge.getTargetNode().getId());
+            if (newOutputGraph.getNode(edge.getTargetNode().getId()) == null) {
+                newOutputGraph.addNode(edge.getTargetNode().getId());
             }
-            graph.addEdge(edge.getId(), edge.getSourceNode().getId(), edge.getTargetNode().getId());
-            graph.getEdge(edge.getId()).setAttribute("weight", edge.getAttribute("weight"));
+            newOutputGraph.addEdge(edge.getId(), edge.getSourceNode().getId(), edge.getTargetNode().getId());
+            newOutputGraph.getEdge(edge.getId()).setAttribute("weight", edge.getAttribute("weight"));
+        });
+
+        for (int i = 0; i < newOutputGraph.getNodeCount(); i++){
+            Node d = newOutputGraph.getNode(i);
+            if (newOutputGraph.getNode(d.getId())== null){
+               newOutputGraph.addNode(d.getId());
+            }
         }
 
-        for (int i = 0; i < graph.getNodeCount(); i++){
-            Node d = graph.getNode(i);
-            if (graph.getNode(d.getId())== null){
-               graph.addNode(d.getId());
-            }
-        }
-
-        return graph;
+        return newOutputGraph;
     }
 
     public MultiGraph getOutputGraph() {
