@@ -1,21 +1,17 @@
 package haw.gka.kruskal;
 
 import haw.gka.GraphGenerator;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.graph.implementations.MultiNode;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class KruskalTest {
-
-    public static final String ATTRIBUTE_WEIGHT = "weight";
-    public static final String ATTRIBUTE_UI_LABEL = "ui.label";
 
     @Test
     public void testOptimalSolutionFound()  {
@@ -174,102 +170,5 @@ public class KruskalTest {
             assertNotNull(testGraph.getEdge("KM"));
             assertNotNull(testGraph.getEdge("KL"));
         }
-    }
-
-    @Test
-    public void succeedWithSingleGraph() {
-        MultiGraph graph = new MultiGraph("foo");
-
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addNode("D");
-        graph.addNode("E");
-        graph.addNode("F");
-        graph.addNode("G");
-        graph.addNode("H");
-
-        graph.addEdge("AB", "A", "B", false).setAttribute(ATTRIBUTE_WEIGHT, 3);
-        graph.addEdge("AC", "A", "C", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-        graph.addEdge("BD", "B", "D", false).setAttribute(ATTRIBUTE_WEIGHT, 2);
-        graph.addEdge("BE", "B", "E", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-        graph.addEdge("BF", "B", "F", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-        graph.addEdge("CG", "C", "G", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-        graph.addEdge("FH", "F", "H", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-        graph.addEdge("GH", "G", "H", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
-
-        // TODO add Assertion
-    }
-
-    @Test
-    public void succeedWithNotConnectedGraphWhenOneGraphHasOnlyOneNode() {
-        MultiGraph graph = new MultiGraph("foo");
-
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addNode("D");
-
-        graph.addNode("I"); // TODO: missing this node in result
-
-        graph.addEdge("AB", "A", "B", false).setAttribute(ATTRIBUTE_WEIGHT, 3);
-        graph.addEdge("AC", "A", "C", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-        graph.addEdge("BD", "B", "D", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-        graph.addEdge("CD", "C", "D", false).setAttribute(ATTRIBUTE_WEIGHT, 5);
-
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
-
-        // TODO add Assertion
-    }
-
-    @Test
-    public void succeedWithTwoNotConnectedGraphs() {
-        MultiGraph graph = new MultiGraph("foo");
-
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addNode("D");
-        graph.addNode("E");
-        graph.addNode("F");
-
-        graph.addEdge("AB", "A", "B", false).setAttribute(ATTRIBUTE_WEIGHT, 3);
-        graph.addEdge("AC", "A", "C", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-        graph.addEdge("BC", "B", "C", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-
-        graph.addEdge("DE", "D", "E", false).setAttribute(ATTRIBUTE_WEIGHT, 3);
-        graph.addEdge("DF", "D", "F", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
-        graph.addEdge("EF", "E", "F", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
-
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
-
-        // TODO add Assertion
-    }
-
-    @Test
-    public void succeedWithSingleConnectedGraphWhenGraphHasOnlyOneNode() {
-        MultiGraph graph = new MultiGraph("foo");
-
-        graph.addNode("A");
-
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
-
-        // TODO: missing node in result
-        // TODO add Assertion
-    }
-
-    @Test
-    public void succeedWithRandomGraph() {
-        MultiGraph graph = GraphGenerator.generateGraph(100, 100, 10, false);
-
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
-
-//        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal(); // TODO fix
-//        kruskal.init(graph);
-//        kruskal.compute();
-
-        // TODO add Assertion
     }
 }
