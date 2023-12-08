@@ -1,15 +1,14 @@
 package haw.gka;
 
 import haw.gka.io.GraphGenerator;
-import haw.gka.kruskal.KruskalImpl;
-import org.graphstream.graph.Graph;
+import haw.gka.kruskal.Kruskal;
 import org.graphstream.graph.implementations.MultiGraph;
 
 
 public class Main {
 	public static void main(String[] args) {
 
-		KruskalImpl kruskal = new KruskalImpl();
+		Kruskal kruskal = new Kruskal();
 		MultiGraph graph = GraphGenerator.generateGraph(10,20,10, false);
 		kruskal.createMinimalSpanningForrest(graph);
 //		 for (int i = 0; i < 1000; i++) {

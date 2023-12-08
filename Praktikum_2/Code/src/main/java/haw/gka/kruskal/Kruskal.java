@@ -7,7 +7,7 @@ import org.graphstream.graph.implementations.MultiGraph;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class KruskalImpl {
+public class Kruskal {
 
     private MultiGraph outputGraph;
 

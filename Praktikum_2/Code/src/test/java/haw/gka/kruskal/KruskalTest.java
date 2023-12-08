@@ -1,17 +1,7 @@
 package haw.gka.kruskal;
 
-import haw.gka.exceptions.UnoperableGraphException;
-import haw.gka.io.GraphFileReader;
-import haw.gka.io.GraphFileWriter;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.graph.implementations.MultiNode;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +54,7 @@ public class KruskalTest {
         testGraph.getEdge("FI").setAttribute("weight", 2);
         testGraph.addEdge("IJ","I", "J", false);
         testGraph.getEdge("IJ").setAttribute("weight", 6);
-        KruskalImpl kruskal = new KruskalImpl();
+        Kruskal kruskal = new Kruskal();
 
         for(int i = 0; i < 10; i++){
             kruskal.createMinimalSpanningForrest(testGraph);
@@ -150,7 +140,7 @@ public class KruskalTest {
         testGraph.getEdge("KM").setAttribute("weight", 2);
         testGraph.addEdge("LM","L", "M", false);
         testGraph.getEdge("LM").setAttribute("weight", 6);
-        KruskalImpl kruskal = new KruskalImpl();
+        Kruskal kruskal = new Kruskal();
 
         for (int i = 0; i < 10; i++){
             System.out.println(kruskal.createMinimalSpanningForrest(testGraph));
