@@ -1,94 +1,92 @@
 package haw.gka.kruskal;
 
-import org.graphstream.algorithm.util.DisjointSets;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class KruskalImpl implements Kruskal {
+public class KruskalImpl {
 
     private MultiGraph outputGraph;
-    @Override
-    public HashSet<Edge>  createMinimalSpanningForrest(MultiGraph graph) {
+
+    public HashSet<Edge> createMinimalSpanningForrest(MultiGraph graph) {
         System.setProperty("org.graphstream.ui", "swing");
-        //Durch die Verwendung von Priority Queue werden Edges sortiert
-        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(Comparator.comparingInt((Edge edge) -> (int) edge.getAttribute("weight")));
-        //Alle Egdes des Graphes in PriorityQueue hinzufügen
+
+        // Durch die Verwendung von Priority Queue werden Edges sortiert
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(
+                Comparator.comparingInt((Edge edge) -> (int) edge.getAttribute("weight")));
+
+        // Alle Edges des Graphes in PriorityQueue hinzufügen
         priorityQueue.addAll(graph.edges().collect(Collectors.toList()));
-        //Der Minimale Spannbaum wird als HashSet von Edges gespeichert:
-        HashSet<Edge> mst = new  HashSet<>();
-        //Jeder Knoten wird im einen leeren HashSet gespeichert.
-        //Alle HashSets mit Knoten werden wieder in Hashset gespeichert
-        HashSet<HashSet<Node>> disjointMengenSet = new HashSet<>();
-        graph.nodes().forEach(node ->{
+
+        // Der Minimale Spannbaum wird als HashSet von Edges gespeichert:
+        HashSet<Edge> mst = new HashSet<>();
+
+        // Jeder Knoten wird in einem leeren HashSet gespeichert.
+        // Alle HashSets mit Knoten werden wieder in einem Hashset gespeichert
+        HashSet<HashSet<Node>> disjointSet = DisjointSet.makeSet(null);
+
+        graph.nodes().forEach((node) -> {
             HashSet<Node> mstDisjointSet = new HashSet<>();
             mstDisjointSet.add(node);
-            disjointMengenSet.add(mstDisjointSet);
+            disjointSet.add(mstDisjointSet);
         });
 
         while (!priorityQueue.isEmpty()) {
-            //Wir nehmen oberste Kante aus Priority Queue
+            // Knoten der kleinsten Edge finden
             Edge actualEdge = priorityQueue.poll();
-            //Wir nehmen Knoten aus der Kante
             Node source = actualEdge.getSourceNode();
             Node target = actualEdge.getTargetNode();
-            //Wir suchne Hashsets zu welchem beiden Knoten gehören
-            HashSet<Node> sourceMenge = findSet(disjointMengenSet, source);
-            HashSet<Node> targetMenge = findSet(disjointMengenSet, target);
-            //Wenn die Knoten zum Unterschiedlichen Sets gehören,
-            //verbinden wir sie in einem gemeinsamen Hashset und hinzufügen die Kante zum MST
-            if (!sourceMenge.equals(targetMenge)){
-                HashSet<Node> unionSet = new HashSet<>();
-                unionSet.addAll(sourceMenge);
-                unionSet.addAll(targetMenge);
-                disjointMengenSet.add(unionSet);
-                disjointMengenSet.remove(targetMenge);
-                disjointMengenSet.remove(sourceMenge);
+
+            // Sets finden, welchem beide Knoten angehören
+            HashSet<Node> sourceSet = DisjointSet.findSet(disjointSet, source);
+            HashSet<Node> targetSet = DisjointSet.findSet(disjointSet, target);
+
+            // Wenn die Knoten zu unterschiedlichen Sets gehören,
+            // verbinden wir sie in einem gemeinsamen Hashset und hinzufügen die Kante zum MST
+            if (!sourceSet.equals(targetSet)){
+                DisjointSet.union(sourceSet, targetSet, disjointSet);
                 mst.add(actualEdge);
             }
         }
 
-        //Edges die zum Spannbaum gehören, werden farblich markiert
+        // Edges die zum Spannbaum gehören, werden farblich markiert
         mst.stream().forEach(x -> x.setAttribute("ui.style", "size: 5px; fill-color: red;"));
 
         //Erstelle den Output Graph
-        this.outputGraph = new MultiGraph(graph.getId());
-        this.outputGraph.setAutoCreate(true);
-        mst.stream().forEach(x -> {
-            if (this.outputGraph.getNode(x.getSourceNode().getId())==null){
-                this.outputGraph.addNode(x.getSourceNode().getId());
-            }
-            if (this.outputGraph.getNode(x.getTargetNode().getId())==null){
-                this.outputGraph.addNode(x.getTargetNode().getId());
-            }
-            this.outputGraph.addEdge(x.getId(), x.getSourceNode().getId(), x.getTargetNode().getId());
-            this.outputGraph.getEdge(x.getId()).setAttribute("weight", x.getAttribute("weight"));
-        });
-        for (int i = 0; i < graph.getNodeCount(); i++){
-            Node d = graph.getNode(i);
-            if (this.outputGraph.getNode(d.getId())== null){
-                this.outputGraph.addNode(d.getId());
-            }
-        }
+        this.outputGraph = createOutputGraph(graph, mst);
+
         return mst;
     }
-    HashSet<Node> findSet(  HashSet<HashSet<Node>> disjointMengeSet , Node node){
-        HashSet<Node> result = null;
-        for (HashSet<Node>  menge : disjointMengeSet){
-            if (menge.contains(node)){
-                result = menge;
+
+    private static MultiGraph createOutputGraph(MultiGraph graph, HashSet<Edge> mst) {
+        graph = new MultiGraph(graph.getId());
+        graph.setAutoCreate(true);
+
+        for (Edge edge: mst) {
+            if (graph.getNode(edge.getSourceNode().getId()) == null) {
+                graph.addNode(edge.getSourceNode().getId());
+            }
+            if (graph.getNode(edge.getTargetNode().getId()) == null) {
+                graph.addNode(edge.getTargetNode().getId());
+            }
+            graph.addEdge(edge.getId(), edge.getSourceNode().getId(), edge.getTargetNode().getId());
+            graph.getEdge(edge.getId()).setAttribute("weight", edge.getAttribute("weight"));
+        }
+
+        for (int i = 0; i < graph.getNodeCount(); i++){
+            Node d = graph.getNode(i);
+            if (graph.getNode(d.getId())== null){
+               graph.addNode(d.getId());
             }
         }
-    return  result;
+
+        return graph;
     }
 
-    public MultiGraph getOutputGraph(){
+    public MultiGraph getOutputGraph() {
         return this.outputGraph;
     }
-
-
 }
