@@ -21,9 +21,8 @@ public class Kruskal {
         // Alle Edges des Graphes in PriorityQueue hinzufügen
         priorityQueue.addAll(graph.edges().collect(Collectors.toList()));
 
-        // TODO: Was ist mit dem Minimal Spanning Forrest bei nicht zusammenhängenden Graphen?
-        // Der Minimale Spannbaum wird als HashSet von Edges gespeichert:
-        HashSet<Edge> minimalSpanningTree = new HashSet<>();
+        // Der Minimale Spannwald wird als HashSet von Edges gespeichert:
+        HashSet<Edge> minimalSpanningForrest = new HashSet<>();
 
         // Initialisierung der disjunkten Teilmengen. Jeder Knoten bekommt eine eigene Teilmenge.
         HashSet<HashSet<Node>> disjointSet = DisjointSet.makeSet(graph);
@@ -42,19 +41,19 @@ public class Kruskal {
             // werden diese in einem gemeinsamen Hashset verbunden und die Kante wird zum MST hinzugefügt
             if (!sourceSet.equals(targetSet)){
                 DisjointSet.union(sourceSet, targetSet, disjointSet);
-                minimalSpanningTree.add(actualEdge);
+                minimalSpanningForrest.add(actualEdge);
             }
         }
 
         // Erstelle den Output Graph
-        return createSpanningForrestGraph(graph, minimalSpanningTree);
+        return createSpanningForrestGraph(graph, minimalSpanningForrest);
     }
 
-    private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningTree) {
+    private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningForrest) {
         MultiGraph newOutputGraph = new MultiGraph(graph.getId());
         newOutputGraph.setAutoCreate(true);
 
-        minimalSpanningTree.forEach((edge) -> {
+        minimalSpanningForrest.forEach((edge) -> {
             if (newOutputGraph.getNode(edge.getSourceNode().getId()) == null) {
                 newOutputGraph.addNode(edge.getSourceNode().getId());
             }

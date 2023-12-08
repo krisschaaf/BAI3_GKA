@@ -1,6 +1,5 @@
 package haw.gka;
 
-import haw.gka.io.GraphGenerator;
 import haw.gka.kruskal.Kruskal;
 import org.graphstream.graph.implementations.MultiGraph;
 
