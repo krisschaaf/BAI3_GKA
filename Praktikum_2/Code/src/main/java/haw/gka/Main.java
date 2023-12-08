@@ -8,9 +8,8 @@ import org.graphstream.graph.implementations.MultiGraph;
 public class Main {
 	public static void main(String[] args) {
 
-		Kruskal kruskal = new Kruskal();
 		MultiGraph graph = GraphGenerator.generateGraph(10,20,10, false);
-		kruskal.createMinimalSpanningForrest(graph);
+		Kruskal.createMinimalSpanningForrest(graph);
 //		 for (int i = 0; i < 1000; i++) {
 //			 graphGenerator.generateGraph(40,70,10, false);
 //			 System.out.println(i);

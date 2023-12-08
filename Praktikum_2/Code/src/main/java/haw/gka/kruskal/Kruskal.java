@@ -9,20 +9,20 @@ import java.util.stream.Collectors;
 
 public class Kruskal {
 
-    private MultiGraph outputGraph;
-
-    public HashSet<Edge> createMinimalSpanningForrest(MultiGraph graph) {
+    public static MultiGraph createMinimalSpanningForrest(MultiGraph graph) {
         System.setProperty("org.graphstream.ui", "swing");
 
         // Durch die Verwendung von Priority Queue werden Edges sortiert
         PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(
-                Comparator.comparingInt((Edge edge) -> (int) edge.getAttribute("weight")));
+                Comparator.comparingInt((Edge edge) ->
+                        (int) edge.getAttribute("weight"))
+        );
 
         // Alle Edges des Graphes in PriorityQueue hinzufügen
         priorityQueue.addAll(graph.edges().collect(Collectors.toList()));
 
         // Der Minimale Spannbaum wird als HashSet von Edges gespeichert:
-        HashSet<Edge> mst = new HashSet<>();
+        HashSet<Edge> minimalSpanningTree = new HashSet<>();
 
         // Jeder Knoten wird in einem leeren HashSet gespeichert.
         // Alle HashSets mit Knoten werden wieder in einem Hashset gespeichert
@@ -45,20 +45,20 @@ public class Kruskal {
             HashSet<Node> targetSet = DisjointSet.findSet(disjointSet, target);
 
             // Wenn die Knoten zu unterschiedlichen Sets gehören,
-            // verbinden wir sie in einem gemeinsamen Hashset und hinzufügen die Kante zum MST
+            // werden diese in einem gemeinsamen Hashset verbunden und die Kante wird zum MST hinzugefügt
             if (!sourceSet.equals(targetSet)){
                 DisjointSet.union(sourceSet, targetSet, disjointSet);
-                mst.add(actualEdge);
+                minimalSpanningTree.add(actualEdge);
             }
         }
 
         // Edges die zum Spannbaum gehören, werden farblich markiert
-        mst.stream().forEach(x -> x.setAttribute("ui.style", "size: 5px; fill-color: red;"));
+        minimalSpanningTree.stream().forEach(edge ->
+                edge.setAttribute("ui.style", "size: 5px; fill-color: red;")
+        );
 
         // Erstelle den Output Graph
-        this.outputGraph = createOutputGraph(graph, mst);
-
-        return mst;
+        return createOutputGraph(graph, minimalSpanningTree);
     }
 
     private static MultiGraph createOutputGraph(MultiGraph graph, HashSet<Edge> mst) {
@@ -77,16 +77,12 @@ public class Kruskal {
         });
 
         for (int i = 0; i < newOutputGraph.getNodeCount(); i++){
-            Node d = newOutputGraph.getNode(i);
-            if (newOutputGraph.getNode(d.getId())== null){
-               newOutputGraph.addNode(d.getId());
+            Node node = newOutputGraph.getNode(i);
+            if (newOutputGraph.getNode(node.getId())== null){
+               newOutputGraph.addNode(node.getId());
             }
         }
 
         return newOutputGraph;
-    }
-
-    public MultiGraph getOutputGraph() {
-        return this.outputGraph;
     }
 }
