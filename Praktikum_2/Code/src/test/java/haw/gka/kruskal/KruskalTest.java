@@ -3,6 +3,8 @@ package haw.gka.kruskal;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -141,7 +143,7 @@ public class KruskalTest {
 
         for (int i = 0; i < 10; i++){
             testGraph = Kruskal.createMinimalSpanningForrest(testGraph);
-            System.out.println(testGraph);
+            System.out.println(testGraph.edges().collect(Collectors.toList()));
 
             assertNull(testGraph.getEdge("BE"));
             assertNull(testGraph.getEdge("BC"));

@@ -21,18 +21,12 @@ public class Kruskal {
         // Alle Edges des Graphes in PriorityQueue hinzufügen
         priorityQueue.addAll(graph.edges().collect(Collectors.toList()));
 
+        // TODO: Was ist mit dem Minimal Spanning Forrest bei nicht zusammenhängenden Graphen?
         // Der Minimale Spannbaum wird als HashSet von Edges gespeichert:
         HashSet<Edge> minimalSpanningTree = new HashSet<>();
 
-        // Jeder Knoten wird in einem leeren HashSet gespeichert.
-        // Alle HashSets mit Knoten werden wieder in einem Hashset gespeichert
-        HashSet<HashSet<Node>> disjointSet = DisjointSet.makeSet(null);
-
-        graph.nodes().forEach((node) -> {
-            HashSet<Node> mstDisjointSet = new HashSet<>();
-            mstDisjointSet.add(node);
-            disjointSet.add(mstDisjointSet);
-        });
+        // Initialisierung der disjunkten Teilmengen. Jeder Knoten bekommt eine eigene Teilmenge.
+        HashSet<HashSet<Node>> disjointSet = DisjointSet.makeSet(graph);
 
         while (!priorityQueue.isEmpty()) {
             // Knoten der kleinsten Edge finden
@@ -52,20 +46,15 @@ public class Kruskal {
             }
         }
 
-        // Edges die zum Spannbaum gehören, werden farblich markiert
-        minimalSpanningTree.stream().forEach(edge ->
-                edge.setAttribute("ui.style", "size: 5px; fill-color: red;")
-        );
-
         // Erstelle den Output Graph
-        return createOutputGraph(graph, minimalSpanningTree);
+        return createSpanningForrestGraph(graph, minimalSpanningTree);
     }
 
-    private static MultiGraph createOutputGraph(MultiGraph graph, HashSet<Edge> mst) {
+    private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningTree) {
         MultiGraph newOutputGraph = new MultiGraph(graph.getId());
         newOutputGraph.setAutoCreate(true);
 
-        mst.stream().forEach((edge) -> {
+        minimalSpanningTree.forEach((edge) -> {
             if (newOutputGraph.getNode(edge.getSourceNode().getId()) == null) {
                 newOutputGraph.addNode(edge.getSourceNode().getId());
             }
@@ -78,7 +67,7 @@ public class Kruskal {
 
         for (int i = 0; i < newOutputGraph.getNodeCount(); i++){
             Node node = newOutputGraph.getNode(i);
-            if (newOutputGraph.getNode(node.getId())== null){
+            if (newOutputGraph.getNode(node.getId()) == null){
                newOutputGraph.addNode(node.getId());
             }
         }

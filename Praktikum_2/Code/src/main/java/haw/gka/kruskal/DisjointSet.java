@@ -1,19 +1,29 @@
 package haw.gka.kruskal;
 
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiGraph;
 
 import java.util.HashSet;
 
 public class DisjointSet {
 
     public static HashSet<HashSet<Node>> makeSet(HashSet<Node> initSet) {
-        if(initSet == null) {
-            return new HashSet<>();
-        } else {
-            HashSet<HashSet<Node>> disjointSet = new HashSet<>();
-            disjointSet.add(initSet);
-            return disjointSet;
-        }
+        HashSet<HashSet<Node>> disjointSet = new HashSet<>();
+        disjointSet.add(initSet);
+
+        return disjointSet;
+    }
+
+    public static HashSet<HashSet<Node>> makeSet(MultiGraph graph) {
+        HashSet<HashSet<Node>> disjointSet = new HashSet<>();
+
+        graph.nodes().forEach((node) -> {
+            HashSet<Node> mstDisjointSet = new HashSet<>();
+            mstDisjointSet.add(node);
+            disjointSet.add(mstDisjointSet);
+        });
+
+        return disjointSet;
     }
 
     public static void union(HashSet<Node> sourceSet, HashSet<Node> targetSet, HashSet<HashSet<Node>> disjointSet) {
