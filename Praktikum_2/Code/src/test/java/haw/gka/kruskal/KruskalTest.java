@@ -1,7 +1,9 @@
 package haw.gka.kruskal;
 
 import haw.gka.GraphGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.algorithm.Kruskal;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -60,27 +62,41 @@ public class KruskalTest {
         testGraph.addEdge("IJ","I", "J", false);
         testGraph.getEdge("IJ").setAttribute("weight", 6);
 
-        for(int i = 0; i < 10; i++){
-            testGraph = Kruskal.createMinimalSpanningForrest(testGraph);
+        MultiGraph compareGraph = haw.gka.kruskal.Kruskal.createMinimalSpanningForrest(testGraph);
+        Kruskal builtInAlgo = new Kruskal();
+        builtInAlgo.init(testGraph);
+        builtInAlgo.compute();
+        Iterable<Edge> builtInResult = builtInAlgo.getTreeEdges();
 
-            assertNull(testGraph.getEdge("BD"));
-            assertNull(testGraph.getEdge("BE"));
-            assertNull(testGraph.getEdge("BC"));
-            assertNull(testGraph.getEdge("CH"));
-            assertNull(testGraph.getEdge("GI"));
-            assertNull(testGraph.getEdge("IJ"));
-            assertNull(testGraph.getEdge("GJ"));
-
-            assertNotNull(testGraph.getEdge("AB"));
-            assertNotNull(testGraph.getEdge("AC"));
-            assertNotNull(testGraph.getEdge("DE"));
-            assertNotNull(testGraph.getEdge("CE"));
-            assertNotNull(testGraph.getEdge("CG"));
-            assertNotNull(testGraph.getEdge("GF"));
-            assertNotNull(testGraph.getEdge("GH"));
-            assertNotNull(testGraph.getEdge("HJ"));
-            assertNotNull(testGraph.getEdge("FI"));
+        for(Edge e : builtInResult){
+            assertEquals(e.getSourceNode().getId(), compareGraph.getEdge(e.getId()).getSourceNode().getId());
+            assertEquals(e.getTargetNode().getId(), compareGraph.getEdge(e.getId()).getTargetNode().getId());
+            assertNotEquals(e.getId(),"BD");
+            assertNotEquals(e.getId(),"BE");
+            assertNotEquals(e.getId(),"BC");
+            assertNotEquals(e.getId(),"CH");
+            assertNotEquals(e.getId(), "GI");
+            assertNotEquals(e.getId(), "IJ");
+            assertNotEquals(e.getId(), "GJ");
         }
+
+        assertNull(compareGraph.getEdge("BD"));
+        assertNull(compareGraph.getEdge("BE"));
+        assertNull(compareGraph.getEdge("BC"));
+        assertNull(compareGraph.getEdge("CH"));
+        assertNull(compareGraph.getEdge("GI"));
+        assertNull(compareGraph.getEdge("IJ"));
+        assertNull(compareGraph.getEdge("GJ"));
+
+        assertNotNull(compareGraph.getEdge("AB"));
+        assertNotNull(compareGraph.getEdge("AC"));
+        assertNotNull(compareGraph.getEdge("DE"));
+        assertNotNull(compareGraph.getEdge("CE"));
+        assertNotNull(compareGraph.getEdge("CG"));
+        assertNotNull(compareGraph.getEdge("GF"));
+        assertNotNull(compareGraph.getEdge("GH"));
+        assertNotNull(compareGraph.getEdge("HJ"));
+        assertNotNull(compareGraph.getEdge("FI"));
     }
     @Test
     public void testOptimalSolutionFoundMultiEdges()  {
@@ -144,31 +160,58 @@ public class KruskalTest {
         testGraph.addEdge("LM","L", "M", false);
         testGraph.getEdge("LM").setAttribute("weight", 6);
 
-        for (int i = 0; i < 10; i++){
-            testGraph = Kruskal.createMinimalSpanningForrest(testGraph);
-            System.out.println(testGraph.edges().collect(Collectors.toList()));
 
-            assertNull(testGraph.getEdge("BE"));
-            assertNull(testGraph.getEdge("BC"));
-            assertNull(testGraph.getEdge("CH"));
-            assertNull(testGraph.getEdge("GI"));
-            assertNull(testGraph.getEdge("IJ"));
-            assertNull(testGraph.getEdge("GJ"));
-            assertNull(testGraph.getEdge("AC"));
-            assertNull(testGraph.getEdge("LM"));
+        MultiGraph compareGraph = haw.gka.kruskal.Kruskal.createMinimalSpanningForrest(testGraph);
 
-            assertNotNull(testGraph.getEdge("BD"));
-            assertNotNull(testGraph.getEdge("AB"));
-            assertNotNull(testGraph.getEdge("DE"));
-            assertNotNull(testGraph.getEdge("CE"));
-            assertNotNull(testGraph.getEdge("CG"));
-            assertNotNull(testGraph.getEdge("GF"));
-            assertNotNull(testGraph.getEdge("GH"));
-            assertNotNull(testGraph.getEdge("HJ"));
-            assertNotNull(testGraph.getEdge("FI"));
+        assertNull(compareGraph.getEdge("BE"));
+        assertNull(compareGraph.getEdge("BC"));
+        assertNull(compareGraph.getEdge("CH"));
+        assertNull(compareGraph.getEdge("GI"));
+        assertNull(compareGraph.getEdge("IJ"));
+        assertNull(compareGraph.getEdge("GJ"));
+        assertNull(compareGraph.getEdge("AC"));
+        assertNull(compareGraph.getEdge("LM"));
 
-            assertNotNull(testGraph.getEdge("KM"));
-            assertNotNull(testGraph.getEdge("KL"));
-        }
+        assertNotNull(compareGraph.getEdge("BD"));
+        assertNotNull(compareGraph.getEdge("AB"));
+        assertNotNull(compareGraph.getEdge("DE"));
+        assertNotNull(compareGraph.getEdge("CE"));
+        assertNotNull(compareGraph.getEdge("CG"));
+        assertNotNull(compareGraph.getEdge("GF"));
+        assertNotNull(compareGraph.getEdge("GH"));
+        assertNotNull(compareGraph.getEdge("HJ"));
+        assertNotNull(compareGraph.getEdge("FI"));
+
+        assertNotNull(compareGraph.getEdge("KM"));
+        assertNotNull(compareGraph.getEdge("KL"));
+    }
+
+    @Test
+    public void testWeightlessGraphRefused(){
+        MultiGraph testGraph = new MultiGraph("testGraph");
+        testGraph.addNode("A");
+        testGraph.addNode("B");
+        testGraph.addNode("C");
+        testGraph.addNode("D");
+        testGraph.addNode("E");
+        testGraph.addNode("F");
+        testGraph.addNode("G");
+        testGraph.addNode("H");
+        testGraph.addNode("I");
+        testGraph.addNode("J");
+
+        testGraph.addNode("K");
+        testGraph.addNode("L");
+        testGraph.addNode("M");
+
+        testGraph.addEdge("AB","A", "B", false);
+        testGraph.addEdge("AB2","A", "B", false);
+        testGraph.addEdge("AC","A", "C", false);
+        testGraph.addEdge("BD","B", "D", false);
+        testGraph.addEdge("BE","B", "E", false);
+        testGraph.addEdge("BC","B", "C", false);
+        testGraph.addEdge("CG","C", "G", false);
+
+        assertThrows(NullPointerException.class, () -> haw.gka.kruskal.Kruskal.createMinimalSpanningForrest(testGraph));
     }
 }
