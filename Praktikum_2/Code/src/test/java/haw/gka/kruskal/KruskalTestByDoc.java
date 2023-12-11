@@ -1,6 +1,10 @@
 package haw.gka.kruskal;
 
 import haw.gka.GraphGenerator;
+import org.graphstream.algorithm.Prim;
+import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.junit.jupiter.api.Test;
 
@@ -153,9 +157,10 @@ public class KruskalTestByDoc {
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-//        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal(); // TODO fix
-//        kruskal.init(graph);
-//        kruskal.compute();
+		Prim prim = new Prim();
+
+		prim.init(graph);
+		prim.compute();
 
         // TODO add Assertion
     }
