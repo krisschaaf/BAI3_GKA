@@ -161,7 +161,7 @@ public class KruskalTest {
         testGraph.getEdge("LM").setAttribute("weight", 6);
 
 
-        MultiGraph compareGraph = haw.gka.kruskal.Kruskal.createMinimalSpanningForrest(testGraph);
+        MultiGraph compareGraph = haw.gka.kruskal.Kruskal.createMinimalSpanningForrest(testGraph).getGraph();
 
         assertNull(compareGraph.getEdge("BE"));
         assertNull(compareGraph.getEdge("BC"));

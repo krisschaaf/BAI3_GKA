@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Kruskal {
 
-    public static MultiGraph createMinimalSpanningForrest(MultiGraph graph) {
+    public static KruskalResult createMinimalSpanningForrest(MultiGraph graph) {
         System.setProperty("org.graphstream.ui", "swing");
 
         // Durch die Verwendung von Priority Queue werden Edges sortiert
@@ -48,7 +48,11 @@ public class Kruskal {
         }
 
         // Erstelle den Output Graph
-        return createSpanningForrestGraph(graph, minimalSpanningForrest, nodesWithoutEdges);
+        return new KruskalResult(
+                createSpanningForrestGraph(graph, minimalSpanningForrest, nodesWithoutEdges),
+                minimalSpanningForrest,
+                calculateWeightSum(graph)
+        );
     }
 
     private static HashSet<Node> collectNodesWithoutEdges(MultiGraph graph) {
@@ -92,5 +96,12 @@ public class Kruskal {
         });
 
         return newOutputGraph;
+    }
+
+    private static Integer calculateWeightSum(MultiGraph graph) {
+        return graph.edges()
+                .map(edge ->  edge.getAttribute("weight", Integer.class))
+                .reduce((a,b) -> a + b)
+                .orElse(0);
     }
 }

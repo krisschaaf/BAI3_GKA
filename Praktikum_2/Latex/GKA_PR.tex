@@ -7,11 +7,13 @@
 
 \tableofcontents
 
+\newpage
+
 \section{Einleitung}
 
 Der Kruskal-Algorithmus ist ein Greedy-Algorithmus, der verwendet wird, um den minimalen Spannbaum eines Graphen zu finden. Der Algorithmus funktioniert in mehreren Schritten:
 
-\begin{enumerate}
+\begin{enumerate} \label{Einleitung}
     \item Zuerst werden alle Kanten des Graphen nach ihrem Gewicht sortiert. Die Kante mit dem kleinsten Gewicht wird zuerst betrachtet. 
 
     \item Für jeden Knoten wird eine neue Teilmenge erstellt
@@ -50,8 +52,25 @@ Die Methoden add(), remove() und contains() des HashSets haben eine Komplexität
 
 \subsection{Rückgabewert Kruskal}
 
-Der Rückgabewert der Kruskal Methode createMinimalSpanningForrest(Multigraph graph) ist ein Multigraph. Im Vergleich zur Implementation der Graphstream Bibliothek wird bei uns aber nicht auf dem übergebenen Graphen editiert, sondern ein neuer wird erstellt. Es ist sinnvoller einen Graphen zurückzugeben, als den minimalen Spannwald da somit im Nachhinein besser getestet werden kann.\\
-Zur Erzeugung des Spannwaldgraphen wird die Hilfsfunktion createSpanningForrestGraph(Multigraph graph, $HashSet\langle Edge\rangle$ minimalSpanningTree) genutzt. In dieser wird über alle Kanten des minimalen Spannwaldes iteriert und ein entsprechender Graph zusammengebaut.
+Der Rückgabewert der Kruskal Methode createMinimalSpanningForrest(Multigraph graph) ist ein neu erzeugtes KruskalResult Objekt. In diesem ist der Spannwald als Graph und als Set aus Kanten enthalten. Zusätzlich ist die gesamte Größe der Kantengewichte gespeichert. Zur Erzeugung des Spannwaldgraphen wird die Hilfsfunktion createSpanningForrestGraph(Multigraph graph, $HashSet\langle Edge\rangle$ minimalSpanningTree) genutzt. In dieser wird über alle Kanten des minimalen Spannwaldes iteriert und ein entsprechender Graph zusammengebaut. 
+
+\subsubsection{Alleinstehende Knoten im Spannwald}
+
+Anhand Punkt 1 in der Einleitung\ref{Einleitung} wird ersichtlich, dass alleinstehende Knoten - also Knoten ohne Kanten - durch die fehlenden Kanten nicht weiter beachtet werden. Hierfür wurde eine neue Funktion eingeführt, welche alle betroffenen Knoten zu Beginn in einem Set speichert und diese dann dem Graph hinzufügt, welcher den Spannwald final darstellt. 
+
+\subsection{Die Main Methode}
+
+In der Main Methode wird der Kruskal Algorithmus auf einen zufällig generierten Graphen angewendet. Die Größe des Graphen muss hierfür hart gecoded werden. Damit nach Ausführung der Main Methode der zufällig generierte Graph betrachtet werden kann, wird dieser über den GraphFileWriter des letzten Praktikums in eine Datei im Pfad \textit{src/main/resources/graphs} abgelegt. Ein Ausschnitt aus einer solchen Datei könnte so aussehen:
+
+\begin{lstlisting}[frame = trBL]
+#undirected:Graph;
+node196-node122(edge63)::1;
+node63-node52(edge1075)::1;
+\end{lstlisting}
+
+Die Summe aller Kantengewichte aus dem minimalen Spannwald ist in dem KruskalResult Objekt enthalten. Dieses wird in der Konsole ausgegeben, bevor der finale minimale Spannwald visualisiert wird. Zusätzlich steht in der Konsole, wie viele Knoten und Kanten der erzeugte Graph enthalten hat.
+
+\newpage
 
 \section{Tests}
 
@@ -100,7 +119,30 @@ Der Vollständigkeit halber testen wir auch einen Graphen welcher aus zwei nicht
 Als Feedback vom letzten Praktikum haben wir mitgenommen, dass wir auch mit zufällig generierten Graphen testen sollen. Ein Problem hierbei ist offensichtlich wie das Ergebnis generisch getestet werden soll. Hierfür bietet sich der Kruskal Algorithmus der Graphstream Bibliothek an. Wie oben beschrieben gibt auch dieser einen Graphen zurück und kann somit verglichen werden.\\
 Generiert werden unsere Graphen über den GraphGenerator. Dieser erwartet als Parameter die Anzahl an Knoten und Kanten, das maximale Gewicht der Kanten und ob diese gerichtet sein sollen. Der zurückgegebene Graph ist entweder vollständig ungerichtet oder vollständig gerichtet.
 
+\subsubsection{Assertions}
+
+Das Überschreiben der Equals Methode des Graphs von Graphstream erschien uns zu aufwändig. Wir hätten hierfür bereits bestehenden Code stark refactoren müssen. Außerdem sind sowohl im Typen Kruskal als auch Prim nur die Felder \textit{graph} und \textit{treeEdges} gespeichert. \textit{graph} ist hierbei der unveränderte Originalgraph und \textit{treeEdges} ist eine Liste mit allen Kanten des minimalen Spannwaldes. Als mögliche Assertions für die Tests mit zufällig erzeugten Graphen kommt also nur das Vergleichen der Kanten in Frage.\\
+Die Kanten werden bei unser eigenen Kruskal Implementierung allerdings neu erstellt, da der Funktion \textit{Graph.addEdge(String id, ...)} nur die Id der Kante übergeben werden kann. Hierdurch wird die Kante als neues Objekt im Heap gespeichert und hat nicht mehr die gleiche Referenz wie die Kante des Originalgraphens. In den Assertions werden die Kanten der minimalen Spannwalde deswegen auf Strings nach dem Schema KantenId[StartKnotenId--EndKnotenId] gemappt und verglichen.
+
 \subsubsection{Ergebnisse und Laufzeit der Tests}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{||l|l|l|l|l||}
+    \hhline{|t:=====:t|}
+    \textbf{Nr} & \textbf{Name} & \textbf{Knoten} & \textbf{Kanten} & \textbf{Dauer (min)} \\ \hhline{|-----|}
+         1 & succeedKruskalFewerNodesThanEdges & & & \\ \hhline{|-----|}
+         2 & succeedPrimFewerNodesThanEdges & & & \\ \hhline{|-----|}
+         3 & succeedKruskalSameNodesThanEdges & & & \\ \hhline{|-----|}
+         4 & succeedPrimSameNodesThanEdges & & & \\ \hhline{|-----|}
+         5 & succeedKruskalMoreNodesThanEdges & 50000 & 5000 & 2,5 \\ \hhline{|-----|}
+         6 & succeedPrimMoreNodesThanEdges & 50000 & 5000 & 2,5 \\ \hhline{|b:=====:b|}
+    \end{tabular}
+    \caption{Open List}
+\end{table}
+
+Bei ca. 100000 Knoten oder Kanten bei der zufälligen Graphgenerierung wird die vorgegebene maximale Laufzeit der Tests von fünf Minuten überschritten. 
+
 
 \bibliographystyle{alpha}
 \bibliography{mybib}

@@ -21,7 +21,7 @@ public class KruskalTestRandomGraph {
     public void succeedKruskalFewerNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(1000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)
@@ -43,7 +43,7 @@ public class KruskalTestRandomGraph {
     public void succeedPrimFewerNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(1000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)
@@ -65,7 +65,7 @@ public class KruskalTestRandomGraph {
     public void succeedKruskalSameNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(10000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)
@@ -87,7 +87,7 @@ public class KruskalTestRandomGraph {
     public void succeedPrimSameNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(10000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)
@@ -109,7 +109,7 @@ public class KruskalTestRandomGraph {
     public void succeedKruskalMoreNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)
@@ -131,7 +131,7 @@ public class KruskalTestRandomGraph {
     public void succeedPrimMoreNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> ourResultEdges = ourResult.edges()
                 .map(KruskalTestRandomGraph::convertEdgeToString)

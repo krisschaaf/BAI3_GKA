@@ -2,6 +2,7 @@ package haw.gka;
 
 import haw.gka.io.GraphFileWriter;
 import haw.gka.kruskal.Kruskal;
+import haw.gka.kruskal.KruskalResult;
 import org.graphstream.graph.implementations.MultiGraph;
 
 import java.io.IOException;
@@ -10,20 +11,15 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		MultiGraph graph = GraphGenerator.generateGraph(200,2000,10, false);
-		MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
-		GraphFileWriter.writeFile(result, "src/main/resources/graphs/lastCreatedGraph");
+		KruskalResult result = Kruskal.createMinimalSpanningForrest(graph);
 
-		Integer weightSum = calculateWeightSum(result);
-		System.out.printf("The sum of all edge weights of the minimal spanning forrest: %s.", weightSum);
+		String filename = "src/main/resources/graphs/lastCreatedGraph";
+		GraphFileWriter.writeFile(result.getGraph(), filename);
+		System.out.printf("You can find the generated graph at: '%s'.%n%n", filename);
+
+		System.out.printf("The sum of all edge weights of the minimal spanning forrest: %s.%n", result.getTotalWeight());
 
 		System.setProperty("org.graphstream.ui", "swing");
-		result.display();
-	}
-
-	private static Integer calculateWeightSum(MultiGraph graph) {
-		return graph.edges()
-				.map(edge ->  edge.getAttribute("weight", Integer.class))
-				.reduce((a,b) -> a + b)
-				.orElseThrow(() -> new RuntimeException("Edge weight accumulation failed!"));
+		result.getGraph().display();
 	}
 }

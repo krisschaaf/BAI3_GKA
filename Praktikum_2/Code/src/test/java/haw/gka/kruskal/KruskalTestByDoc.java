@@ -53,7 +53,7 @@ public class KruskalTestByDoc {
         graph.addEdge("FH", "F", "H", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
         graph.addEdge("GH", "G", "H", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
 
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> shouldEdges = new HashSet<>(Arrays.asList(
                 "AB", "AC", "BD", "BE", "BF", "CG", "FH"
@@ -86,7 +86,7 @@ public class KruskalTestByDoc {
         graph.addEdge("DF", "D", "F", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
         graph.addEdge("EF", "E", "F", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
 
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> shouldEdges = new HashSet<>(Arrays.asList(
                 "AB", "BC", "DE", "EF"
@@ -106,7 +106,7 @@ public class KruskalTestByDoc {
 
         graph.addNode("A");
 
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> shouldEdges = new HashSet<>(Arrays.asList());
 
@@ -134,7 +134,7 @@ public class KruskalTestByDoc {
         graph.addEdge("BD", "B", "D", false).setAttribute(ATTRIBUTE_WEIGHT, 4);
         graph.addEdge("CD", "C", "D", false).setAttribute(ATTRIBUTE_WEIGHT, 5);
 
-        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph result = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
         HashSet<String> shouldEdges = new HashSet<>(Arrays.asList(
                 "AB", "BD", "CD"
@@ -164,7 +164,7 @@ public class KruskalTestByDoc {
     public void succeedWithRandomGraphKruskal() {
         MultiGraph graph = GraphGenerator.generateGraph(10000, 1000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
         HashSet<Edge> ourResultEdges = new HashSet<>(ourResult.edges().collect(Collectors.toSet()));
         HashSet<String> ourResultEdgesString = new HashSet<>(convertEdgesToString(ourResultEdges));
 
@@ -182,7 +182,7 @@ public class KruskalTestByDoc {
     public void succeedWithRandomGraphPrim() {
         MultiGraph graph = GraphGenerator.generateGraph(100, 100, 10, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
 
 		Prim prim = new Prim();
 		prim.init(graph);
