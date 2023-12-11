@@ -86,7 +86,9 @@ public class Kruskal {
         }
 
         nodesWithoutEdges.forEach((node) -> {
-            newOutputGraph.addNode(node.getId());
+            if(newOutputGraph.getNode(node.getId()) == null) {
+                newOutputGraph.addNode(node.getId());
+            }
         });
 
         return newOutputGraph;

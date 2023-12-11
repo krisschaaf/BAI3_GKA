@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class KruskalTestByDoc {
     public static final String ATTRIBUTE_WEIGHT = "weight";
 
-    private boolean checkIfContainSameEdges(MultiGraph result, HashSet<String> shouldEdges) {
+    private boolean checkIfContainingSameEdges(MultiGraph result, HashSet<String> shouldEdges) {
         HashSet<String> actualEdges = (HashSet<String>) result.edges().
                 map(edge -> edge.getId()).
                 collect(Collectors.toSet());
@@ -21,7 +21,7 @@ public class KruskalTestByDoc {
         return actualEdges.containsAll(shouldEdges) && shouldEdges.containsAll(actualEdges);
     }
 
-    private boolean checkIfContainSameNodes(MultiGraph result, HashSet<String> shouldNodes) {
+    private boolean checkIfContainingSameNodes(MultiGraph result, HashSet<String> shouldNodes) {
         HashSet<String> actualNodes = (HashSet<String>) result.nodes().
                 map(node -> node.getId()).
                 collect(Collectors.toSet());
@@ -61,8 +61,8 @@ public class KruskalTestByDoc {
                 "A", "B", "C", "D", "E", "F", "G", "H"
         ));
 
-        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainingSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainingSameNodes(result, shouldNodes));
     }
 
     @Test
@@ -94,8 +94,8 @@ public class KruskalTestByDoc {
                 "A", "B", "C", "D", "E", "F"
         ));
 
-        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainingSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainingSameNodes(result, shouldNodes));
     }
 
     @Test
@@ -112,8 +112,8 @@ public class KruskalTestByDoc {
                 "A"
         ));
 
-        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainingSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainingSameNodes(result, shouldNodes));
     }
 
     @Test
@@ -142,8 +142,8 @@ public class KruskalTestByDoc {
                 "A", "B", "C", "D", "E"
         ));
 
-        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainingSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainingSameNodes(result, shouldNodes));
 
     }
 
