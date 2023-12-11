@@ -7,6 +7,8 @@ import org.graphstream.graph.Node;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GraphFileWriter {
 
@@ -70,7 +72,7 @@ public class GraphFileWriter {
 		} else {
 			output = "#undirected:"+graph.getId()+";\n" +output;
 		}
-		if (!Verifier.isValidFilename(filename)) {
+		if (!isValidFilename(filename)) {
 			// Füge Dateiendung hinzu falls nicht vorhanden
 			filename += ".grph";
 		}
@@ -85,5 +87,11 @@ public class GraphFileWriter {
 		} catch (IOException e) {
 			throw new IOException(e);
 		}
+	}
+
+	private static boolean isValidFilename(String path) {
+		Pattern filename = Pattern.compile("(.)+\\.grph", Pattern.CASE_INSENSITIVE);
+		Matcher m = filename.matcher(path);
+		return m.find();
 	}
 }

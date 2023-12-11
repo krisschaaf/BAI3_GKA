@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Main {
 	public static void main(String[] args) throws IOException {
 
-		MultiGraph graph = GraphGenerator.generateGraph(200,2000,10, false);
+		MultiGraph graph = GraphGenerator.generateGraph(200,2000,100, false);
 		KruskalResult result = Kruskal.createMinimalSpanningForrest(graph);
 
 		String filename = "src/main/resources/graphs/lastCreatedGraph";

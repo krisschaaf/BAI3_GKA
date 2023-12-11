@@ -4,7 +4,9 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 public class Kruskal {
@@ -56,15 +58,9 @@ public class Kruskal {
     }
 
     private static HashSet<Node> collectNodesWithoutEdges(MultiGraph graph) {
-        HashSet<Node> nodesWithoutEdges = new HashSet<>();
-
-        graph.nodes().forEach((node) -> {
-            if(node.edges().collect(Collectors.toList()).size() == 0) {
-                nodesWithoutEdges.add(node);
-            }
-        });
-
-        return nodesWithoutEdges;
+        return graph.nodes()
+                .filter(node -> !node.edges().findAny().isPresent())
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
     private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningForrest, HashSet<Node> nodesWithoutEdges) {
@@ -101,7 +97,7 @@ public class Kruskal {
     private static Integer calculateWeightSum(MultiGraph graph) {
         return graph.edges()
                 .map(edge ->  edge.getAttribute("weight", Integer.class))
-                .reduce((a,b) -> a + b)
+                .reduce(Integer::sum)
                 .orElse(0);
     }
 }

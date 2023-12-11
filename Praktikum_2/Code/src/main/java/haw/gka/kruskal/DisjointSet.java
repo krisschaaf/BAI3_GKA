@@ -18,9 +18,9 @@ public class DisjointSet {
         HashSet<HashSet<Node>> disjointSet = new HashSet<>();
 
         graph.nodes().forEach((node) -> {
-            HashSet<Node> mstDisjointSet = new HashSet<>();
-            mstDisjointSet.add(node);
-            disjointSet.add(mstDisjointSet);
+            HashSet<Node> setWithSingleNode = new HashSet<>();
+            setWithSingleNode.add(node);
+            disjointSet.add(setWithSingleNode);
         });
 
         return disjointSet;
@@ -37,14 +37,12 @@ public class DisjointSet {
     }
 
     public static HashSet<Node> findSet(HashSet<HashSet<Node>> disjointSet, Node node) {
-        HashSet<Node> result = null;
-
         for (HashSet<Node> set: disjointSet){
             if (set.contains(node)) {
-                result = set;
+                return set;
             }
         }
 
-        return result;
+        return null;
     }
 }
