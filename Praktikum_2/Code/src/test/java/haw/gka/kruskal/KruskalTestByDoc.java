@@ -2,9 +2,7 @@ package haw.gka.kruskal;
 
 import haw.gka.GraphGenerator;
 import org.graphstream.algorithm.Prim;
-import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.DefaultGraph;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.junit.jupiter.api.Test;
 
@@ -151,16 +149,45 @@ public class KruskalTestByDoc {
 
     }
 
+    private static HashSet<String> convertEdgesToString(HashSet<Edge> ourResultEdges) {
+        HashSet<String> ourResultEdgesString = new HashSet<>();
+
+        ourResultEdges.forEach((edge) -> {
+            String appender = edge.getId() + "[" + edge.getSourceNode().getId() + "--" + edge.getTargetNode().getId() + "]";
+            ourResultEdgesString.add(appender);
+        });
+
+        return ourResultEdgesString;
+    }
+
     @Test
-    public void succeedWithRandomGraph() {
+    public void succeedWithRandomGraphKruskal() {
+        MultiGraph graph = GraphGenerator.generateGraph(10000, 1000, 100, false);
+
+        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
+        HashSet<Edge> ourResultEdges = new HashSet<>(ourResult.edges().collect(Collectors.toSet()));
+        HashSet<String> ourResultEdgesString = new HashSet<>(convertEdgesToString(ourResultEdges));
+
+        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
+        kruskal.init(graph);
+        kruskal.compute();
+
+        HashSet<Edge> theirResultEdges = new HashSet<>(kruskal.getTreeEdgesStream().collect(Collectors.toSet()));
+        HashSet<String> theirResultEdgesString = new HashSet<>(convertEdgesToString(theirResultEdges));
+
+        assertTrue(ourResultEdgesString.containsAll(theirResultEdgesString));
+        assertTrue(theirResultEdgesString.containsAll(ourResultEdgesString));
+    }
+
+    public void succeedWithRandomGraphPrim() {
         MultiGraph graph = GraphGenerator.generateGraph(100, 100, 10, false);
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
 		Prim prim = new Prim();
-
 		prim.init(graph);
 		prim.compute();
+
 
         // TODO add Assertion
     }

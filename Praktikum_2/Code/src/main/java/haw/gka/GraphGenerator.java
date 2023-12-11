@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 public class GraphGenerator {
 
-    public static MultiGraph generateGraph(int vertexAmount, int edgesAmount, int maxWeight, boolean direktet ) {
+    public static MultiGraph generateGraph(int vertexAmount, int edgesAmount, int maxWeight, boolean directed) {
         MultiGraph graph = new MultiGraph("Graph");
         System.setProperty("org.graphstream.ui", "swing");
 
@@ -38,7 +38,7 @@ public class GraphGenerator {
             firstNode = nodes.get(randomNumber1);
             secondNode = nodes.get(randomNumber2);
             String edgeName = "edge" + i;
-            graph.addEdge(edgeName, firstNode, secondNode, direktet).setAttribute("weight", random.nextInt(maxWeight));
+            graph.addEdge(edgeName, firstNode, secondNode, directed).setAttribute("weight", random.nextInt(maxWeight));
             edges.add(graph.getEdge(edgeName));
         });
         System.out.println("Amount of nodes: " + nodes.size());
