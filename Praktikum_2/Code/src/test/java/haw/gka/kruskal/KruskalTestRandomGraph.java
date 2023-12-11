@@ -23,17 +23,17 @@ public class KruskalTestRandomGraph {
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
         kruskal.init(graph);
         kruskal.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(kruskal.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
@@ -45,17 +45,17 @@ public class KruskalTestRandomGraph {
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
 		Prim prim = new Prim();
 		prim.init(graph);
 		prim.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(prim.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
@@ -67,17 +67,17 @@ public class KruskalTestRandomGraph {
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
         kruskal.init(graph);
         kruskal.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(kruskal.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
@@ -89,17 +89,17 @@ public class KruskalTestRandomGraph {
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
 		Prim prim = new Prim();
 		prim.init(graph);
 		prim.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(prim.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
@@ -107,21 +107,21 @@ public class KruskalTestRandomGraph {
 
     @Test
     public void succeedKruskalMoreNodesThanEdges() {
-        MultiGraph graph = GraphGenerator.generateGraph(10000, 1000, 100, false);
+        MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
         kruskal.init(graph);
         kruskal.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(kruskal.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
@@ -129,21 +129,21 @@ public class KruskalTestRandomGraph {
 
     @Test
     public void succeedPrimMoreNodesThanEdges() {
-        MultiGraph graph = GraphGenerator.generateGraph(10000, 1000, 100, false);
+        MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
         MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = new HashSet<>(ourResult.edges()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> ourResultEdges = ourResult.edges()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
 		Prim prim = new Prim();
 		prim.init(graph);
 		prim.compute();
 
-        HashSet<String> theirResultEdges = new HashSet<>(prim.getTreeEdgesStream()
-                .map((edge -> convertEdgeToString(edge)))
-                .collect(Collectors.toSet()));
+        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
+                .map(KruskalTestRandomGraph::convertEdgeToString)
+                .collect(Collectors.toCollection(HashSet::new));
 
         assertTrue(ourResultEdges.containsAll(theirResultEdges));
         assertTrue(theirResultEdges.containsAll(ourResultEdges));
