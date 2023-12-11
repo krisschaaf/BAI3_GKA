@@ -112,9 +112,8 @@ public class KruskalTestByDoc {
                 "A"
         ));
 
-        // TODO: missing node in result
-//        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-//        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainSameNodes(result, shouldNodes));
     }
 
     @Test
@@ -126,7 +125,7 @@ public class KruskalTestByDoc {
         graph.addNode("C");
         graph.addNode("D");
 
-        graph.addNode("E"); // TODO: missing this node in result
+        graph.addNode("E");
 
         graph.addEdge("AB", "A", "B", false).setAttribute(ATTRIBUTE_WEIGHT, 3);
         graph.addEdge("AC", "A", "C", false).setAttribute(ATTRIBUTE_WEIGHT, 6);
@@ -143,9 +142,8 @@ public class KruskalTestByDoc {
                 "A", "B", "C", "D", "E"
         ));
 
-        // TODO: missing node in result
-//        assertTrue(checkIfContainSameEdges(result, shouldEdges));
-//        assertTrue(checkIfContainSameNodes(result, shouldNodes));
+        assertTrue(checkIfContainSameEdges(result, shouldEdges));
+        assertTrue(checkIfContainSameNodes(result, shouldNodes));
 
     }
 

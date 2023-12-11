@@ -18,6 +18,8 @@ public class Kruskal {
                         (int) edge.getAttribute("weight"))
         );
 
+        HashSet<Node> nodesWithoutEdges = collectNodesWithoutEdges(graph);
+
         // Alle Edges des Graphes in PriorityQueue hinzufügen
         priorityQueue.addAll(graph.edges().collect(Collectors.toList()));
 
@@ -46,10 +48,22 @@ public class Kruskal {
         }
 
         // Erstelle den Output Graph
-        return createSpanningForrestGraph(graph, minimalSpanningForrest);
+        return createSpanningForrestGraph(graph, minimalSpanningForrest, nodesWithoutEdges);
     }
 
-    private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningForrest) {
+    private static HashSet<Node> collectNodesWithoutEdges(MultiGraph graph) {
+        HashSet<Node> nodesWithoutEdges = new HashSet<>();
+
+        graph.nodes().forEach((node) -> {
+            if(node.edges().collect(Collectors.toList()).size() == 0) {
+                nodesWithoutEdges.add(node);
+            }
+        });
+
+        return nodesWithoutEdges;
+    }
+
+    private static MultiGraph createSpanningForrestGraph(MultiGraph graph, HashSet<Edge> minimalSpanningForrest, HashSet<Node> nodesWithoutEdges) {
         MultiGraph newOutputGraph = new MultiGraph(graph.getId());
         newOutputGraph.setAutoCreate(true);
 
@@ -70,6 +84,10 @@ public class Kruskal {
                newOutputGraph.addNode(node.getId());
             }
         }
+
+        nodesWithoutEdges.forEach((node) -> {
+            newOutputGraph.addNode(node.getId());
+        });
 
         return newOutputGraph;
     }
