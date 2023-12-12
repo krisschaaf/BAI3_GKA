@@ -17,7 +17,7 @@ public class Main {
 		GraphFileWriter.writeFile(result.getGraph(), filename);
 		System.out.printf("You can find the generated graph at: '%s'.%n%n", filename);
 
-		System.out.printf("The sum of all edge weights of the minimal spanning forrest: %s.%n", result.getTotalWeight());
+		System.out.printf("The sum of all edge weights of the minimal spanning forrest: %s.%n", result.getTreeWeight());
 
 		System.setProperty("org.graphstream.ui", "swing");
 		result.getGraph().display();

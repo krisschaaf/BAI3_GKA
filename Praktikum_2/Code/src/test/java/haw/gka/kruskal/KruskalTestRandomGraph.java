@@ -1,6 +1,7 @@
 package haw.gka.kruskal;
 
 import haw.gka.GraphGenerator;
+import haw.gka.io.GraphFileWriter;
 import org.graphstream.algorithm.Prim;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KruskalTestRandomGraph {
@@ -21,131 +23,77 @@ public class KruskalTestRandomGraph {
     public void succeedKruskalFewerNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(1000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+        org.graphstream.algorithm.Kruskal graphStreamKruskal = new org.graphstream.algorithm.Kruskal();
+        graphStreamKruskal.init(graph);
+        graphStreamKruskal.compute();
 
-        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
-        kruskal.init(graph);
-        kruskal.compute();
-
-        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamKruskal.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 
     @Test
     public void succeedPrimFewerNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(1000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+		Prim graphStreamPrim = new Prim();
+		graphStreamPrim.init(graph);
+		graphStreamPrim.compute();
 
-		Prim prim = new Prim();
-		prim.init(graph);
-		prim.compute();
-
-        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamPrim.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 
     @Test
     public void succeedKruskalSameNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(10000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+        org.graphstream.algorithm.Kruskal graphStreamKruskal = new org.graphstream.algorithm.Kruskal();
+        graphStreamKruskal.init(graph);
+        graphStreamKruskal.compute();
 
-        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
-        kruskal.init(graph);
-        kruskal.compute();
-
-        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamKruskal.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 
     @Test
     public void succeedPrimSameNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(10000, 10000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+        Prim graphStreamPrim = new Prim();
+        graphStreamPrim.init(graph);
+        graphStreamPrim.compute();
 
-		Prim prim = new Prim();
-		prim.init(graph);
-		prim.compute();
-
-        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamPrim.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 
     @Test
     public void succeedKruskalMoreNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+        org.graphstream.algorithm.Kruskal graphStreamKruskal = new org.graphstream.algorithm.Kruskal();
+        graphStreamKruskal.init(graph);
+        graphStreamKruskal.compute();
 
-        org.graphstream.algorithm.Kruskal kruskal = new org.graphstream.algorithm.Kruskal();
-        kruskal.init(graph);
-        kruskal.compute();
-
-        HashSet<String> theirResultEdges = kruskal.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamKruskal.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 
     @Test
     public void succeedPrimMoreNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(50000, 5000, 100, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourKruskal = Kruskal.createMinimalSpanningForrest(graph);
 
-        HashSet<String> ourResultEdges = ourResult.edges()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
+        Prim graphStreamPrim = new Prim();
+        graphStreamPrim.init(graph);
+        graphStreamPrim.compute();
 
-		Prim prim = new Prim();
-		prim.init(graph);
-		prim.compute();
-
-        HashSet<String> theirResultEdges = prim.getTreeEdgesStream()
-                .map(KruskalTestRandomGraph::convertEdgeToString)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        assertTrue(ourResultEdges.containsAll(theirResultEdges));
-        assertTrue(theirResultEdges.containsAll(ourResultEdges));
+        assertEquals((int) graphStreamPrim.getTreeWeight(), ourKruskal.getTreeWeight());
     }
 }

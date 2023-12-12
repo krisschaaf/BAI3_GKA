@@ -53,7 +53,7 @@ public class Kruskal {
         return new KruskalResult(
                 createSpanningForrestGraph(graph, minimalSpanningForrest, nodesWithoutEdges),
                 minimalSpanningForrest,
-                calculateWeightSum(graph)
+                calculateWeightSum(minimalSpanningForrest)
         );
     }
 
@@ -94,8 +94,8 @@ public class Kruskal {
         return newOutputGraph;
     }
 
-    private static Integer calculateWeightSum(MultiGraph graph) {
-        return graph.edges()
+    private static Integer calculateWeightSum(HashSet<Edge> minimalSpanningForrest) {
+        return minimalSpanningForrest.stream()
                 .map(edge ->  edge.getAttribute("weight", Integer.class))
                 .reduce(Integer::sum)
                 .orElse(0);

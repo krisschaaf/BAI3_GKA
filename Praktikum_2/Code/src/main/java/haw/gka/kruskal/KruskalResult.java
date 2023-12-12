@@ -12,5 +12,5 @@ import java.util.HashSet;
 public class KruskalResult {
     private MultiGraph graph;
     private HashSet<Edge> edges;
-    private Integer totalWeight;
+    private Integer treeWeight;
 }
