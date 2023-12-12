@@ -15,10 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KruskalTestRandomGraph {
 
-    private static String convertEdgeToString(Edge edge) {
-        return edge.getId() + "[" + edge.getSourceNode().getId() + "--" + edge.getTargetNode().getId() + "]";
-    }
-
     @Test
     public void succeedKruskalFewerNodesThanEdges() {
         MultiGraph graph = GraphGenerator.generateGraph(1000, 10000, 100, false);
