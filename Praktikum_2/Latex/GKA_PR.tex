@@ -121,8 +121,8 @@ Generiert werden unsere Graphen über den GraphGenerator. Dieser erwartet als Pa
 
 \subsubsection{Assertions}
 
-Das Überschreiben der Equals Methode des Graphs von Graphstream erschien uns zu aufwändig. Wir hätten hierfür bereits bestehenden Code stark refactoren müssen. Außerdem sind sowohl im Typen Kruskal als auch Prim nur die Felder \textit{graph} und \textit{treeEdges} gespeichert. \textit{graph} ist hierbei der unveränderte Originalgraph und \textit{treeEdges} ist eine Liste mit allen Kanten des minimalen Spannwaldes. Als mögliche Assertions für die Tests mit zufällig erzeugten Graphen kommt also nur das Vergleichen der Kanten in Frage.\\
-Die Kanten werden bei unser eigenen Kruskal Implementierung allerdings neu erstellt, da der Funktion \textit{Graph.addEdge(String id, ...)} nur die Id der Kante übergeben werden kann. Hierdurch wird die Kante als neues Objekt im Heap gespeichert und hat nicht mehr die gleiche Referenz wie die Kante des Originalgraphens. In den Assertions werden die Kanten der minimalen Spannwalde deswegen auf Strings nach dem Schema KantenId[StartKnotenId--EndKnotenId] gemappt und verglichen.
+Das Überschreiben der Equals Methode des Graphs von Graphstream erschien in unserem Fall zu aufwändig. Wir hätten hierfür bereits bestehenden Code stark refactoren müssen. Außerdem sind sowohl im Typen Kruskal als auch Prim nur die Felder \textit{graph} und \textit{treeEdges} gespeichert. \textit{graph} ist hierbei der unveränderte Originalgraph und \textit{treeEdges} ist eine Liste mit allen Kanten des minimalen Spannwaldes. Bei größeren Graphen besteht die Möglichkeit, dass unser Kruskal Algorithmus einen anderen minimalen Spannbaum findet als die GraphStream Algorithmen Kruskal oder Prim. Als mögliche Assertions für die Tests mit zufällig erzeugten Graphen kommt also nur das Vergleichen der aufsummierten Kantengewichte in Frage.\\
+Damit die Tests aussagekräftig sind, haben wir die Kantengewichte in einem möglichst großen Bereich (1-100) zufällig generiert.
 
 \subsubsection{Ergebnisse und Laufzeit der Tests}
 
