@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KruskalTestByDoc {
@@ -179,16 +180,16 @@ public class KruskalTestByDoc {
         assertTrue(theirResultEdgesString.containsAll(ourResultEdgesString));
     }
 
+    @Test
     public void succeedWithRandomGraphPrim() {
-        MultiGraph graph = GraphGenerator.generateGraph(100, 100, 10, false);
+        MultiGraph graph = GraphGenerator.generateGraph(100, 10000, 10, false);
 
-        MultiGraph ourResult = Kruskal.createMinimalSpanningForrest(graph).getGraph();
+        KruskalResult ourResult = Kruskal.createMinimalSpanningForrest(graph);
 
 		Prim prim = new Prim();
 		prim.init(graph);
 		prim.compute();
 
-
-        // TODO add Assertion
+        assertEquals((int) prim.getTreeWeight(), ourResult.getTreeWeight());
     }
 }
