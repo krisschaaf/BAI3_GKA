@@ -131,17 +131,21 @@ Damit die Tests aussagekräftig sind, haben wir die Kantengewichte in einem mög
     \begin{tabular}{||l|l|l|l|l||}
     \hhline{|t:=====:t|}
     \textbf{Nr} & \textbf{Name} & \textbf{Knoten} & \textbf{Kanten} & \textbf{Dauer (min)} \\ \hhline{|-----|}
-         1 & succeedKruskalFewerNodesThanEdges & 50000 & 450000 & 4,88 \\ \hhline{|-----|}
-         2 & succeedPrimFewerNodesThanEdges & 50000 & 450000 & 0,0065 \\ \hhline{|-----|}
-         3 & succeedKruskalSameNodesThanEdges & 75000 & 75000 & 4,84 \\ \hhline{|-----|}
-         4 & succeedPrimSameNodesThanEdges & 75000 & 75000 & 0,0046 \\ \hhline{|-----|}
-         5 & succeedKruskalMoreNodesThanEdges & 100000 & 50000 & 4,99 \\ \hhline{|-----|}
-         6 & succeedPrimMoreNodesThanEdges & 100000 & 50000 & 0,0043 \\ \hhline{|b:=====:b|}
+         1 & Kruskal FewerNodesThanEdges & 50000 & 450000 & 4,88 \\ \hhline{|-----|}
+         2 & Prim FewerNodesThanEdges & 50000 & 450000 & 0,0065 \\ \hhline{|-----|}
+         3 & Kruskal SameNodesThanEdges & 75000 & 75000 & 4,84 \\ \hhline{|-----|}
+         4 & Prim SameNodesThanEdges & 75000 & 75000 & 0,0046 \\ \hhline{|-----|}
+         5 & Kruskal MoreNodesThanEdges & 100000 & 50000 & 4,99 \\ \hhline{|-----|}
+         6 & Prim MoreNodesThanEdges & 100000 & 50000 & 0,0043 \\ \hhline{|b:=====:b|}
     \end{tabular}
     \caption{Open List}
+    \label{laufzeit}
 \end{table}
 
-Auffällig ist, dass eine Steigerung der Kantenanzahl zu einem geringeren Anstieg der Laufzeit führt, als bei einem gleichzahligen Anwachsen der Knotenanzahl.
+In der obigen Tabelle \ref{laufzeit} ist die Laufzeit unseres Kruskalalgorithmus im Vergleich zu dem Primalgorithmus von graphstream dargestellt.\\
+Auffällig ist, dass eine Steigerung der Kantenanzahl zu einem geringeren Anstieg der Laufzeit führt, als bei einem gleichzahligen Anwachsen der Knotenanzahl. 
+Da der Algorithmus über die Kanten iteriert, können wir uns dieses Phänomen nicht erklären. Zum Finden der kantenlosen Knoten iterieren wir auch über die Knoten, dies jedoch mit einer Zeitkomplexität von O(n) und über Streams.
+Außerdem ist zu beachten, dass der Primalgorithmus deutlich schneller läuft.
 
 \bibliographystyle{alpha}
 \bibliography{mybib}
