@@ -31,7 +31,7 @@ public class Kruskal {
         // Initialisierung der disjunkten Teilmengen. Jeder Knoten bekommt eine eigene Teilmenge.
         HashSet<HashSet<Node>> disjointSet = DisjointSet.makeSet(graph);
 
-        while (!priorityQueue.isEmpty()) {
+        while (!priorityQueue.isEmpty()) { // TODO: weitere Abbruchbedingung (Größe mst == Anzahl Knoten des Ausgangsgraphen - 1)
             // Knoten der kleinsten Edge finden
             Edge actualEdge = priorityQueue.poll();
             Node source = actualEdge.getSourceNode();
@@ -52,7 +52,6 @@ public class Kruskal {
         // Erstelle den Output Graph
         return new KruskalResult(
                 createSpanningForrestGraph(graph, minimalSpanningForrest, nodesWithoutEdges),
-                minimalSpanningForrest,
                 calculateWeightSum(minimalSpanningForrest)
         );
     }

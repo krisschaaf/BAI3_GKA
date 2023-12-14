@@ -25,7 +25,7 @@ public class GraphGenerator {
             graph.addNode(String.valueOf(node));
         });
         List<Node> nodes = graph.nodes().collect(Collectors.toList());
-        Collections.shuffle(nodes);
+        Collections.shuffle(nodes); // TODO: kann weg?
         Random random = new Random();
         List<Edge> edges = new ArrayList<>();
         IntStream.range(0, edgesAmount).forEach(i -> {
