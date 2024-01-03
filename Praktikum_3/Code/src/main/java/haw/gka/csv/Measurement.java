@@ -1,4 +1,4 @@
-package haw.gka;
+package haw.gka.csv;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
