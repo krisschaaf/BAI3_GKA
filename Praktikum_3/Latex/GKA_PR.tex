@@ -12,6 +12,16 @@
 \section{Einleitung}
 
 \section{Dokumentation der Implementierung}
+Eulergraphen generieren.
+Wir haben einen Euler-Multigraphen basierend auf dem vorgeschlagenen Algorithmus erstellt. 
+Gemäß der Anforderung mussten wir einen Multigraphen mit einer festgelegten Anzahl von Knoten und Kanten erstellen. 
+Wir haben eine Überprüfung hinzugefügt, um sicherzustellen, dass die von den Benutzern angegebene Anzahl von Kanten nicht geringer ist als die Anzahl der Knoten minus eins. Dies ist notwendig, um den Graphen zusammenhängend zu halten. 
+Wir erstellen eine Liste der Knoten des Graphen und eine Liste der Positionen, deren Länge der Anzahl der Kanten entspricht. Wir weisen jeder Knoten eine der Positionen zu. 
+Wir speichern in einer HashMap namens posHashMap die Position für jeden Knoten. 
+Zuerst wählen wir aus posHashMap einen Knoten mit der Positionsnummer null oder, falls dieser nicht existiert, weisen wir eine zufällige Knoten als Startknoten zu. 
+Danach iterieren wir von null bis zur Anzahl der Kanten. Wir müssen die actualSource und actualTarget Knoten bestimmen, zwischen ihnen Kanten erstellen und die nächste neue actualTarget-Knoten suchen und die vorherige Zielknoten der Variable actualSource zuweisen. Dies wird in der Funktion getNextNode() implementiert. 
+Eine wichtige Ergänzung zum vorgegebenen Pseudocode wurde eingeführt: Bis wir die Anzahl der Knoten in den Iterationen nicht überschreiten, verwenden wir anstatt der Funktion getNextNode(), die Knoten zufällig auswählt, falls sie nicht in posHashMap vorhanden sind, entnehmen wir der Reihe nach Knoten aus der Knotenliste, nachdem wir diese Liste zuvor gemischt haben. 
+Auf diese Weise stellen wir sicher, dass alle Knoten gewählt werden und der Graph zusammenhängend bleibt. Wir verbinden beim Erreichen der vorletzten Kantennummer den aktuellen Knoten mit dem Startknoten, um den Kreis zu schließen.
 
 \section{Tests}
 
