@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Main {
 	private static final String TEAM_NAME = "TeamC";
-	private static final String HARDWARE = "Hardware"; // TODO
 	private static final String TOOL = "Tool"; // TODO
 
 	
@@ -43,7 +42,7 @@ public class Main {
 					TEAM_NAME,
 					getGraphType(graph),
 					graph.getEdgeCount(),
-					HARDWARE,
+					buildHardwareInfo(),
 					TOOL,
 					data
 			);
@@ -71,5 +70,11 @@ public class Main {
 			throw new RuntimeException("Illegal Graph Type");
 		}
 		return graphType;
+	}
+
+	private static String buildHardwareInfo() {
+		return System.getProperty("os.name") + " " +
+				System.getProperty("os.version") + " " +
+				System.getProperty("os.arch");
 	}
 }
