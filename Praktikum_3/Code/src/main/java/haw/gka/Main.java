@@ -17,9 +17,10 @@ public class Main {
 
 	
 	public static void main(String[] args) {
+		System.setProperty("org.graphstream.ui", "swing");
+
 		List<Graph> graphs = getGraphList();
-		GraphGenerator eulerGenerator = new GraphGenerator();
-		eulerGenerator.createEulerGraph(10, 100, "0").display();
+
 		for (Graph graph: graphs) {
 			String[][] data = new String[10][3];
 

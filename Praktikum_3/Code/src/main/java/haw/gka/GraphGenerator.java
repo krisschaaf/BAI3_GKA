@@ -11,12 +11,9 @@ import java.util.stream.IntStream;
 
 public class GraphGenerator {
 
-    // TODO
-    // TODO important! set id for graph
     public static Graph createEulerGraph(int nodesAmount, int edgeCount, String id) {
         int minEdgeAmount = nodesAmount * (nodesAmount - 1) / 2;
-        MultiGraph graph = new MultiGraph("Graph");
-        System.setProperty("org.graphstream.ui", "swing");
+        MultiGraph graph = new MultiGraph(id);
         IntStream.range(0, nodesAmount).forEach(x -> {
             String nodeName = "node" + x;
             MultiNode node = new MultiNode(graph, nodeName);
