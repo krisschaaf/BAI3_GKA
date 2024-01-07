@@ -15,7 +15,7 @@ public class Main {
 	private static final String TOOL = "Tool"; // TODO
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.setProperty("org.graphstream.ui", "swing");
 
 		List<Graph> graphs = getGraphList();
@@ -51,7 +51,7 @@ public class Main {
 		}
 	}
 
-	private static List<Graph> getGraphList() {
+	private static List<Graph> getGraphList() throws Exception {
 		Graph eulerGraph1 = GraphGenerator.createEulerGraph(100, 3000, "01");
 		Graph eulerGraph2 = GraphGenerator.createEulerGraph(1000, 400000, "02");
 		Graph eulerGraph3 = GraphGenerator.createEulerGraph(10000, 1000000, "03");

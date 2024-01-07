@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 public class GraphGenerator {
 
     public static Graph createEulerGraph(int nodesAmount, int edgesAmount, String id) throws Exception {
+        //Anzahl von Edges prüfen damit Graph zusammenhängen bleibt
         if (edgesAmount < nodesAmount-1){
             throw new Exception ("Amount of Edges have to be more then " + (nodesAmount-1));
             }
@@ -24,16 +25,17 @@ public class GraphGenerator {
             MultiNode node = new MultiNode(graph, nodeName);
             graph.addNode(String.valueOf(node));
         });
-        //pos : V -> {1; :::; m }  injektive Abb der n Knoten auf die m Position
-        Map<Node, Integer> posHashMap = new HashMap<>();
+
         //Erstellen Liste mit Nodes  V = {1; :::; n}
         List<Node> nodes = graph.nodes().collect(Collectors.toList());
         //Positionen im Eulerkreis
         List<Integer> positions = IntStream.rangeClosed(0, edgesAmount - 1)
                 .boxed().collect(Collectors.toList());
-        //Collections.shuffle(positions);
-       Collections.shuffle(nodes);
-        for (int i = 0; i <nodesAmount; i++) { //*
+
+
+        //pos : V -> {1; :::; m }  injektive Abb der n Knoten auf die m Position
+        Map<Node, Integer> posHashMap = new HashMap<>();
+        for (int i = 0; i <nodesAmount; i++) {
             int nextPos = random.nextInt(edgesAmount-1);
             //i-tem Element aus der Liste von Nodes random Position zuweisen
             posHashMap.put(nodes.get(i), nextPos);
@@ -41,31 +43,26 @@ public class GraphGenerator {
         }
 
         Node start = null;
-
         start = getNextNode(posHashMap, nodes, 0);
         Node actualStart = start;
 
+        //Damit Graph zudammenhängend bleibt zuerst fügen wir alle Knoten aus der geshuffelten Klotenliste hinzu
+        Collections.shuffle(nodes);
         for (int i = 1; i < edgesAmount; i++) {
             Node actualTarget = getNextNode(posHashMap, nodes, i);
             String edgeName = String.format("edge%s", i);
             if ((i < nodesAmount) &&(!actualStart.equals(nodes.get(i)))){
                 actualTarget = nodes.get(i);
             } else {
-//                actualTarget = getNextNode(posHashMap, nodes, i);
-//            Ohne Schlinge:
                 do {
                     actualTarget = getNextNode(posHashMap, nodes, i);
                 }while (actualStart.equals(actualTarget));
-
-
             }
-//
 
             graph.addEdge(edgeName, actualStart, actualTarget);
             actualStart = actualTarget;
             if (i == nodesAmount - 1) {
                 graph.addEdge(String.format("edge%s", edgesAmount), actualTarget, start);
-
             }
 
         }

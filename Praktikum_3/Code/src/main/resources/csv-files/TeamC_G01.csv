@@ -1,7 +1,7 @@
 TeamName,TeamC,
 GraphType,MultiGraph,
-EdgeCount,100,
-Hardware,Mac OS X 14.1.1 aarch64,
+EdgeCount,3000,
+Hardware,Windows 10 10.0 amd64,
 MeasurementTool,Tool,
 
 Run,Time(ms),Energy(J),
