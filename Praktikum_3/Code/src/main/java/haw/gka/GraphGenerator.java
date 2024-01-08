@@ -42,14 +42,14 @@ public class GraphGenerator {
             positions.remove((Object) nextPos);
         }
 
-        Node start = null;
-        start = getNextNode(posHashMap, nodes, 0);
+
+        Node start = getNextNode(posHashMap, nodes, 0);
         Node actualSource = start;
 
         //Damit Graph zudammenhängend bleibt zuerst fügen wir alle Knoten aus der geshuffelten Klotenliste hinzu
         Collections.shuffle(nodes);
         for (int i = 1; i < edgesAmount; i++) {
-            Node actualTarget = getNextNode(posHashMap, nodes, i);
+            Node actualTarget = null;
             String edgeName = String.format("edge%s", i);
             if ((i < nodesAmount) && (!actualSource.equals(nodes.get(i)))) {
                 actualTarget = nodes.get(i);
