@@ -8,69 +8,52 @@ import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.MultiNode;
 import org.graphstream.graph.implementations.SingleGraph;
 
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Hierholzer {
     private static List<Edge> visitedEdges;
-    private static List<Graph> result;
+
     private static List<Node> findEulerCircle(Node startNode){
         // Der zu untersuchende Knoten ist zu Beginn der Startknoten
         Node currentNode = startNode;
         // Initialisiere List, in die die Knoten des Kreises geschrieben werden
-        List<Node> circleNodes = new LinkedList<Node>();
-        visitedEdges = new LinkedList<Edge>();
+        List<Node> circleNodes = new ArrayList<Node>();
+        visitedEdges = new ArrayList<Edge>();
         // Führe folgenden Block so lange aus, bis der Kreis geschlossen ist
         do {
             circleNodes.add(currentNode);
-            // Suche nächste Kante
-            Edge nextEdge = null;
             // Ist diese schon Teil des bisherigen Kreises, suche nächste Kante
-            for (int i = 0; i == 0 || visitedEdges.contains(nextEdge); i++) {
-                nextEdge = getNthEdge(currentNode, i);
-                if (nextEdge == null) {
-                    throw new RuntimeException("Node " + currentNode.getId() + " has no more edges!");
-                }
+            List<Edge> edges = currentNode.edges().collect(Collectors.toList());
+            Edge nextEdge = edges.get(0);
+            for (int i = 1; visitedEdges.contains(nextEdge); i++) {
+                nextEdge = edges.get(i);
             }
-
             // Füge gefundene Kante dem Kreis hinzu
             visitedEdges.add(nextEdge);
             // Betrachte nächsten Knoten
             currentNode = nextEdge.getOpposite(currentNode);
-
-        } while(!startNode.equals(currentNode));
-
+        } while(!startNode.getId().equals(currentNode.getId()));
         return circleNodes;
     }
 
     public static List<Graph> findEulerGraphs(Graph graph) {
 
-        // Ueberpruefe ob jeder Knoten eine gerade Anzahl an Kanten besitzt
-        if(!isValidEulerGraph(graph)){
-            throw new RuntimeException("Graph is not valid!");
-        }
-        result  = new ArrayList<Graph>();
+        List<Graph> result = new LinkedList<Graph>();
         List<Edge> cachedEdges = new LinkedList<Edge>();
-        List<Node> circleNodes = new LinkedList<Node>();
+        List<Node> circleNodes = new ArrayList<Node>();
         // Führe folgenden Block solange aus, bis keine Kanten mehr im Graph vorhanden sind
         while(graph.getEdgeCount() > 0) {
-            Node startNode = null;
+            Node startNode;
+
             if(circleNodes.isEmpty()){
                 // Beginne mit dem ersten Knoten im Graphen als Startknoten
                 startNode = graph.getNode(0);
             } else {
                 // Sonst nehme den ersten Knoten des zuletzt gebauten Eulerkreises, der noch Nachbarn hat
-                for(Node n : circleNodes){
-                    if(n.getDegree() > 0){
-                        startNode = n;
-                        break;
-                    }
-                }
-                if (startNode == null){
-                    throw new RuntimeException("Somethings wrong, edges left but " +
-                            "no further nodes with neighbours found!");
-                }
+                startNode = circleNodes.stream().filter(node -> node.getDegree() > 0).findAny().orElse(null);
             }
             // Suche nächsten Eulerkreis
             circleNodes.addAll(findEulerCircle(startNode));
@@ -80,7 +63,7 @@ public class Hierholzer {
             for (Edge e: visitedEdges
             ) {
                 try{
-                    //Cache und Entferne die Kanten des Kreises aus dem Graphen
+                    // Cache und Entferne die Kanten des Kreises aus dem Graphen
                     cachedEdges.add(e);
                     graph.removeEdge(e.getId());
                 } catch (ElementNotFoundException enf){
@@ -92,16 +75,7 @@ public class Hierholzer {
         for (Edge e : cachedEdges){
             graph.addEdge(e.getId(), e.getSourceNode(), e.getTargetNode());
         }
-
         return result;
-    }
-
-    private static Edge getNthEdge(Node node,int n){
-        try{
-            return (Edge)node.edges().toArray()[n];
-        } catch (IndexOutOfBoundsException e){
-            return null;
-        }
     }
 
     private static boolean isValidEulerGraph(Graph g){
@@ -111,20 +85,6 @@ public class Hierholzer {
             }
         }
         return true;
-    }
-
-    private static List<Node> getNeighbours(Node n){
-        List<Node> localresult = new LinkedList<Node>();
-        Collections.addAll(localresult, n.neighborNodes().toArray(Node[]::new));
-        return localresult;
-    }
-
-    private static int getNeighbourSize(Node n){
-        int counter = 0;
-        for (Edge e : n.edges().toArray(Edge[]::new)){
-            counter += 1;
-        }
-        return counter;
     }
 
     private static Graph getGraphFromEdges(List<Edge> edges){
@@ -137,7 +97,6 @@ public class Hierholzer {
         ) {
             // Füge Kanten des Kreises dem leeren Teilgraph hinzu
             newGraph.addEdge(e.getId(),e.getSourceNode().getId(), e.getTargetNode().getId());
-            newGraph.getEdge(e.getId()).setAttribute("ui.label", "marked");
         }
         return newGraph;
     }
