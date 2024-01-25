@@ -13,8 +13,8 @@ public class GraphGenerator {
 
     public static Graph createEulerGraph(int nodesAmount, int edgesAmount, String id) throws Exception {
         //Anzahl von Edges prüfen damit Graph zusammenhängen bleibt
-        if (edgesAmount < nodesAmount - 1) {
-            throw new Exception("Amount of Edges have to be more then " + (nodesAmount - 1));
+        if (edgesAmount < nodesAmount) {
+            throw new Exception("Amount of Edges have to be more then " + (nodesAmount));
         }
 
         MultiGraph graph = new MultiGraph(id);
@@ -36,7 +36,7 @@ public class GraphGenerator {
         //pos : V -> {1; :::; m }  injektive Abb der n Knoten auf die m Position
         Map<Node, Integer> posHashMap = new HashMap<>();
         for (int i = 0; i < nodesAmount; i++) {
-            int nextPos = random.nextInt(edgesAmount - 1);
+            int nextPos = random.nextInt(edgesAmount );
             //i-tem Element aus der Liste von Nodes random Position zuweisen
             posHashMap.put(nodes.get(i), nextPos);
             positions.remove((Object) nextPos);
@@ -48,7 +48,7 @@ public class GraphGenerator {
 
         //Damit Graph zudammenhängend bleibt zuerst fügen wir alle Knoten aus der geshuffelten Klotenliste hinzu
         Collections.shuffle(nodes);
-        for (int i = 1; i < edgesAmount; i++) {
+        for (int i = 0; i < edgesAmount; i++) {
             Node actualTarget = null;
             String edgeName = String.format("edge%s", i);
             if ((i < nodesAmount) && (!actualSource.equals(nodes.get(i)))) {
@@ -61,11 +61,15 @@ public class GraphGenerator {
 
             graph.addEdge(edgeName, actualSource, actualTarget);
             actualSource = actualTarget;
-            if (i == edgesAmount - 1) {
+            if ((i == edgesAmount-1)&& (!actualSource.equals(start))) {
                 graph.addEdge(String.format("edge%s", edgesAmount), actualTarget, start);
+            } else if ((i == edgesAmount-1)&& (actualSource.equals(start))){
+                do {
+                    actualTarget = getNextNode(posHashMap, nodes, i);
+                } while (actualSource.equals(actualTarget));
             }
         }
-
+        checkKnotenGraph(graph);
         return graph;
     }
 
@@ -77,7 +81,6 @@ public class GraphGenerator {
             posHashMap.put(node, posNr);
         } else {
             for (Map.Entry<Node, Integer> entry : posHashMap.entrySet()) {
-
                 if (Objects.equals(posNr, entry.getValue())) {
                     node = entry.getKey();
                 }
@@ -85,5 +88,13 @@ public class GraphGenerator {
         }
 
         return node;
+    }
+
+  static void checkKnotenGraph(MultiGraph graph){
+        graph.nodes().forEach(node -> {
+            int grad = node.enteringEdges().collect(Collectors.toSet()).size();
+            if (grad % 2 == 1)
+            System.out.println("!!!Wrang   " +(grad));
+       });
     }
 }
