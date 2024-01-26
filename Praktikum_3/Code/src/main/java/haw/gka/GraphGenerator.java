@@ -14,7 +14,7 @@ public class GraphGenerator {
     public static Graph createEulerGraph(int nodesAmount, int edgesAmount, String id) throws Exception {
         //Anzahl von Edges prüfen damit Graph zusammenhängen bleibt
         if (edgesAmount < nodesAmount) {
-            throw new Exception("Amount of Edges have to be more then " + (nodesAmount));
+            throw new Exception("Amount of Edges have to be more then " + (nodesAmount - 1));
         }
 
         MultiGraph graph = new MultiGraph(id);
@@ -90,11 +90,11 @@ public class GraphGenerator {
         return node;
     }
 
-  static void checkKnotenGraph(MultiGraph graph){
+    private static void checkKnotenGraph(MultiGraph graph){
         graph.nodes().forEach(node -> {
             int grad = node.enteringEdges().collect(Collectors.toSet()).size();
             if (grad % 2 == 1)
-            System.out.println("!!!Wrang   " +(grad));
-       });
+                System.out.println("!!!Wrang   " +(grad));
+        });
     }
 }

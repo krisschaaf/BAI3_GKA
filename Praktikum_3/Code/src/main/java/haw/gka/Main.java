@@ -14,7 +14,7 @@ public class Main {
 	private static final String TEAM_NAME = "TeamC";
 	private static final String TOOL = "Tool"; // TODO
 
-	
+
 	public static void main(String[] args) throws Exception {
 		System.setProperty("org.graphstream.ui", "swing");
 
