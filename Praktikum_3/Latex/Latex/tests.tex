@@ -79,3 +79,59 @@ Der letzte statische Graph\ref{fig:multiedge} ist ein Multigraph. Dieser enthäl
 	\caption{Ein Graph mehr Kanten als Knoten}
 	\label{fig:multiedge}
 \end{figure}
+
+\subsection{Zufällig generierte Testgraphen}
+
+Beim Testen von zufällig generierten Testgraphen entstehen verschiedenste Probleme.\\
+Um aber vorerst eine paar Teilfunktionalitäten des GraphGenerators zu testen wurden Tests implementiert, welche die an den GraphGenerator übergebenen Parameter testet. So wirft dieser zum Beispiel bei weniger übergebenen Kanten als Knoten eine Exception. Außerdem auch, wenn ein alleinstehender Knoten als einzige Komponente des Graphen erstellt werden soll.
+\\
+In der präsentierten Implementierung bringen sowohl der GraphGenerator als auch der Hierholzer Algorithmus eine gewisse "Zufälligkeit" mit sich. Dadurch ist es nicht möglich anhand der übergebenen Kanten- und Knotengröße zu bestimmen, wie viele Eulerkreise der Hierholzer Algorithmus finden wird. Zusätzlich wird die Kantenanzahl im GraphGenerator erhöht, wenn sich mit den übergebenen Parametern keine Eulergraphen bilden lassen. Auch dies erschwert die Vorhersage.\\
+Werden zum Beispiel 10 Knoten und 11 Kanten übergeben erhöht sich die Kantenanzahl auf 12, da es sonst Knoten mit ungradem Knotengrad gäbe.\\
+
+Um dies genauer zu zeigen folgender Test:
+\begin{lstlisting}[language = java, frame = trBL]
+@Test
+public void graphGenerator() {
+    Graph graph = GraphGenerator.createEulerGraph(10,11, "foo");
+    System.out.println("Edgecount: " + graph.edges().count());
+
+    List<Graph> eulerianCircles = Hierholzer.findEulerGraphs(graph);
+
+    System.out.println("Euleriancircles: " + eulerianCircles);
+}
+\end{lstlisting}
+
+\textbf{Die erste Ausgabe:} \\ 
+\textit{Edgecount: 12}\\
+\textit{Euleriancircles: [Teilgraph\_edge0, Teilgraph\_edge1, Teilgraph\_edge9]}\\
+
+\textbf{Die zweite Ausgabe:} \\ 
+\textit{Edgecount: 12} \\
+\textit{Euleriancircles: [Teilgraph\_edge3, Teilgraph\_edge9]}\\
+
+\textbf{Die dritte Ausgabe:} \\ 
+\textit{Edgecount: 12} \\
+\textit{Euleriancircles: [Teilgraph\_edge9]}\\
+
+Zu sehen ist, dass selbst bei sehr kleinen Graphen schon zu erkennen ist, dass die Ergebnisse nicht an den übergebenen Parametern festgemacht werden können.\\
+Der Vollständigkeit halber folgen drei Versuche mit einem größeren Graphen. Auch hier sind aber keine nutzbaren Werte zu erkennen.
+
+\newpage
+
+\textbf{Mit 100 Knoten und 10000 Kanten:}\\
+
+\begin{minipage}[t]{0.33\textwidth}
+    \textbf{Die erste Ausgabe:} \\
+    \textit{Edgecount: 10001} \\
+    \textit{EulerianCirclesCount: 89}
+\end{minipage}%
+\begin{minipage}[t]{0.33\textwidth}
+    \textbf{Die zweite Ausgabe:} \\
+    \textit{Edgecount: 10001} \\
+    \textit{EulerianCirclesCount: 103}
+\end{minipage}%
+\begin{minipage}[t]{0.33\textwidth}
+    \textbf{Die dritte Ausgabe:} \\
+    \textit{Edgecount: 10001} \\
+    \textit{EulerianCirclesCount: 112}
+\end{minipage}

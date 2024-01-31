@@ -11,10 +11,10 @@ import java.util.stream.IntStream;
 
 public class GraphGenerator {
 
-    public static Graph createEulerGraph(int nodesAmount, int edgesAmount, String id) throws Exception {
+    public static Graph createEulerGraph(int nodesAmount, int edgesAmount, String id) {
         //Anzahl von Edges prüfen damit Graph zusammenhängen bleibt
         if (edgesAmount < nodesAmount) {
-            throw new Exception("Amount of Edges have to be more then " + (nodesAmount - 1));
+            throw new IllegalArgumentException("Amount of Edges have to be more then " + (nodesAmount - 1));
         }
 
         MultiGraph graph = new MultiGraph(id);
@@ -49,7 +49,7 @@ public class GraphGenerator {
         //Damit Graph zudammenhängend bleibt zuerst fügen wir alle Knoten aus der geshuffelten Klotenliste hinzu
         Collections.shuffle(nodes);
         for (int i = 0; i < edgesAmount; i++) {
-            Node actualTarget = null;
+            Node actualTarget;
             String edgeName = String.format("edge%s", i);
             if ((i < nodesAmount) && (!actualSource.equals(nodes.get(i)))) {
                 actualTarget = nodes.get(i);
@@ -69,7 +69,7 @@ public class GraphGenerator {
                 } while (actualSource.equals(actualTarget));
             }
         }
-        checkKnotenGraph(graph);
+        checkGraphNodes(graph);
         return graph;
     }
 
@@ -90,7 +90,7 @@ public class GraphGenerator {
         return node;
     }
 
-    private static void checkKnotenGraph(MultiGraph graph){
+    private static void checkGraphNodes(MultiGraph graph){
         graph.nodes().forEach(node -> {
             int grad = node.enteringEdges().collect(Collectors.toSet()).size();
             if (grad % 2 == 1)
