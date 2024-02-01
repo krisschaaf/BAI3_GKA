@@ -70,6 +70,12 @@ public class GraphGenerator {
             }
         }
         checkGraphNodes(graph);
+
+        if(graph.edges().count() != edgesAmount) {
+            System.out.println("Due to no allowed loops the amount of edges has been raised from " +
+                    edgesAmount + " to " + graph.edges().count()+ ".");
+        }
+
         return graph;
     }
 
