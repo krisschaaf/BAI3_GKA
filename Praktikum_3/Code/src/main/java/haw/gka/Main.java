@@ -12,15 +12,13 @@ import java.util.List;
 
 public class Main {
 	private static final String TEAM_NAME = "TeamC";
-	private static final String TOOL = "Tool"; // TODO
+	private static final String TOOL = "Powerlog";
 
 
 	public static void main(String[] args) {
 		System.setProperty("org.graphstream.ui", "swing");
 
-		List<Graph> graphs = getGraphList();
-
-		for (Graph graph: graphs) {
+		for (Graph graph: getGraphList()) {
 			String[][] data = new String[10][3];
 
 			for (int i = 1; i <= 13; i++) {

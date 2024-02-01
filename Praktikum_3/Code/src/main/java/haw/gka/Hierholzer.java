@@ -35,7 +35,7 @@ public class Hierholzer {
                 startNode = graph.getNode(0);
             } else {
                 // Sonst nehme den ersten Knoten des zuletzt gebauten Eulerkreises, der noch Nachbarn hat
-                startNode = circleNodes.stream().filter(node -> node.getDegree() > 0).findAny().orElseThrow(() -> new RuntimeException(""));
+                startNode = circleNodes.stream().filter(node -> node.getDegree() > 0).findAny().orElseThrow(() -> new RuntimeException("No Node with Degree > 0 found!"));
             }
             // Suche nächsten Eulerkreis und füge ihn zu den bisher gefundenen hinzu
             circleNodes.addAll(findEulerCircle(startNode));

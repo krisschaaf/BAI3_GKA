@@ -45,7 +45,7 @@ public class HierholzerTest {
 
         List<Graph> eulerCircles = Hierholzer.findEulerGraphs(test);
 
-        HashSet<Edge> collectedEdges = new HashSet<Edge>();
+        HashSet<Edge> collectedEdges = new HashSet<>();
         for (Graph g : eulerCircles){
             for(Node n : g.nodes().collect(Collectors.toList())){
                 assertEquals((n.getDegree()%2),0);
@@ -55,11 +55,11 @@ public class HierholzerTest {
         assertEquals(test.getEdgeCount(),collectedEdges.size());
     }
     @Test
-    public void testGeneratedEulerGraph() throws Exception {
+    public void testGeneratedEulerGraph() {
         Graph test = GraphGenerator.createEulerGraph(100, 4000, "test");
         List<Graph> eulerCircles = Hierholzer.findEulerGraphs(test);
 
-        HashSet<Edge> collectedEdges = new HashSet<Edge>();
+        HashSet<Edge> collectedEdges = new HashSet<>();
         for (Graph g : eulerCircles){
             for(Node n : g.nodes().collect(Collectors.toList())){
                 assertEquals((n.getDegree()%2),0);
@@ -70,7 +70,7 @@ public class HierholzerTest {
     }
 
     @Test
-    public void testIdentifyNonEulerGraph() throws Exception {
+    public void testIdentifyNonEulerGraph() {
         Random rnd = new Random();
         for(int i = 1; i < 10; i++){
             Graph test = GraphGenerator.createEulerGraph(100, i*1000, "test");

@@ -6,11 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HierholzerAufg1BTest {
 
-//    @Test
-//    public void graphGeneratorThrowsExceptionOnLoop() {
-//        assertThrows(IllegalArgumentException.class, () -> GraphGenerator.createEulerGraph(1, 1, "foo"));
-//    }
-
     @Test
     public void graphGeneratorThrowsExceptionWhenLessEdgesThanNodes() {
         assertThrows(IllegalArgumentException.class, () -> GraphGenerator.createEulerGraph(2, 1, "foo"));
